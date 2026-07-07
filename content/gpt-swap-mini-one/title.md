@@ -1,0 +1,1 @@
+Swap person and make them miniature

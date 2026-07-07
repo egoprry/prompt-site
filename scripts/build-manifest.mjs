@@ -6,6 +6,9 @@
  *   tags.md     (required) — tags separated by newlines or commas, "#" optional
  *   content.md  (required) — the post body (prompts), rendered as markdown
  *   date.md     (optional) — a YYYY-MM-DD date; falls back to content.md mtime
+ *   hero.md     (optional) — crop anchor for the card's hero thumbnail:
+ *               top | bottom | center | left | right, or an exact
+ *               CSS object-position like "50% 20%" (default: center)
  *   *.webp/…    (optional) — up to 7 images; "fin-" prefixed finals sort first
  *   style-ref/, img-ref/, omni-ref/ (optional) — reference image subfolders,
  *               listed separately in the manifest under "refs"
@@ -40,6 +43,24 @@ function parseTags(md) {
     .filter((t) => t.length > 0);
 }
 
+/* Normalize hero.md to a safe CSS object-position value, or null. */
+function parseHero(md) {
+  const line = (md || '').split('\n').map((l) => l.trim()).find((l) => l.length > 0);
+  if (!line) return null;
+  const v = line.toLowerCase();
+  const keywords = {
+    top: '50% 0%',
+    bottom: '50% 100%',
+    center: '50% 50%',
+    left: '0% 50%',
+    right: '100% 50%',
+  };
+  if (keywords[v]) return keywords[v];
+  if (/^\d{1,3}% \d{1,3}%$/.test(v)) return v;
+  console.warn(`  ! invalid hero.md value "${line}" — expected top/bottom/center/left/right or "X% Y%"`);
+  return null;
+}
+
 async function parseDate(dir, dateMd) {
   const m = (dateMd || '').match(/\d{4}-\d{2}-\d{2}/);
   if (m) return m[0];
@@ -57,11 +78,12 @@ const folders = entries.filter((e) => e.isDirectory()).map((e) => e.name).sort()
 const posts = [];
 for (const folder of folders) {
   const dir = path.join(CONTENT_DIR, folder);
-  const [titleMd, tagsMd, contentMd, dateMd] = await Promise.all([
+  const [titleMd, tagsMd, contentMd, dateMd, heroMd] = await Promise.all([
     readIfExists(path.join(dir, 'title.md')),
     readIfExists(path.join(dir, 'tags.md')),
     readIfExists(path.join(dir, 'content.md')),
     readIfExists(path.join(dir, 'date.md')),
+    readIfExists(path.join(dir, 'hero.md')),
   ]);
 
   if (contentMd === null && titleMd === null) {
@@ -85,12 +107,15 @@ for (const folder of folders) {
     } catch { /* folder doesn't exist */ }
   }
 
+  const hero = parseHero(heroMd);
+
   posts.push({
     id: folder,
     title: parseTitle(titleMd, folder),
     tags: parseTags(tagsMd),
     date: await parseDate(dir, dateMd),
     images,
+    ...(hero ? { hero } : {}),
     ...(Object.keys(refs).length ? { refs } : {}),
     content: (contentMd || '').replace(/\r\n/g, '\n').trim(),
   });

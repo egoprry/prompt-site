@@ -1,9 +1,40 @@
 {
-  "generated": "2026-07-07T20:48:18.048Z",
+  "generated": "2026-07-07T21:38:32.841Z",
   "posts": [
     {
+      "id": "gpt-swap-mini-one",
+      "title": "Swap person and make them miniature",
+      "tags": [
+        "chatgpt-image-2",
+        "swap"
+      ],
+      "date": "2026-07-07",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp"
+      ],
+      "content": "Swap character and make them miniature\n\n## Base prompt\n\n```\nreplace the person on the right with the person in the second image, the person in the second image is miniature, they are further to the right down the steps\n```"
+    },
+    {
+      "id": "gpt-swap-mult-one",
+      "title": "Swap two people into an image",
+      "tags": [
+        "chatgpt-image-2",
+        "swap"
+      ],
+      "date": "2026-07-07",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp",
+        "img-03.webp"
+      ],
+      "content": "Swap two people in an image\n\n## Base prompt\n\n```\nreplace the likeness of the man and woman with the man and woman in second and third images, keep scene the same, keep expressions of original image including lighting. update to be 3:4 image\n```\n\n## Notes\n\n- Base image made with Midjourney v8.1 no references prompt below\n\n```\nWide anamorphic two shot, slight low angle, dusty near abandoned 1880s frontier town main street. Two figures stride shoulder to shoulder toward camera mid stride. Left: Black woman, mid 20s, long dark hair, wide brim black cowboy hat, 3/4 face toward companion, cream rolled sleeve button down, deep cobalt blue bandana knotted at throat, tooled leather gun belt slung low, revolver holstered right hip, dark fitted denim, scuffed riding boots. Right: White man, mid 30s, full reddish brown beard, short tousled hair, black wide brim hat, 3/4 face front lit, gunmetal Oakley X Metal Juliet sunglasses with fire iridium red lenses catching lens flare, charcoal tailored suit jacket over dark dress shirt and patterned tie (deliberately anachronistic), right hand gripping a curved fixed blade knife. Background: sun bleached clapboard buildings, rutted dirt street, tumbleweeds, hitching post, distant church steeple. Editorial poster framing. Palette: bleached bone white sky, dusty ochre street, deep umber shadows, cobalt and fire red accents. 35mm film grain, faint halftone shadows, subtle CMYK registration offset on highlights for vintage litho poster feel. High noon stillness, suspended dust haze, sharp foreground, soft mid ground bokeh. --chaos 75 --ar 7:3 --raw --sref 2081446411 --profile ukmch4y mphr36g --stylize 1000 --hd\n```"
+    },
+    {
       "id": "groyper-swap-series-one",
-      "title": "Groyper swap series one",
+      "title": "Groyper swap (force)",
       "tags": [
         "chatgpt-image-2",
         "swap"
@@ -17,8 +48,26 @@
       "content": "Method of ensuring that groyper is not interpreted as pepe in gpt swap\n\n## Base prompt\n\n```\nrecreate the first image with the green character in the second image, keep the color palette (including for character) from the original image, keep the expression of the original image, also update the second character to have the same texture as the original image, CRITICAL CHARACTER NOTE ABOUT GREEN CHARACTER: This character is NOT Pepe the Frog and must not be interpreted, restyled, or nudged toward Pepe's geometry. Specifically: Keep the rounded bulbous humanoid head shape from this green character second image reference. This is an original character that happens to be green-skinned and amphibian-adjacent; treat it as you would any original humanoid design. \n```"
     },
     {
+      "id": "mj-buddycop-one",
+      "title": "Movie poster buddy cops",
+      "tags": [
+        "midjourney",
+        "v8.0"
+      ],
+      "date": "2026-07-07",
+      "images": [
+        "img-01.webp"
+      ],
+      "refs": {
+        "style-ref": [
+          "ref-01.webp"
+        ]
+      },
+      "content": "mj buddy cop movie poster v8.0\n\n## Base prompt\n\n```\ncinematic 1980s buddy-cop action movie poster, two male detectives standing back to back in dramatic poses, one younger with wild long mullet hair and piercing blue eyes in a worn leather jacket, the other an older distinguished Black man with a graying mustache in a rumpled suit and loosened tie looking like he's too old for this, fiery explosion and cityscape silhouette behind them, dramatic orange and teal split lighting, the text \"DEFCON 3\" stylishly integrated into the composition in bold chrome metallic lettering with light reflections, cinematic typography woven into the smoke and light, anamorphic lens flares, high detail --chaos 20 --ar 3:4 --raw --profile canaos2 --stylize 1000 --v 8.0\n```"
+    },
+    {
       "id": "mj-surreal-one",
-      "title": "Midjourney surreal v7 one",
+      "title": "Surreal character MJ",
       "tags": [
         "midjourney",
         "v7.0"
@@ -45,7 +94,7 @@
     },
     {
       "id": "mj-text-af-one",
-      "title": "Midjourney AF text v8",
+      "title": "AF Text MJ",
       "tags": [
         "midjourney",
         "v8.0"

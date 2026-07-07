@@ -358,9 +358,13 @@
       parts.push('<div class="status">No posts match the current filters.</div>');
     } else {
       const cards = list.map((p) => {
+        // hero crop anchor from hero.md; re-validated here since it lands in
+        // a style attribute
+        const heroPos = /^\d{1,3}% \d{1,3}%$/.test(p.hero || '')
+          ? ` style="object-position:${p.hero}"` : '';
         const hero = p.images.length
           ? `<div class="post-hero${isFin(p.images[0]) ? ' fin' : ''}">
-               <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}">
+               <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${heroPos}>
              </div>`
           : '<div class="post-hero empty">text-only</div>';
         return `

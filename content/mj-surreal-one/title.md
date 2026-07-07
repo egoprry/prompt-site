@@ -1,1 +1,1 @@
-Midjourney surreal v7 one
+Surreal character MJ

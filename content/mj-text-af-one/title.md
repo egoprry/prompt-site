@@ -1,1 +1,1 @@
-Midjourney AF text v8
+AF Text MJ

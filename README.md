@@ -13,6 +13,9 @@ A static single-page site for sharing image-generation prompts, designed for Git
                    (midjourney, chatgpt-image-2, kling-3, seedance-2.0, grok, …)
      content.md    required — the post body / prompts, markdown supported
      date.md       optional — YYYY-MM-DD (falls back to file modified date)
+     hero.md       optional — hero thumbnail crop anchor: top, bottom,
+                   center, left, right, or an exact "X% Y%" position
+                   (default: center)
      *.png/jpg/…   optional — up to 7 images, any format
      style-ref/    optional — style reference images (midjourney posts)
      img-ref/      optional — image reference images
