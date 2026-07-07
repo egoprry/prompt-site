@@ -1,0 +1,81 @@
+{
+  "generated": "2026-07-07T13:44:58.469Z",
+  "posts": [
+    {
+      "id": "cyberpunk-alley-rain",
+      "title": "Cyberpunk Alley in the Rain",
+      "tags": [
+        "midjourney"
+      ],
+      "date": "2026-07-01",
+      "images": [
+        "img-01.webp",
+        "img-02.webp",
+        "img-03.webp"
+      ],
+      "content": "A moody neon alley scene that holds up across aspect ratios. The key is keeping the light sources motivated — every glow comes from signage or puddle reflections.\n\n## Base prompt\n\n```\nrain-soaked cyberpunk alley at night, holographic signage in kanji and hangul,\nsteam rising from street vents, lone figure with transparent umbrella,\nreflections in puddles, cinematic lighting, anamorphic lens flare,\nshot on Kodak Portra 800 --ar 2:3 --v 7 --style raw\n```\n\n## Variations\n\n- Swap `lone figure with transparent umbrella` for `stray cat on a dumpster` for a quieter mood\n- Add `--chaos 20` for more varied sign layouts\n- For the wide establishing shot use `--ar 21:9` and drop the figure entirely\n\n**Tip:** `--style raw` matters here — without it the neon gets over-saturated and the rain streaks turn painterly."
+    },
+    {
+      "id": "grok-retro-arcade-posters",
+      "title": "Grok Retro Arcade Poster Series",
+      "tags": [
+        "grok"
+      ],
+      "date": "2026-06-15",
+      "images": [
+        "img-01.webp",
+        "img-02.webp",
+        "img-03.webp",
+        "img-04.webp",
+        "img-05.webp"
+      ],
+      "content": "A repeatable template for a matched poster series. Swap only the game concept line and the two palette colors — everything else stays fixed so the set looks coherent.\n\n```\n1980s arcade cabinet marquee poster for a fictional game called \"{GAME}\",\n{CONCEPT LINE}, airbrushed illustration style, chrome bevel title lettering,\nstarburst highlights, {COLOR A} and {COLOR B} palette on deep black,\nsubtle print halftone texture, 2:3 poster\n```\n\n## The five in this set\n\n1. `NEON VIPER` — a chrome snake coiled around a joystick, orange and violet\n2. `STAR HAULER` — a cargo ship escaping a collapsing sun, cyan and gold\n3. `RIFT RUNNER` — a skater grinding a lightning bolt, amber and crimson\n4. `MECHA GARDEN` — robot hands cradling a glowing bonsai, purple and mint\n5. `DEEP SIGNAL` — a diver reaching for a glowing radio tower, teal and sand\n\nGrok keeps the lettering style consistent across a session, so generate the whole set in one conversation."
+    },
+    {
+      "id": "kling-drone-canyon",
+      "title": "Kling 3 Drone Flight Through Slot Canyon",
+      "tags": [
+        "kling-3"
+      ],
+      "date": "2026-07-05",
+      "images": [],
+      "content": "A 10-second FPV-style shot that Kling 3 nails about 7 times out of 10. Camera language is everything — tell it what the camera does, not what the video \"feels like\".\n\n```\nFPV drone shot flying fast through a narrow sandstone slot canyon, camera\nbanking left and right following the curves of the rock, warm sunlight\nshafts cutting through dust from above, motion blur on canyon walls,\nsmooth continuous forward motion, 10 seconds, no cuts\n```\n\n## What matters\n\n1. `no cuts` prevents it from editing in a second angle halfway through\n2. `smooth continuous forward motion` stops the drift-and-hover problem\n3. Keep subjects out of it — people in fast FPV shots still warp badly\n4. Generate at 10s and trim; the first second is usually a rough ramp-in"
+    },
+    {
+      "id": "minimal-geometric-logos",
+      "title": "Minimal Geometric Logo Explorations",
+      "tags": [
+        "midjourney",
+        "chatgpt-image-2"
+      ],
+      "date": "2026-07-06",
+      "images": [],
+      "content": "Text-only post — the outputs are client work I can't share, but the prompt structure is reusable.\n\n## Midjourney\n\n```\nflat vector logo mark, abstract geometric fox constructed from three\noverlapping circles, single color on white, negative space, swiss design,\nno text --ar 1:1 --v 7 --style raw --no gradients, shading, 3d\n```\n\nThe `--no gradients, shading, 3d` block is what keeps it actually flat.\n\n## ChatGPT Image 2\n\n```\nDesign a minimal logo mark: an abstract fox built from exactly three\noverlapping circles. Single solid black on pure white. Flat vector style,\nno gradients, no outlines, no text. Center it with generous margins.\n```\n\nChatGPT is better at \"exactly three circles\" — Midjourney treats counts as a suggestion. Midjourney wins on negative-space cleverness. Run both and cherry-pick."
+    },
+    {
+      "id": "perfume-product-shot",
+      "title": "Luxury Perfume Product Shot",
+      "tags": [
+        "chatgpt-image-2"
+      ],
+      "date": "2026-06-24",
+      "images": [
+        "img-01.webp",
+        "img-02.webp"
+      ],
+      "content": "ChatGPT Image 2 handles glass refraction surprisingly well if you describe the lighting rig instead of the mood.\n\n```\nStudio product photograph of an amber glass perfume bottle with a brushed\ngold cap, sitting on a wet black marble slab. Single softbox key light from\nthe upper left, white bounce card on the right, thin rim light separating\nthe bottle from a charcoal background. Condensation droplets on the glass.\nSharp focus on the label, f/8 depth of field. No text on the label.\n```\n\n## Notes\n\n- Describing the actual lighting setup (key, bounce, rim) beats adjectives like \"dramatic\" or \"cinematic\"\n- Ask for `no text on the label` — otherwise it invents a garbled brand name\n- Follow up with \"same scene, camera 30 degrees lower, closer crop\" to get a matched set"
+    },
+    {
+      "id": "seedance-liquid-chrome",
+      "title": "Seedance 2.0 Liquid Chrome Morph",
+      "tags": [
+        "seedance-2.0"
+      ],
+      "date": "2026-06-30",
+      "images": [
+        "img-01.webp"
+      ],
+      "content": "Image-to-video workflow. Generate the still first (frame attached), then feed it to Seedance 2.0 with the motion prompt.\n\n## Still (any image model)\n\n```\nmacro shot of a sphere of liquid chrome hovering above a dark studio floor,\nperfect mirror reflections of unseen colored lights, dust particles in the\nair, black background, 85mm lens\n```\n\n## Motion prompt\n\n```\nthe chrome sphere slowly deforms into a rippling liquid ribbon, twisting in\nplace, reflections sliding across its surface, camera locked off, studio\nlights flickering between magenta and cyan, seamless loop\n```\n\n- `camera locked off` is doing the heavy lifting — Seedance loves to orbit and it ruins the loop\n- Ask for `seamless loop` and generate 5s; the loop point lands around 4.2s"
+    }
+  ]
+}

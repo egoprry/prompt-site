@@ -1,0 +1,17 @@
+{
+  "name": "prompt-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static SPA for sharing image-generation prompts, hosted on GitHub Pages",
+  "type": "module",
+  "scripts": {
+    "images": "node scripts/optimize-images.mjs",
+    "manifest": "node scripts/build-manifest.mjs",
+    "build": "node scripts/optimize-images.mjs && node scripts/build-manifest.mjs",
+    "placeholders": "node scripts/generate-placeholders.mjs",
+    "serve": "node scripts/serve.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.2"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "prompts": [
+    { "prompt": "ultra-detailed macro photograph of a dew-covered spider web at dawn, golden backlight, shallow depth of field, forest bokeh --ar 3:2 --v 7 --style raw" },
+    { "prompt": "isometric cutaway of a cozy underground hobbit workshop, warm lantern light, clutter of tools and blueprints, soft clay render style --ar 1:1 --v 7" },
+    { "prompt": "brutalist concrete cathedral in a desert at high noon, lone figure in red robe, harsh shadows, 35mm film grain --ar 16:9 --style raw --v 7" },
+    { "prompt": "bioluminescent jellyfish drifting through a flooded neon-lit subway station, cinematic underwater photography, volumetric light rays --ar 21:9 --v 7" },
+    { "prompt": "vintage 1970s japanese travel poster of Mount Fuji with a bullet train, risograph texture, limited palette of vermilion, indigo and cream --ar 2:3 --v 7" },
+    { "prompt": "knitted wool sculpture of a grizzly bear roaring, studio product photography, seamless grey background, softbox lighting --ar 4:5 --v 7 --style raw" },
+    { "prompt": "aerial top-down of a container ship port at night rendered as a circuit board, teal and amber lights, extreme detail --ar 1:1 --v 7" },
+    { "prompt": "oil painting of an astronaut tending a greenhouse on Mars, warm interior light against cold red landscape, impressionist brushwork --ar 3:2 --v 7" },
+    { "prompt": "black and white street photography of a rain-soaked Tokyo crossing, umbrellas from above, high contrast, Fan Ho style --ar 4:5 --style raw --v 7" },
+    { "prompt": "translucent glass chess pieces mid-explosion, frozen shatter moment, high-speed studio photography, black background --ar 16:9 --v 7 --style raw" }
+  ]
+}
