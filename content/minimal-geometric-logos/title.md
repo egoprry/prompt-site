@@ -1,1 +1,0 @@
-Minimal Geometric Logo Explorations

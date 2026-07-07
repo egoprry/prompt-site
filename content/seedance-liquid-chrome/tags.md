@@ -1,1 +1,0 @@
-seedance-2.0
