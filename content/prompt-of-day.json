@@ -1,14 +1,16 @@
 {
   "prompts": [
-    { "prompt": "ultra-detailed macro photograph of a dew-covered spider web at dawn, golden backlight, shallow depth of field, forest bokeh --ar 3:2 --v 7 --style raw" },
-    { "prompt": "isometric cutaway of a cozy underground hobbit workshop, warm lantern light, clutter of tools and blueprints, soft clay render style --ar 1:1 --v 7" },
-    { "prompt": "brutalist concrete cathedral in a desert at high noon, lone figure in red robe, harsh shadows, 35mm film grain --ar 16:9 --style raw --v 7" },
-    { "prompt": "bioluminescent jellyfish drifting through a flooded neon-lit subway station, cinematic underwater photography, volumetric light rays --ar 21:9 --v 7" },
-    { "prompt": "vintage 1970s japanese travel poster of Mount Fuji with a bullet train, risograph texture, limited palette of vermilion, indigo and cream --ar 2:3 --v 7" },
-    { "prompt": "knitted wool sculpture of a grizzly bear roaring, studio product photography, seamless grey background, softbox lighting --ar 4:5 --v 7 --style raw" },
-    { "prompt": "aerial top-down of a container ship port at night rendered as a circuit board, teal and amber lights, extreme detail --ar 1:1 --v 7" },
-    { "prompt": "oil painting of an astronaut tending a greenhouse on Mars, warm interior light against cold red landscape, impressionist brushwork --ar 3:2 --v 7" },
-    { "prompt": "black and white street photography of a rain-soaked Tokyo crossing, umbrellas from above, high contrast, Fan Ho style --ar 4:5 --style raw --v 7" },
-    { "prompt": "translucent glass chess pieces mid-explosion, frozen shatter moment, high-speed studio photography, black background --ar 16:9 --v 7 --style raw" }
+    {
+      "prompt": "logo 'garden' with vines surrounding, strict forest green and black duotone with verdigris-green as the only highlight value, heavy risograph misregistration, screenprint grain, halftone shadows --chaos 55 --ar 1:1 --raw --profile x451od4 xt8pi47 --stylize 900"
+    },
+    {
+      "prompt": "Frutiger Aero poeter, text 'low cortisol', high altitude composition, caucasian man early twenties with short wavy brown hair lounging on bubble drifting through cumulus clouds, wearing a sleek tailored blue suit with crisp white dress shirt, 2007 desktop wallpaper nostalgia, atmosphere of complete weightlessness --chaos 35 --ar 3:4 --raw --profile ne1w54c 8mjogxz t4cjqhc --stylize 800"
+    },
+    {
+      "prompt": "high-contrast digital aesthetic defined by it's texture and tone."
+    },
+    {
+      "prompt": "dark green Frutiger Aero dream poster --chaos 35 --ar 3:4 --raw --profile xhoa6ex 8mjogxz --stylize 800"
+    }
   ]
 }
