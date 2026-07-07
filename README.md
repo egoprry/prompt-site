@@ -13,7 +13,10 @@ A static single-page site for sharing image-generation prompts, designed for Git
                    (midjourney, chatgpt-image-2, kling-3, seedance-2.0, grok, …)
      content.md    required — the post body / prompts, markdown supported
      date.md       optional — YYYY-MM-DD (falls back to file modified date)
-     *.png/jpg/…   optional — up to 5 images, any format
+     *.png/jpg/…   optional — up to 7 images, any format
+     style-ref/    optional — style reference images (midjourney posts)
+     img-ref/      optional — image reference images
+     omni-ref/     optional — omni reference images
    ```
 
 2. Optimize the images and rebuild the manifest:
@@ -22,7 +25,17 @@ A static single-page site for sharing image-generation prompts, designed for Git
    npm run build
    ```
 
-   This converts images to WebP (max 2048px on the long edge, quality 82), renames them to `img-01.webp`, `img-02.webp`, … and regenerates `content/manifest.json`.
+   This converts images to WebP (max 2048px on the long edge, quality 82) and regenerates `content/manifest.json`.
+
+   **Image naming standard** (applied automatically by the optimizer):
+
+   | Original name | Becomes | Meaning |
+   |---|---|---|
+   | starts with `fin` | `fin-01.webp`, `fin-02.webp`, … | Featured finals — always shown first, red border, set apart from other thumbnails |
+   | anything else | `img-01.webp`, `img-02.webp`, … | Regular post images |
+   | inside `style-ref/`, `img-ref/`, `omni-ref/` | `ref-01.webp`, `ref-02.webp`, … | Reference images — shown in their own labeled sections in the post, don't count toward the 7-image cap |
+
+   To mark an image as a final, name the file with a `fin` prefix (e.g. `fin cover.png`) before running the build; already-optimized `fin-NN.webp` files keep their status.
 
 3. Commit and push. GitHub Pages serves the result as-is.
 

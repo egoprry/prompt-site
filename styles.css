@@ -192,7 +192,7 @@ a:hover { text-decoration: underline; }
   flex: 0 0 auto;
 }
 
-.post-thumbs-row { display: flex; gap: 6px; }
+.post-thumbs-row { display: flex; gap: 6px; flex-wrap: wrap; max-width: 420px; }
 
 .thumb {
   width: 72px;
@@ -202,6 +202,13 @@ a:hover { text-decoration: underline; }
   border-radius: var(--radius);
   background: var(--bg-3);
 }
+
+/* "fin" finals: bordered and set slightly apart from the other thumbnails */
+.thumb-fin {
+  border: 2px solid var(--brand);
+  margin-right: 8px;
+}
+.thumb-fin:last-child { margin-right: 0; }
 
 .thumb-empty {
   width: 72px;
@@ -295,6 +302,30 @@ a:hover { text-decoration: underline; }
   background: var(--bg-3);
 }
 .post-image-item img:hover { border-color: var(--border-strong); }
+
+.post-image-item.fin img { border: 2px solid var(--brand); }
+.post-image-item.fin img:hover { border-color: #d92a40; }
+
+/* midjourney reference-image sections */
+.ref-section { margin: 4px 0 16px; }
+
+.ref-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  border: 1px solid var(--border-strong);
+  padding: 1px 8px;
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+
+.post-images-refs {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  margin: 0;
+}
 
 .post-content { margin-top: 20px; }
 

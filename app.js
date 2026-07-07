@@ -37,7 +37,15 @@
   };
 
   const imageUrl = (post, file) =>
-    `content/${encodeURIComponent(post.id)}/${encodeURIComponent(file)}`;
+    `content/${encodeURIComponent(post.id)}/${file.split('/').map(encodeURIComponent).join('/')}`;
+
+  const isFin = (file) => /^fin/i.test(file);
+
+  const REF_SECTIONS = [
+    ['style-ref', 'Style refs'],
+    ['img-ref', 'Image refs'],
+    ['omni-ref', 'Omni refs'],
+  ];
 
   /* Plain-text preview of markdown content for list cards. */
   const snippet = (md, len) => md
@@ -215,8 +223,8 @@
     } else {
       const cards = list.map((p) => {
         const thumbs = p.images.length
-          ? `<div class="post-thumbs-row">${p.images.slice(0, 5).map((img, i) =>
-              `<img class="thumb" loading="lazy" src="${imageUrl(p, img)}" alt="${escapeHtml(p.title)} image ${i + 1}">`
+          ? `<div class="post-thumbs-row">${p.images.slice(0, 7).map((img, i) =>
+              `<img class="thumb${isFin(img) ? ' thumb-fin' : ''}" loading="lazy" src="${imageUrl(p, img)}" alt="${escapeHtml(p.title)} image ${i + 1}">`
             ).join('')}</div>`
           : '<div class="thumb-empty">text</div>';
         return `
@@ -245,13 +253,34 @@
       return;
     }
 
+    // One flat lightbox list: finals first, then each ref section in order.
+    const gallery = p.images.map((img) => img);
+    const figure = (file, alt, i, extra) => `
+      <figure class="post-image-item${extra || ''}">
+        <img loading="lazy" src="${imageUrl(p, file)}" alt="${escapeHtml(alt)}" data-lightbox="${i}">
+        <a class="btn btn-sm" href="${imageUrl(p, file)}" download>Download</a>
+      </figure>`;
+
     const images = p.images.length
-      ? `<div class="post-images">${p.images.map((img, i) => `
-          <figure class="post-image-item">
-            <img loading="lazy" src="${imageUrl(p, img)}" alt="${escapeHtml(p.title)} image ${i + 1}" data-lightbox="${i}">
-            <a class="btn btn-sm" href="${imageUrl(p, img)}" download>Download</a>
-          </figure>`).join('')}</div>`
+      ? `<div class="post-images">${p.images.map((img, i) =>
+          figure(img, `${p.title} image ${i + 1}`, i, isFin(img) ? ' fin' : '')
+        ).join('')}</div>`
       : '';
+
+    let refSections = '';
+    for (const [dir, label] of REF_SECTIONS) {
+      const files = p.refs?.[dir];
+      if (!files?.length) continue;
+      refSections += `
+        <section class="ref-section">
+          <div class="ref-label">${label}</div>
+          <div class="post-images post-images-refs">${files.map((f, j) => {
+            const i = gallery.length;
+            gallery.push(`${dir}/${f}`);
+            return figure(`${dir}/${f}`, `${p.title} ${label.toLowerCase()} ${j + 1}`, i);
+          }).join('')}</div>
+        </section>`;
+    }
 
     app.innerHTML = `
       <div class="post-view">
@@ -260,10 +289,11 @@
         <div class="post-tags">${p.tags.map((t) => tagPill(t, false)).join('')}</div>
         <div class="post-date">${formatDate(p.date)}</div>
         ${images}
+        ${refSections}
         <div class="post-content">${renderMarkdown(p.content)}</div>
       </div>`;
 
-    lightboxImages = p.images.map((img) => imageUrl(p, img));
+    lightboxImages = gallery.map((img) => imageUrl(p, img));
     document.title = `${p.title} — GARDEN`;
   }
 

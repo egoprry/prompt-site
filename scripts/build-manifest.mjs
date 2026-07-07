@@ -6,7 +6,9 @@
  *   tags.md     (required) — tags separated by newlines or commas, "#" optional
  *   content.md  (required) — the post body (prompts), rendered as markdown
  *   date.md     (optional) — a YYYY-MM-DD date; falls back to content.md mtime
- *   *.webp/…    (optional) — up to 5 images, shown in filename sort order
+ *   *.webp/…    (optional) — up to 7 images; "fin-" prefixed finals sort first
+ *   style-ref/, img-ref/, omni-ref/ (optional) — reference image subfolders,
+ *               listed separately in the manifest under "refs"
  *
  * Run after adding or editing posts:  npm run manifest
  */
@@ -16,6 +18,11 @@ import path from 'node:path';
 
 const CONTENT_DIR = path.resolve(import.meta.dirname, '..', 'content');
 const IMAGE_EXT = new Set(['.webp', '.png', '.jpg', '.jpeg', '.gif', '.avif']);
+const REF_DIRS = ['style-ref', 'img-ref', 'omni-ref'];
+const MAX_IMAGES = 7;
+
+const isImage = (f) => IMAGE_EXT.has(path.extname(f).toLowerCase());
+const isFin = (f) => /^fin/i.test(f);
 
 async function readIfExists(file) {
   try { return await readFile(file, 'utf8'); } catch { return null; }
@@ -62,10 +69,21 @@ for (const folder of folders) {
     continue;
   }
 
-  const images = (await readdir(dir))
-    .filter((f) => IMAGE_EXT.has(path.extname(f).toLowerCase()))
-    .sort()
-    .slice(0, 5);
+  const allImages = (await readdir(dir))
+    .filter(isImage)
+    .sort((a, b) => (isFin(b) - isFin(a)) || a.localeCompare(b));
+  if (allImages.length > MAX_IMAGES) {
+    console.warn(`  ! ${folder}: ${allImages.length} images — only the first ${MAX_IMAGES} are shown`);
+  }
+  const images = allImages.slice(0, MAX_IMAGES);
+
+  const refs = {};
+  for (const refDir of REF_DIRS) {
+    try {
+      const files = (await readdir(path.join(dir, refDir))).filter(isImage).sort();
+      if (files.length) refs[refDir] = files;
+    } catch { /* folder doesn't exist */ }
+  }
 
   posts.push({
     id: folder,
@@ -73,6 +91,7 @@ for (const folder of folders) {
     tags: parseTags(tagsMd),
     date: await parseDate(dir, dateMd),
     images,
+    ...(Object.keys(refs).length ? { refs } : {}),
     content: (contentMd || '').replace(/\r\n/g, '\n').trim(),
   });
 }

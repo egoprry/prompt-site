@@ -1,12 +1,17 @@
 /**
  * Optimize post images for the web.
  *
- * For every post folder in content/:
+ * For every post folder in content/ (and its optional style-ref/, img-ref/,
+ * omni-ref/ subfolders):
  *  - converts images (png/jpg/jpeg/gif/tiff/bmp/avif/webp) to WebP
  *  - resizes so neither dimension exceeds 2048px (never enlarges)
  *  - compresses (quality 82)
- *  - renames to a consistent format: img-01.webp, img-02.webp, …
- *    (numbered by the original filenames' sort order)
+ *  - renames to the naming standard:
+ *      post root:  originals starting with "fin" -> fin-01.webp, fin-02.webp…
+ *                  everything else               -> img-01.webp, img-02.webp…
+ *      ref subfolders (style-ref/img-ref/omni-ref) -> ref-01.webp, ref-02.webp…
+ *    (numbered by the original filenames' sort order; "fin" images are the
+ *    featured finals and always display first on the site)
  *  - deletes the originals after successful conversion
  *
  * Usage:
@@ -22,8 +27,10 @@ import sharp from 'sharp';
 const CONTENT_DIR = path.resolve(import.meta.dirname, '..', 'content');
 const MAX_DIM = 2048;
 const QUALITY = 82;
+const MAX_IMAGES = 7;
 const IMAGE_EXT = new Set(['.png', '.jpg', '.jpeg', '.gif', '.tif', '.tiff', '.bmp', '.avif', '.webp']);
-const FINAL_RE = /^img-\d{2}\.webp$/;
+const REF_DIRS = ['style-ref', 'img-ref', 'omni-ref'];
+const FINAL_RE = /^(fin|img|ref)-\d{2}\.webp$/;
 
 const args = process.argv.slice(2);
 const keepOriginals = args.includes('--keep');
@@ -37,40 +44,46 @@ async function listPostFolders() {
     .filter((name) => !onlyFolder || name === onlyFolder);
 }
 
-async function processFolder(folder) {
-  const dir = path.join(CONTENT_DIR, folder);
-  const files = (await readdir(dir)).filter((f) => IMAGE_EXT.has(path.extname(f).toLowerCase()));
-  if (files.length === 0) return;
+/* Target prefix for a file: post-root images starting with "fin" are finals,
+   ref-folder images are always "ref", everything else is "img". */
+function targetPrefix(file, isRefDir) {
+  if (isRefDir) return 'ref';
+  return /^fin/i.test(file) ? 'fin' : 'img';
+}
 
-  if (files.length > 5) {
-    console.warn(`  ! ${folder}: ${files.length} images found — the site shows a max of 5 per post`);
+async function processDir(dir, label, isRefDir) {
+  let files;
+  try {
+    files = (await readdir(dir)).filter((f) => IMAGE_EXT.has(path.extname(f).toLowerCase()));
+  } catch {
+    return 0; // folder doesn't exist
   }
+  if (files.length === 0) return 0;
 
-  // Check which already-final files are within limits and can be left alone.
-  const conformant = [];
+  // Already-conformant files within limits are left alone; everything else
+  // is converted. Numbering continues per-prefix after existing files.
+  const nextNum = { fin: 1, img: 1, ref: 1 };
   const toProcess = [];
+  let untouched = 0;
+
   for (const file of files.sort()) {
     if (FINAL_RE.test(file)) {
       const meta = await sharp(path.join(dir, file)).metadata();
       if (meta.width <= MAX_DIM && meta.height <= MAX_DIM) {
-        conformant.push(file);
+        const prefix = file.slice(0, 3);
+        nextNum[prefix] = Math.max(nextNum[prefix], Number(file.slice(4, 6)) + 1);
+        untouched++;
         continue;
       }
     }
     toProcess.push(file);
   }
 
-  if (toProcess.length === 0) {
-    console.log(`  = ${folder}: ${conformant.length} image(s) already optimized`);
-    return;
-  }
-
-  // Assign numbers after the highest existing conformant number.
-  let next = conformant.reduce((max, f) => Math.max(max, Number(f.slice(4, 6))), 0) + 1;
-
   for (const file of toProcess) {
     const src = path.join(dir, file);
-    const finalName = `img-${String(next).padStart(2, '0')}.webp`;
+    const prefix = targetPrefix(file, isRefDir);
+    const finalName = `${prefix}-${String(nextNum[prefix]).padStart(2, '0')}.webp`;
+    nextNum[prefix]++;
     const tmp = path.join(dir, `.tmp-${finalName}`);
     const dest = path.join(dir, finalName);
 
@@ -86,8 +99,23 @@ async function processFolder(folder) {
     await rename(tmp, dest);
 
     const kb = (n) => `${(n / 1024).toFixed(0)} KB`;
-    console.log(`  > ${folder}/${file} -> ${finalName} (${kb(before)} -> ${kb(after)})`);
-    next++;
+    console.log(`  > ${label}/${file} -> ${finalName} (${kb(before)} -> ${kb(after)})`);
+  }
+
+  if (toProcess.length === 0) {
+    console.log(`  = ${label}: ${untouched} image(s) already optimized`);
+  }
+  return files.length;
+}
+
+async function processFolder(folder) {
+  const dir = path.join(CONTENT_DIR, folder);
+  const rootCount = await processDir(dir, folder, false);
+  if (rootCount > MAX_IMAGES) {
+    console.warn(`  ! ${folder}: ${rootCount} images found — the site shows a max of ${MAX_IMAGES} per post`);
+  }
+  for (const ref of REF_DIRS) {
+    await processDir(path.join(dir, ref), `${folder}/${ref}`, true);
   }
 }
 
