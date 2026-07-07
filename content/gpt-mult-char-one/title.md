@@ -1,0 +1,1 @@
+Add multiple characters to scene
