@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-07T16:21:38.718Z",
+  "generated": "2026-07-07T16:26:12.174Z",
   "posts": [
     {
       "id": "groyper-swap-series-one",
@@ -9,7 +9,7 @@
       ],
       "date": "2026-07-07",
       "images": [
-        "img-01.webp",
+        "fin-01.webp",
         "img-02.webp",
         "img-03.webp"
       ],
@@ -23,14 +23,22 @@
       ],
       "date": "2026-07-07",
       "images": [
-        "img-04.webp",
-        "img-05.webp",
-        "img-06.webp",
-        "img-07.webp",
-        "img-08.webp",
-        "img-09.webp",
-        "img-10.webp"
+        "fin-01.webp"
       ],
+      "refs": {
+        "style-ref": [
+          "img-08.webp",
+          "img-09.webp",
+          "img-10.webp"
+        ],
+        "img-ref": [
+          "img-06.webp",
+          "img-07.webp"
+        ],
+        "omni-ref": [
+          "img-04.webp"
+        ]
+      },
       "content": "mj surreal v7\n\n## Base prompt\n\n```\ntwo-tone photographic poster, only black and deep olive, a man in a long cloak with a heavy ornate mask, standing on a smooth empty plane, the cloak has tiny reflective points like wet sequins, long shadow splits into strange shapes, extremely minimal background, print-scan texture, dust and grain --chaos 100 --ar 2:1 --exp 100 --raw --profile a15dut4 brkalbq --ow 550 --stylize 1000 --v 7\n```"
     }
   ]
