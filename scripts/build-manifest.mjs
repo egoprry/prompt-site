@@ -6,6 +6,8 @@
  *   tags.md     (required) — tags separated by newlines or commas, "#" optional
  *   content.md  (required) — the post body (prompts), rendered as markdown
  *   date.md     (optional) — a YYYY-MM-DD date; falls back to content.md mtime
+ *   author.md   (optional) — the author's X handle (with or without @);
+ *               shown as a profile link on the card and in the post
  *   hero.md     (optional) — crop anchor for the card's hero thumbnail:
  *               top | bottom | center | left | right, or an exact
  *               CSS object-position like "50% 20%" (default: center)
@@ -43,6 +45,18 @@ function parseTags(md) {
     .filter((t) => t.length > 0);
 }
 
+/* First non-empty line of author.md as a bare X handle, or null. */
+function parseAuthor(md) {
+  const line = (md || '').split('\n').map((l) => l.trim()).find((l) => l.length > 0);
+  if (!line) return null;
+  const handle = line.replace(/^@/, '');
+  if (!/^[A-Za-z0-9_]{1,15}$/.test(handle)) {
+    console.warn(`  ! invalid author.md value "${line}" — expected an X handle`);
+    return null;
+  }
+  return handle;
+}
+
 /* Normalize hero.md to a safe CSS object-position value, or null. */
 function parseHero(md) {
   const line = (md || '').split('\n').map((l) => l.trim()).find((l) => l.length > 0);
@@ -78,12 +92,13 @@ const folders = entries.filter((e) => e.isDirectory()).map((e) => e.name).sort()
 const posts = [];
 for (const folder of folders) {
   const dir = path.join(CONTENT_DIR, folder);
-  const [titleMd, tagsMd, contentMd, dateMd, heroMd] = await Promise.all([
+  const [titleMd, tagsMd, contentMd, dateMd, heroMd, authorMd] = await Promise.all([
     readIfExists(path.join(dir, 'title.md')),
     readIfExists(path.join(dir, 'tags.md')),
     readIfExists(path.join(dir, 'content.md')),
     readIfExists(path.join(dir, 'date.md')),
     readIfExists(path.join(dir, 'hero.md')),
+    readIfExists(path.join(dir, 'author.md')),
   ]);
 
   if (contentMd === null && titleMd === null) {
@@ -108,6 +123,7 @@ for (const folder of folders) {
   }
 
   const hero = parseHero(heroMd);
+  const author = parseAuthor(authorMd);
 
   posts.push({
     id: folder,
@@ -116,6 +132,7 @@ for (const folder of folders) {
     date: await parseDate(dir, dateMd),
     images,
     ...(hero ? { hero } : {}),
+    ...(author ? { author } : {}),
     ...(Object.keys(refs).length ? { refs } : {}),
     content: (contentMd || '').replace(/\r\n/g, '\n').trim(),
   });

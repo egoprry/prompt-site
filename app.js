@@ -50,6 +50,9 @@
     ['omni-ref', 'Omni refs'],
   ];
 
+  const authorLink = (handle) =>
+    `<a class="author-link" href="https://x.com/${encodeURIComponent(handle)}" target="_blank" rel="noopener">@${escapeHtml(handle)}</a>`;
+
   /* Plain-text preview of markdown content for list cards. */
   const snippet = (md, len) => md
     .replace(/```[^\n]*\n?/g, '')
@@ -374,7 +377,10 @@
               <div class="post-title">${escapeHtml(p.title)}</div>
               <div class="post-snippet">${escapeHtml(snippet(p.content, 220))}</div>
               <div class="post-tags">${p.tags.map((t) => tagPill(t, t === state.tag)).join('')}</div>
-              <div class="post-date">${formatDate(p.date)}</div>
+              <div class="post-foot">
+                <div class="post-date">${formatDate(p.date)}</div>
+                ${p.author ? authorLink(p.author) : ''}
+              </div>
             </div>
           </article>`;
       });
@@ -394,6 +400,7 @@
     }
 
     // One flat lightbox list: finals first, then each ref section in order.
+    // p.images is fin-first, so fin figures occupy the leading indices.
     const gallery = p.images.map((img) => img);
     const figure = (file, alt, i, extra) => `
       <figure class="post-image-item${extra || ''}">
@@ -401,9 +408,16 @@
         <a class="btn btn-sm" href="${imageUrl(p, file)}" download>Download</a>
       </figure>`;
 
-    const images = p.images.length
-      ? `<div class="post-images">${p.images.map((img, i) =>
-          figure(img, `${p.title} image ${i + 1}`, i, isFin(img) ? ' fin' : '')
+    const finFiles = p.images.filter(isFin);
+    const restFiles = p.images.filter((f) => !isFin(f));
+
+    // The fin final gets its own row; the rest keep the grid.
+    const finRow = finFiles.map((img, i) =>
+      figure(img, `${p.title} image ${i + 1}`, i, ' fin fin-hero')
+    ).join('');
+    const images = restFiles.length
+      ? `<div class="post-images">${restFiles.map((img, j) =>
+          figure(img, `${p.title} image ${finFiles.length + j + 1}`, finFiles.length + j)
         ).join('')}</div>`
       : '';
 
@@ -422,21 +436,29 @@
         </section>`;
     }
 
+    // Zip bundles the images the final was created from: non-fin post
+    // images plus refs, never the fin final itself.
+    const zipFiles = [...restFiles, ...gallery.slice(p.images.length)];
+    zipTargets = zipFiles.map((img) => ({ path: imageUrl(p, img), name: img }));
+    zipName = `${p.id}.zip`;
+
     app.innerHTML = `
       <div class="post-view">
         <a class="back-link" href="#/">&#8592; Back to all posts</a>
         <h1 class="post-title">${escapeHtml(p.title)}</h1>
-        <div class="post-tags">${p.tags.map((t) => tagPill(t, false)).join('')}</div>
+        <div class="post-tags">
+          ${p.tags.map((t) => tagPill(t, false)).join('')}
+          ${p.author ? `<span class="post-author"><span class="author-label">Author</span>${authorLink(p.author)}</span>` : ''}
+        </div>
         <div class="post-date">${formatDate(p.date)}</div>
-        ${gallery.length > 1 ? '<button class="btn btn-sm post-zip" data-zip>Download all (.zip)</button>' : ''}
+        ${finRow}
+        ${zipTargets.length >= 2 ? '<button class="btn btn-sm post-zip" data-zip>Download all (.zip)</button>' : ''}
         ${images}
         ${refSections}
         <div class="post-content">${renderMarkdown(p.content)}</div>
       </div>`;
 
     lightboxImages = gallery.map((img) => imageUrl(p, img));
-    zipTargets = gallery.map((img) => ({ path: imageUrl(p, img), name: img }));
-    zipName = `${p.id}.zip`;
     document.title = `${p.title} — GARDEN`;
   }
 

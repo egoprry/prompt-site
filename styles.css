@@ -20,6 +20,7 @@
   --brand-dark: #59101c;
   --danger: #f43b52;
   --radius: 6px;
+  --post-height: 200px;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
 }
@@ -177,6 +178,8 @@ body.assets-page .controls { display: none; }
   gap: 16px;
   align-items: flex-start;
   justify-content: space-between;
+  max-height:140px;
+  overflow-y: auto;  
 }
 
 /* styled after the periwinkle "GARDEN" sign */
@@ -221,7 +224,7 @@ body.assets-page .controls { display: none; }
 .post-hero {
   flex: 0 0 36%;
   position: relative;
-  min-height: 180px;
+  min-height: var(--post-height);
   background: var(--bg-3);
   border-right: 1px solid var(--border);
 }
@@ -235,7 +238,10 @@ body.assets-page .controls { display: none; }
 }
 
 /* "fin" finals keep their red marker */
-.post-hero.fin img { outline: 2px solid var(--brand); outline-offset: -2px; }
+.post-hero.fin img { 
+  outline: 2px solid var(--border-dark); 
+  outline-offset: -2px; 
+}
 
 .post-hero.empty {
   display: flex;
@@ -283,7 +289,33 @@ body.assets-page .controls { display: none; }
 .tag:hover { color: var(--text); border-color: var(--border-strong); }
 .tag.active { color: #04100a; background: var(--brand); border-color: var(--brand); font-weight: 600; }
 
+.post-foot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+.post-foot .post-date { margin-top: 0; }
+
 .post-date { color: var(--text-3); font-size: 12px; margin-top: 8px; }
+
+.author-link { color: var(--accent); font-size: 12px; }
+
+.post-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
+}
+
+.author-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
 
 /* -------------------------------------------------------------- post view */
 
@@ -310,7 +342,7 @@ body.assets-page .controls { display: none; }
 
 .post-images {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--post-height), 1fr));
   gap: 12px;
   margin: 20px 0;
 }
@@ -328,8 +360,21 @@ body.assets-page .controls { display: none; }
 }
 .post-image-item img:hover { border-color: var(--border-strong); }
 
-.post-image-item.fin img { border: 2px solid var(--brand); }
+.post-image-item.fin img {
+  border: 2px solid var(--brand);
+}
+
 .post-image-item.fin img:hover { border-color: #d92a40; }
+
+/* the fin final on its own row, shown uncropped */
+.post-image-item.fin-hero {
+  width: min(500px, 50vw);
+  margin: 20px 0 0;
+}
+.post-image-item.fin-hero img {
+  aspect-ratio: auto;
+  height: auto;
+}
 
 /* midjourney reference-image sections */
 .ref-section { margin: 4px 0 16px; }
@@ -348,7 +393,7 @@ body.assets-page .controls { display: none; }
 }
 
 .post-images-refs {
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   margin: 0;
 }
 
@@ -424,7 +469,9 @@ body.assets-page .controls { display: none; }
 }
 .masonry-item img:hover { border-color: var(--border-strong); }
 
-.masonry-item.fin img { border: 2px solid var(--brand); }
+.masonry-item.fin img { 
+   border: 2px solid var(--brand);
+}
 .masonry-item.fin img:hover { border-color: #d92a40; }
 
 .post-zip { margin-top: 12px; }

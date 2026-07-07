@@ -1,6 +1,4 @@
-Swap two people in an image
-
-## Base prompt
+## Prompt
 
 ```
 replace the likeness of the man and woman with the man and woman in second and third images, keep scene the same, keep expressions of original image including lighting. update to be 3:4 image

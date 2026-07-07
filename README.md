@@ -16,6 +16,9 @@ A static single-page site for sharing image-generation prompts, designed for Git
      hero.md       optional — hero thumbnail crop anchor: top, bottom,
                    center, left, right, or an exact "X% Y%" position
                    (default: center)
+     author.md     optional — the author's X handle (with or without @);
+                   linked on the card (bottom right) and in the post
+                   header next to the tags
      *.png/jpg/…   optional — up to 7 images, any format
      style-ref/    optional — style reference images (midjourney posts)
      img-ref/      optional — image reference images
