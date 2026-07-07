@@ -264,7 +264,7 @@
       </div>`;
 
     lightboxImages = p.images.map((img) => imageUrl(p, img));
-    document.title = `${p.title} — Prompts`;
+    document.title = `${p.title} — GARDEN`;
   }
 
   function renderRoute() {
@@ -277,7 +277,7 @@
       els.tag.value = state.tag;
       els.images.value = state.images;
       els.sort.value = state.sort;
-      document.title = 'Prompts';
+      document.title = 'GARDEN';
       renderList(state);
     }
     window.scrollTo(0, 0);
