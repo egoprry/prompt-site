@@ -94,9 +94,23 @@ a:hover { text-decoration: underline; }
 
 .controls { display: flex; gap: 8px; flex-wrap: wrap; }
 
-/* the post filters don't apply on the assets page */
+/* the post filters don't apply outside the posts views */
 body.assets-page .search,
 body.assets-page .controls { display: none; }
+
+.social { display: flex; gap: 6px; margin-left: auto; }
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-2);
+}
+.icon-btn:hover { color: var(--text); border-color: var(--border-strong); text-decoration: none; }
 
 .input {
   background: var(--bg);
@@ -195,53 +209,45 @@ body.assets-page .controls { display: none; }
 
 .post-card {
   display: flex;
-  gap: 16px;
   background: var(--bg-2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
+  overflow: hidden;
   cursor: pointer;
 }
 .post-card:hover { border-color: var(--border-strong); }
 
-.post-thumbs {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 0 0 auto;
-}
-
-.post-thumbs-row { display: flex; gap: 6px; flex-wrap: wrap; max-width: 420px; }
-
-.thumb {
-  width: 72px;
-  height: 72px;
-  object-fit: cover;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+/* single hero thumbnail filling the left ~36% of the card */
+.post-hero {
+  flex: 0 0 36%;
+  position: relative;
+  min-height: 180px;
   background: var(--bg-3);
+  border-right: 1px solid var(--border);
 }
 
-/* "fin" finals: bordered and set slightly apart from the other thumbnails */
-.thumb-fin {
-  border: 2px solid var(--brand);
-  margin-right: 8px;
+.post-hero img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.thumb-fin:last-child { margin-right: 0; }
 
-.thumb-empty {
-  width: 72px;
-  height: 72px;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
+/* "fin" finals keep their red marker */
+.post-hero.fin img { outline: 2px solid var(--brand); outline-offset: -2px; }
+
+.post-hero.empty {
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-3);
   font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.post-meta { flex: 1 1 auto; min-width: 0; }
+.post-meta { flex: 1 1 auto; min-width: 0; padding: 16px; }
 
 .post-title {
   font-size: 16px;
@@ -479,6 +485,33 @@ body.assets-page .controls { display: none; }
 .lightbox-nav.next { right: 12px; }
 .lightbox-nav[disabled] { opacity: 0.3; cursor: default; }
 
+/* ------------------------------------------------------------------ footer */
+
+.footer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 24px 24px;
+  text-align: center;
+}
+
+.footer-link { color: var(--text-3); font-size: 12px; }
+.footer-link:hover { color: var(--text-2); }
+
+/* --------------------------------------------------------------------- 404 */
+
+.notfound { text-align: center; padding: 64px 0; }
+
+.notfound-code {
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 64px;
+  color: var(--brand);
+  line-height: 1;
+}
+
+.notfound-text { color: var(--text-2); margin: 12px 0 20px; }
+
 /* ------------------------------------------------------------------ mobile */
 
 @media (max-width: 640px) {
@@ -490,8 +523,14 @@ body.assets-page .controls { display: none; }
   .controls .select { flex: 1 1 0; min-width: 0; }
 
   .post-card { flex-direction: column; }
-  .post-thumbs-row { flex-wrap: wrap; }
-  .thumb, .thumb-empty { width: 60px; height: 60px; }
+  .post-hero {
+    flex: none;
+    min-height: 0;
+    height: 200px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .post-hero.empty { height: 48px; }
 
   .potd { flex-direction: column; }
 

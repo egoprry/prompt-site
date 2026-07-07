@@ -1,11 +1,12 @@
 {
-  "generated": "2026-07-07T19:45:02.411Z",
+  "generated": "2026-07-07T20:48:18.048Z",
   "posts": [
     {
       "id": "groyper-swap-series-one",
       "title": "Groyper swap series one",
       "tags": [
-        "chatgpt-image-2"
+        "chatgpt-image-2",
+        "swap"
       ],
       "date": "2026-07-07",
       "images": [
@@ -19,7 +20,8 @@
       "id": "mj-surreal-one",
       "title": "Midjourney surreal v7 one",
       "tags": [
-        "midjourney"
+        "midjourney",
+        "v7.0"
       ],
       "date": "2026-07-07",
       "images": [
@@ -40,13 +42,32 @@
         ]
       },
       "content": "mj surreal v7\n\n## Base prompt\n\n```\ntwo-tone photographic poster, only black and deep olive, a man in a long cloak with a heavy ornate mask, standing on a smooth empty plane, the cloak has tiny reflective points like wet sequins, long shadow splits into strange shapes, extremely minimal background, print-scan texture, dust and grain --chaos 100 --ar 2:1 --exp 100 --raw --profile a15dut4 brkalbq --ow 550 --stylize 1000 --v 7\n```"
+    },
+    {
+      "id": "mj-text-af-one",
+      "title": "Midjourney AF text v8",
+      "tags": [
+        "midjourney",
+        "v8.0"
+      ],
+      "date": "2026-07-07",
+      "images": [
+        "fin-01.webp"
+      ],
+      "refs": {
+        "style-ref": [
+          "ref-01.webp",
+          "ref-02.webp"
+        ]
+      },
+      "content": "m v8 text AF\n\n## Base prompt\n\n```\ntext: \"AF\", realistic dark distented liquid metal typography medium weight, soft RGB spectrum reflections on chrome, serif, centered composition, sharp details, elegant, clean, retro-futuristic, background is extremely intricate crashing black waves, slight reflection of red moon --chaos 40 --ar 4:3 --exp 32 --raw --profile etymmj8 sjcj9wq --stylize 1000 --v 8.0\n```"
     }
   ],
   "assets": [
-    "fin-01.webp",
     "img-01.webp",
     "img-02.webp",
     "img-03.webp",
-    "img-04.webp"
+    "img-04.webp",
+    "img-05.webp"
   ]
 }

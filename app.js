@@ -283,6 +283,8 @@
       return { view: 'post', id: decodeURIComponent(path.slice(5)) };
     }
     if (path === 'assets') return { view: 'assets' };
+    if (path === 'privacy') return { view: 'privacy' };
+    if (path !== '') return { view: '404' };
     return {
       view: 'list',
       q: params.get('q') || '',
@@ -356,14 +358,14 @@
       parts.push('<div class="status">No posts match the current filters.</div>');
     } else {
       const cards = list.map((p) => {
-        const thumbs = p.images.length
-          ? `<div class="post-thumbs-row">${p.images.slice(0, 7).map((img, i) =>
-              `<img class="thumb${isFin(img) ? ' thumb-fin' : ''}" loading="lazy" src="${imageUrl(p, img)}" alt="${escapeHtml(p.title)} image ${i + 1}">`
-            ).join('')}</div>`
-          : '<div class="thumb-empty">text</div>';
+        const hero = p.images.length
+          ? `<div class="post-hero${isFin(p.images[0]) ? ' fin' : ''}">
+               <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}">
+             </div>`
+          : '<div class="post-hero empty">text-only</div>';
         return `
           <article class="post-card" data-post="${escapeHtml(p.id)}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
-            <div class="post-thumbs">${thumbs}</div>
+            ${hero}
             <div class="post-meta">
               <div class="post-title">${escapeHtml(p.title)}</div>
               <div class="post-snippet">${escapeHtml(snippet(p.content, 220))}</div>
@@ -457,17 +459,61 @@
     document.title = 'Assets — GARDEN';
   }
 
+  function renderPrivacy() {
+    app.innerHTML = `
+      <div class="post-view page-view">
+        <a class="back-link" href="#/">&#8592; Back to all posts</a>
+        <h1 class="post-title">Privacy</h1>
+        <div class="post-content">
+          <p>GARDEN is a static site. It sets no cookies, runs no analytics or
+          tracking scripts, and has no accounts, forms, or comment systems.
+          Nothing you do here is collected or stored by this site.</p>
+          <h2>Hosting</h2>
+          <p>The site is hosted on GitHub Pages. GitHub may log basic technical
+          information about visits (such as IP addresses) for security and
+          operational purposes, as described in the
+          <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a>.</p>
+          <h2>Downloads and clipboard</h2>
+          <p>Image downloads, zip bundling, and copy-to-clipboard all happen
+          entirely in your browser. Nothing is uploaded anywhere.</p>
+          <h2>External links</h2>
+          <p>Links to X and GitHub lead to third-party sites governed by their
+          own privacy policies.</p>
+          <h2>Contact</h2>
+          <p>Questions? Open an issue on the
+          <a href="https://github.com/egoprry/prompt-site" target="_blank" rel="noopener">GitHub repository</a>.</p>
+        </div>
+      </div>`;
+    document.title = 'Privacy — GARDEN';
+  }
+
+  function render404() {
+    app.innerHTML = `
+      <div class="notfound">
+        <div class="notfound-code">404</div>
+        <p class="notfound-text">This page doesn't exist.</p>
+        <a class="btn" href="#/">Back to GARDEN</a>
+      </div>`;
+    document.title = '404 — GARDEN';
+  }
+
   function renderRoute() {
     const state = readHash();
     closeLightbox();
+    const navFor = state.view === 'assets' ? 'assets'
+      : (state.view === 'list' || state.view === 'post') ? 'list' : '';
     document.querySelectorAll('.nav-link').forEach((a) => {
-      a.classList.toggle('active', a.getAttribute('data-nav') === (state.view === 'assets' ? 'assets' : 'list'));
+      a.classList.toggle('active', a.getAttribute('data-nav') === navFor);
     });
-    document.body.classList.toggle('assets-page', state.view === 'assets');
+    document.body.classList.toggle('assets-page', state.view !== 'list' && state.view !== 'post');
     if (state.view === 'post') {
       renderPost(state.id);
     } else if (state.view === 'assets') {
       renderAssets();
+    } else if (state.view === 'privacy') {
+      renderPrivacy();
+    } else if (state.view === '404') {
+      render404();
     } else {
       els.search.value = state.q;
       els.tag.value = state.tag;

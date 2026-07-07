@@ -1,2 +1,2 @@
 midjourney
-v7.0
+v8.0

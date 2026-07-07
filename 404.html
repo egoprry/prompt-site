@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>404 — GARDEN</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23f43b52'/%3E%3C/svg%3E">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #04100a; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #e9f5ec;
+      background-color: #04100a;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23134422' fill-opacity='0.55'/%3E%3Ccircle cx='6' cy='6' r='1' fill='%23134422' fill-opacity='0.35'/%3E%3C/svg%3E");
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .code {
+      font-family: 'Arial Black', Arial, sans-serif;
+      font-weight: 900;
+      font-style: italic;
+      font-size: 72px;
+      color: #f43b52;
+      line-height: 1;
+    }
+    p { color: #93cf9f; margin: 12px 0 20px; }
+    a {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 12px;
+      background: #04100a;
+      color: #e9f5ec;
+      border: 1px solid #17402a;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    a:hover { border-color: #26663f; }
+  </style>
+</head>
+<body>
+  <div>
+    <div class="code">404</div>
+    <p>This page doesn't exist.</p>
+    <a id="home" href="/">Back to GARDEN</a>
+  </div>
+  <script>
+    // On project pages the site root is /<repo>/ — point home there.
+    var seg = location.pathname.split('/')[1];
+    if (seg) document.getElementById('home').href = '/' + seg + '/';
+  </script>
+</body>
+</html>
