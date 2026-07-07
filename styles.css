@@ -77,7 +77,26 @@ a:hover { text-decoration: underline; }
 }
 .brand:hover { text-decoration: none; }
 
+.site-nav { display: flex; gap: 4px; }
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: var(--radius);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+}
+.nav-link:hover { color: var(--text); text-decoration: none; }
+.nav-link.active { color: var(--text); background: var(--bg-3); }
+
 .controls { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* the post filters don't apply on the assets page */
+body.assets-page .search,
+body.assets-page .controls { display: none; }
 
 .input {
   background: var(--bg);
@@ -368,6 +387,41 @@ a:hover { text-decoration: underline; }
 }
 
 .codeblock .copy-btn { position: absolute; top: 8px; right: 8px; }
+
+/* ------------------------------------------------------------ assets page */
+
+.assets-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.assets-head .count { margin-bottom: 0; }
+
+.masonry { columns: 220px; column-gap: 12px; }
+
+.masonry-item {
+  break-inside: avoid;
+  margin: 0 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.masonry-item img {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: zoom-in;
+  background: var(--bg-3);
+}
+.masonry-item img:hover { border-color: var(--border-strong); }
+
+.masonry-item.fin img { border: 2px solid var(--brand); }
+.masonry-item.fin img:hover { border-color: #d92a40; }
+
+.post-zip { margin-top: 12px; }
 
 /* ---------------------------------------------------------------- lightbox */
 

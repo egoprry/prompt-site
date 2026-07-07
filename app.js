@@ -20,9 +20,12 @@
   };
 
   let posts = [];
+  let assets = [];
   let promptOfDay = null;
   let lightboxImages = [];
   let lightboxIndex = 0;
+  let zipTargets = []; // [{path, name}] for the current view's "download all"
+  let zipName = 'images.zip';
 
   /* ------------------------------------------------------------- helpers */
 
@@ -130,6 +133,136 @@
     return out.join('\n');
   }
 
+  /* ------------------------------------------------- zip (STORE, no deps) */
+
+  const crcTable = (() => {
+    const t = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1;
+      t[n] = c;
+    }
+    return t;
+  })();
+
+  function crc32(bytes) {
+    let c = 0xFFFFFFFF;
+    for (let i = 0; i < bytes.length; i++) c = crcTable[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+    return (c ^ 0xFFFFFFFF) >>> 0;
+  }
+
+  /* Build an uncompressed .zip (images are already compressed WebP). */
+  function buildZip(entries) { // entries: [{name, bytes: Uint8Array}]
+    const encoder = new TextEncoder();
+    const chunks = [];
+    const central = [];
+    let offset = 0;
+
+    const now = new Date();
+    const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1);
+    const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+
+    for (const { name, bytes } of entries) {
+      const nameBytes = encoder.encode(name);
+      const crc = crc32(bytes);
+      const header = new DataView(new ArrayBuffer(30));
+      header.setUint32(0, 0x04034b50, true);
+      header.setUint16(4, 20, true);          // version needed
+      header.setUint16(6, 0x0800, true);      // UTF-8 names
+      header.setUint16(8, 0, true);           // method: store
+      header.setUint16(10, dosTime, true);
+      header.setUint16(12, dosDate, true);
+      header.setUint32(14, crc, true);
+      header.setUint32(18, bytes.length, true);
+      header.setUint32(22, bytes.length, true);
+      header.setUint16(26, nameBytes.length, true);
+      header.setUint16(28, 0, true);
+      chunks.push(new Uint8Array(header.buffer), nameBytes, bytes);
+      central.push({ nameBytes, crc, size: bytes.length, offset });
+      offset += 30 + nameBytes.length + bytes.length;
+    }
+
+    let cdSize = 0;
+    for (const e of central) {
+      const cd = new DataView(new ArrayBuffer(46));
+      cd.setUint32(0, 0x02014b50, true);
+      cd.setUint16(4, 20, true);
+      cd.setUint16(6, 20, true);
+      cd.setUint16(8, 0x0800, true);
+      cd.setUint16(10, 0, true);
+      cd.setUint16(12, dosTime, true);
+      cd.setUint16(14, dosDate, true);
+      cd.setUint32(16, e.crc, true);
+      cd.setUint32(20, e.size, true);
+      cd.setUint32(24, e.size, true);
+      cd.setUint16(28, e.nameBytes.length, true);
+      cd.setUint32(42, e.offset, true);
+      chunks.push(new Uint8Array(cd.buffer), e.nameBytes);
+      cdSize += 46 + e.nameBytes.length;
+    }
+
+    const end = new DataView(new ArrayBuffer(22));
+    end.setUint32(0, 0x06054b50, true);
+    end.setUint16(8, central.length, true);
+    end.setUint16(10, central.length, true);
+    end.setUint32(12, cdSize, true);
+    end.setUint32(16, offset, true);
+    chunks.push(new Uint8Array(end.buffer));
+
+    return new Blob(chunks, { type: 'application/zip' });
+  }
+
+  async function downloadAllZip(button) {
+    if (!zipTargets.length || button.disabled) return;
+    const original = button.textContent;
+    button.disabled = true;
+    try {
+      const entries = [];
+      for (let i = 0; i < zipTargets.length; i++) {
+        button.textContent = `Zipping ${i + 1}/${zipTargets.length}…`;
+        const res = await fetch(zipTargets[i].path);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        entries.push({ name: zipTargets[i].name, bytes: new Uint8Array(await res.arrayBuffer()) });
+      }
+      const url = URL.createObjectURL(buildZip(entries));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = zipName;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      button.textContent = original;
+    } catch (err) {
+      button.textContent = 'Failed — retry?';
+      setTimeout(() => { button.textContent = original; }, 2000);
+    }
+    button.disabled = false;
+  }
+
+  /* Copy an image to the clipboard (converted to PNG, the only format
+     browsers accept). Falls back to copying the image URL as text. */
+  async function copyImage(src, button) {
+    const original = 'Copy';
+    try {
+      const res = await fetch(src);
+      const bitmap = await createImageBitmap(await res.blob());
+      const canvas = document.createElement('canvas');
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      canvas.getContext('2d').drawImage(bitmap, 0, 0);
+      const png = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': png })]);
+      button.textContent = 'Copied';
+    } catch {
+      try {
+        await navigator.clipboard.writeText(new URL(src, location.href).href);
+        button.textContent = 'Copied URL';
+      } catch {
+        button.textContent = 'Failed';
+      }
+    }
+    setTimeout(() => { button.textContent = original; }, 1500);
+  }
+
   /* Deterministic "random" pick per calendar day. */
   function pickPromptOfDay(prompts) {
     if (!Array.isArray(prompts) || prompts.length === 0) return null;
@@ -149,6 +282,7 @@
     if (path.startsWith('post/')) {
       return { view: 'post', id: decodeURIComponent(path.slice(5)) };
     }
+    if (path === 'assets') return { view: 'assets' };
     return {
       view: 'list',
       q: params.get('q') || '',
@@ -288,20 +422,52 @@
         <h1 class="post-title">${escapeHtml(p.title)}</h1>
         <div class="post-tags">${p.tags.map((t) => tagPill(t, false)).join('')}</div>
         <div class="post-date">${formatDate(p.date)}</div>
+        ${gallery.length > 1 ? '<button class="btn btn-sm post-zip" data-zip>Download all (.zip)</button>' : ''}
         ${images}
         ${refSections}
         <div class="post-content">${renderMarkdown(p.content)}</div>
       </div>`;
 
     lightboxImages = gallery.map((img) => imageUrl(p, img));
+    zipTargets = gallery.map((img) => ({ path: imageUrl(p, img), name: img }));
+    zipName = `${p.id}.zip`;
     document.title = `${p.title} — GARDEN`;
+  }
+
+  function renderAssets() {
+    zipTargets = assets.map((f) => ({ path: `data/${encodeURIComponent(f)}`, name: f }));
+    zipName = 'garden-assets.zip';
+    lightboxImages = assets.map((f) => `data/${encodeURIComponent(f)}`);
+
+    const items = assets.map((f, i) => `
+      <figure class="masonry-item${isFin(f) ? ' fin' : ''}">
+        <img loading="lazy" src="data/${encodeURIComponent(f)}" alt="Asset ${escapeHtml(f)}" data-lightbox="${i}">
+        <a class="btn btn-sm" href="data/${encodeURIComponent(f)}" download>Download</a>
+      </figure>`).join('');
+
+    app.innerHTML = `
+      <div class="assets-head">
+        <div class="count">${assets.length} asset${assets.length === 1 ? '' : 's'}</div>
+        ${assets.length ? '<button class="btn" data-zip>Download all (.zip)</button>' : ''}
+      </div>
+      ${assets.length
+        ? `<div class="masonry">${items}</div>`
+        : '<div class="status">No assets yet. Drop images into the data/ folder and run <code>npm run build</code>.</div>'}`;
+
+    document.title = 'Assets — GARDEN';
   }
 
   function renderRoute() {
     const state = readHash();
     closeLightbox();
+    document.querySelectorAll('.nav-link').forEach((a) => {
+      a.classList.toggle('active', a.getAttribute('data-nav') === (state.view === 'assets' ? 'assets' : 'list'));
+    });
+    document.body.classList.toggle('assets-page', state.view === 'assets');
     if (state.view === 'post') {
       renderPost(state.id);
+    } else if (state.view === 'assets') {
+      renderAssets();
     } else {
       els.search.value = state.q;
       els.tag.value = state.tag;
@@ -356,6 +522,11 @@
       setTimeout(() => { copyText.textContent = 'Copy'; }, 1500);
       return;
     }
+    const zipBtn = e.target.closest('[data-zip]');
+    if (zipBtn) {
+      downloadAllZip(zipBtn);
+      return;
+    }
     const copyBlock = e.target.closest('[data-copy]');
     if (copyBlock) {
       navigator.clipboard.writeText(copyBlock.parentElement.querySelector('pre').textContent);
@@ -390,6 +561,9 @@
   });
 
   els.lbClose.addEventListener('click', closeLightbox);
+  document.getElementById('lb-copy').addEventListener('click', (e) => {
+    copyImage(lightboxImages[lightboxIndex], e.target);
+  });
   els.lbPrev.addEventListener('click', () => { if (lightboxIndex > 0) { lightboxIndex--; updateLightbox(); } });
   els.lbNext.addEventListener('click', () => { if (lightboxIndex < lightboxImages.length - 1) { lightboxIndex++; updateLightbox(); } });
   els.lightbox.addEventListener('click', (e) => { if (e.target === els.lightbox) closeLightbox(); });
@@ -412,6 +586,7 @@
       if (!manifestRes.ok) throw new Error(`manifest.json: HTTP ${manifestRes.status}`);
       const manifest = await manifestRes.json();
       posts = manifest.posts || [];
+      assets = manifest.assets || [];
 
       if (potdRes.ok) {
         const potd = await potdRes.json();

@@ -20,6 +20,10 @@
           </g>
         </svg>
       </a>
+      <nav class="site-nav">
+        <a class="nav-link" href="#/" data-nav="list">Posts</a>
+        <a class="nav-link" href="#/assets" data-nav="assets">Assets</a>
+      </nav>
       <input type="search" id="search" class="input search" placeholder="Search title or content…" autocomplete="off" spellcheck="false" aria-label="Search posts">
       <div class="controls">
         <select id="filter-tag" class="input select" aria-label="Filter by tag">
@@ -48,6 +52,7 @@
     <div class="lightbox-bar">
       <span class="lightbox-counter" id="lb-counter"></span>
       <div class="lightbox-actions">
+        <button class="btn" id="lb-copy">Copy</button>
         <a class="btn" id="lb-download" href="#" download>Download</a>
         <button class="btn" id="lb-close" aria-label="Close viewer">Close</button>
       </div>

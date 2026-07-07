@@ -49,6 +49,12 @@ A static single-page site for sharing image-generation prompts, designed for Git
 | `npm run serve` | Local dev server at http://localhost:4173 |
 | `npm run placeholders` | Regenerate sample placeholder images (dev only) |
 
+## Assets gallery
+
+Images dropped into `data/` at the repo root appear on the **Assets** page (`#/assets`) as a masonry gallery. They get the exact same treatment as post images: `npm run build` optimizes them to WebP and applies the naming standard (`fin`-prefixed files sort first with a red border). Every image has a download button, the lightbox works the same as in posts, and a "Download all (.zip)" button at the top bundles the whole gallery client-side (no server needed).
+
+Posts with more than one image also get a "Download all (.zip)" button, which includes reference images with their folder paths. The lightbox has a Copy button that puts the image on the clipboard as PNG.
+
 ## Prompt of the day
 
 `content/prompt-of-day.json` holds a `prompts` array. The site picks one deterministically per calendar day, so every visitor sees the same prompt on a given day.

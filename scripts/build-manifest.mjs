@@ -96,6 +96,14 @@ for (const folder of folders) {
   });
 }
 
-const manifest = { generated: new Date().toISOString(), posts };
+// Static assets gallery from data/ at the repo root (fin-first, no cap).
+let assets = [];
+try {
+  assets = (await readdir(path.resolve(CONTENT_DIR, '..', 'data')))
+    .filter(isImage)
+    .sort((a, b) => (isFin(b) - isFin(a)) || a.localeCompare(b));
+} catch { /* no data folder */ }
+
+const manifest = { generated: new Date().toISOString(), posts, assets };
 await writeFile(path.join(CONTENT_DIR, 'manifest.json'), JSON.stringify(manifest, null, 2));
-console.log(`Wrote content/manifest.json with ${posts.length} post(s).`);
+console.log(`Wrote content/manifest.json with ${posts.length} post(s) and ${assets.length} asset(s).`);

@@ -20,11 +20,12 @@
  *   node scripts/optimize-images.mjs my-post   # process a single folder
  */
 
-import { readdir, stat, rename, unlink } from 'node:fs/promises';
+import { readdir, readFile, copyFile, stat, rename, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
 const CONTENT_DIR = path.resolve(import.meta.dirname, '..', 'content');
+const DATA_DIR = path.resolve(import.meta.dirname, '..', 'data');
 const MAX_DIM = 2048;
 const QUALITY = 82;
 const MAX_IMAGES = 7;
@@ -60,35 +61,63 @@ async function processDir(dir, label, isRefDir) {
   }
   if (files.length === 0) return 0;
 
-  // Already-conformant files within limits are left alone; everything else
-  // is converted. Numbering continues per-prefix after existing files.
+  // Already-conformant files (correct prefix for their location, within
+  // limits) are left alone; everything else is converted or renamed.
+  // Numbering continues per-prefix after existing conformant files.
   const nextNum = { fin: 1, img: 1, ref: 1 };
   const toProcess = [];
+  const taken = new Set(files);
   let untouched = 0;
 
   for (const file of files.sort()) {
     if (FINAL_RE.test(file)) {
-      const meta = await sharp(path.join(dir, file)).metadata();
-      if (meta.width <= MAX_DIM && meta.height <= MAX_DIM) {
-        const prefix = file.slice(0, 3);
-        nextNum[prefix] = Math.max(nextNum[prefix], Number(file.slice(4, 6)) + 1);
-        untouched++;
-        continue;
+      const prefix = file.slice(0, 3);
+      const prefixOk = isRefDir ? prefix === 'ref' : prefix !== 'ref';
+      if (prefixOk) {
+        const meta = await sharp(path.join(dir, file)).metadata();
+        if (meta.width <= MAX_DIM && meta.height <= MAX_DIM) {
+          nextNum[prefix] = Math.max(nextNum[prefix], Number(file.slice(4, 6)) + 1);
+          untouched++;
+          continue;
+        }
       }
     }
     toProcess.push(file);
   }
 
+  const kb = (n) => `${(n / 1024).toFixed(0)} KB`;
+
   for (const file of toProcess) {
     const src = path.join(dir, file);
     const prefix = targetPrefix(file, isRefDir);
-    const finalName = `${prefix}-${String(nextNum[prefix]).padStart(2, '0')}.webp`;
-    nextNum[prefix]++;
-    const tmp = path.join(dir, `.tmp-${finalName}`);
+    let finalName;
+    do {
+      finalName = `${prefix}-${String(nextNum[prefix]).padStart(2, '0')}.webp`;
+      nextNum[prefix]++;
+    } while (taken.has(finalName) && finalName !== file);
+    taken.add(finalName);
     const dest = path.join(dir, finalName);
 
-    const before = (await stat(src)).size;
-    await sharp(src)
+    // Read into a buffer so sharp never holds a handle on the source file
+    // (a held handle makes the rename below fail with EBUSY on Windows).
+    const buf = await readFile(src);
+    const meta = await sharp(buf).metadata();
+
+    // Already-optimized WebP under the wrong name: rename, don't re-encode.
+    if (path.extname(file).toLowerCase() === '.webp' &&
+        meta.width <= MAX_DIM && meta.height <= MAX_DIM) {
+      if (keepOriginals) {
+        await copyFile(src, dest);
+      } else {
+        await rename(src, dest);
+      }
+      console.log(`  > ${label}/${file} -> ${finalName} (renamed)`);
+      continue;
+    }
+
+    const tmp = path.join(dir, `.tmp-${finalName}`);
+    const before = buf.length;
+    await sharp(buf)
       .rotate() // respect EXIF orientation
       .resize(MAX_DIM, MAX_DIM, { fit: 'inside', withoutEnlargement: true })
       .webp({ quality: QUALITY, effort: 5 })
@@ -98,7 +127,6 @@ async function processDir(dir, label, isRefDir) {
     if (!keepOriginals) await unlink(src);
     await rename(tmp, dest);
 
-    const kb = (n) => `${(n / 1024).toFixed(0)} KB`;
     console.log(`  > ${label}/${file} -> ${finalName} (${kb(before)} -> ${kb(after)})`);
   }
 
@@ -125,5 +153,10 @@ if (folders.length === 0) {
 } else {
   console.log(`Optimizing images in ${folders.length} post folder(s)…`);
   for (const folder of folders) await processFolder(folder);
-  console.log('Done.');
 }
+
+// Static assets gallery: same handling, no image cap.
+if (!onlyFolder || onlyFolder === 'data') {
+  await processDir(DATA_DIR, 'data', false);
+}
+console.log('Done.');
