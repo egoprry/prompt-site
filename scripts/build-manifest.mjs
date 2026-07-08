@@ -20,6 +20,7 @@
 
 import { readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import sharp from 'sharp';
 
 const CONTENT_DIR = path.resolve(import.meta.dirname, '..', 'content');
 const IMAGE_EXT = new Set(['.webp', '.png', '.jpg', '.jpeg', '.gif', '.avif']);
@@ -28,6 +29,17 @@ const MAX_IMAGES = 7;
 
 const isImage = (f) => IMAGE_EXT.has(path.extname(f).toLowerCase());
 const isFin = (f) => /^fin/i.test(f);
+
+/* Pixel dimensions, so the site can reserve space before images load
+   (prevents layout shift). Returns [width, height] or null. */
+async function imageDims(file) {
+  try {
+    const meta = await sharp(await readFile(file)).metadata();
+    return meta.width && meta.height ? [meta.width, meta.height] : null;
+  } catch {
+    return null;
+  }
+}
 
 async function readIfExists(file) {
   try { return await readFile(file, 'utf8'); } catch { return null; }
@@ -122,6 +134,19 @@ for (const folder of folders) {
     } catch { /* folder doesn't exist */ }
   }
 
+  // dimensions for every image this post references, keyed by relative path
+  const dims = {};
+  for (const f of images) {
+    const d = await imageDims(path.join(dir, f));
+    if (d) dims[f] = d;
+  }
+  for (const [refDir, files] of Object.entries(refs)) {
+    for (const f of files) {
+      const d = await imageDims(path.join(dir, refDir, f));
+      if (d) dims[`${refDir}/${f}`] = d;
+    }
+  }
+
   const hero = parseHero(heroMd);
   const author = parseAuthor(authorMd);
 
@@ -134,18 +159,25 @@ for (const folder of folders) {
     ...(hero ? { hero } : {}),
     ...(author ? { author } : {}),
     ...(Object.keys(refs).length ? { refs } : {}),
+    ...(Object.keys(dims).length ? { dims } : {}),
     content: (contentMd || '').replace(/\r\n/g, '\n').trim(),
   });
 }
 
 // Static assets gallery from data/ at the repo root (fin-first, no cap).
 let assets = [];
+const assetDims = {};
 try {
-  assets = (await readdir(path.resolve(CONTENT_DIR, '..', 'data')))
+  const dataDir = path.resolve(CONTENT_DIR, '..', 'data');
+  assets = (await readdir(dataDir))
     .filter(isImage)
     .sort((a, b) => (isFin(b) - isFin(a)) || a.localeCompare(b));
+  for (const f of assets) {
+    const d = await imageDims(path.join(dataDir, f));
+    if (d) assetDims[f] = d;
+  }
 } catch { /* no data folder */ }
 
-const manifest = { generated: new Date().toISOString(), posts, assets };
+const manifest = { generated: new Date().toISOString(), posts, assets, assetDims };
 await writeFile(path.join(CONTENT_DIR, 'manifest.json'), JSON.stringify(manifest, null, 2));
 console.log(`Wrote content/manifest.json with ${posts.length} post(s) and ${assets.length} asset(s).`);

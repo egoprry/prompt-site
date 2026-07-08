@@ -29,7 +29,8 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { background: var(--bg); }
+/* stable gutter so the scrollbar appearing/disappearing never shifts layout */
+html { background: var(--bg); scrollbar-gutter: stable; }
 
 body {
   font-family: var(--font-sans);
@@ -165,7 +166,8 @@ body.assets-page .controls { display: none; }
 
 /* -------------------------------------------------------------------- main */
 
-#app { padding: 24px; max-width: var(--app-mwidth); margin: 0 auto; }
+/* min-height keeps the footer from jumping while a view renders */
+#app { padding: 24px; max-width: var(--app-mwidth); margin: 0 auto; min-height: 60vh; }
 
 .status { color: var(--text-2); padding: 48px 0; text-align: center; }
 
@@ -421,6 +423,7 @@ body.assets-page .controls { display: none; }
 
 .post-image-item img {
   width: 100%;
+  height: auto;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border: 1px solid var(--border);
@@ -436,15 +439,21 @@ body.assets-page .controls { display: none; }
 
 .post-image-item.fin img:hover { border-color: #d92a40; }
 
-/* the fin final on its own row, shown uncropped */
+/* the fin final on its own row, shown uncropped, capped at 550px tall */
 .post-image-item.fin-hero {
   width: min(700px, 50vw);
   margin: 20px 0 0;
 }
 .post-image-item.fin-hero img {
-  aspect-ratio: auto;
+  /* the inline aspect-ratio (from build-time dims) reserves the box before
+     load; the figure's inline width keeps the height <= 550px */
+  width: 100%;
   height: auto;
+  max-height: 550px;
+  object-fit: contain;
 }
+
+.post-image-item .ref-label { align-self: flex-start; margin-bottom: 0; }
 
 /* midjourney reference-image sections */
 .ref-section { margin: 4px 0 16px; }
@@ -535,12 +544,39 @@ body.assets-page .controls { display: none; }
 
 .masonry-item img {
   width: 100%;
+  height: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   cursor: zoom-in;
   background: var(--bg-3);
 }
 .masonry-item img:hover { border-color: var(--border-strong); }
+
+/* front-page masonry: tags overlaid on the image, natural aspect ratios */
+.post-masonry-item { position: relative; cursor: pointer; }
+.post-masonry-item img { cursor: pointer; }
+
+.masonry-tags {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  z-index: 1;
+}
+
+.post-masonry-text {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: pointer;
+}
+.post-masonry-text:hover { border-color: var(--border-strong); }
+.post-masonry-text .post-title { font-size: 14px; }
+.post-masonry-text .masonry-tags { position: static; margin-top: 8px; }
 
 .masonry-item.fin img { 
    border: 2px solid var(--brand);

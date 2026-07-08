@@ -24,6 +24,7 @@
 
   let posts = [];
   let assets = [];
+  let assetDims = {};
   let promptOfDay = null;
   let lightboxImages = [];
   let lightboxIndex = 0;
@@ -62,8 +63,17 @@
     `<a class="author-link" href="https://x.com/${encodeURIComponent(handle)}" target="_blank" rel="noopener">@${escapeHtml(handle)}</a>`;
 
   const getLayout = () => {
-    try { return localStorage.getItem('garden-layout') === 'grid' ? 'grid' : 'list'; }
-    catch { return 'list'; }
+    try {
+      const v = localStorage.getItem('garden-layout');
+      return v === 'grid' || v === 'masonry' ? v : 'list';
+    } catch { return 'list'; }
+  };
+
+  /* width/height attributes from build-time dims — the browser reserves the
+     image's aspect ratio before it loads, preventing layout shift. */
+  const dimAttrs = (dims, key) => {
+    const d = dims && dims[key];
+    return d ? ` width="${d[0]}" height="${d[1]}"` : '';
   };
 
   /* Newest-first order used for prev/next cycling in the post view. */
@@ -381,12 +391,30 @@
           <div class="layout-toggle" role="group" aria-label="Layout">
             <button class="btn btn-sm${layout === 'list' ? ' active' : ''}" data-layout="list">List</button>
             <button class="btn btn-sm${layout === 'grid' ? ' active' : ''}" data-layout="grid">Grid</button>
+            <button class="btn btn-sm${layout === 'masonry' ? ' active' : ''}" data-layout="masonry">Masonry</button>
           </div>
         </div>
       </div>`);
 
     if (list.length === 0) {
       parts.push('<div class="status">No posts match the current filters.</div>');
+    } else if (layout === 'masonry') {
+      const items = list.map((p) => {
+        const tags = `<div class="masonry-tags">${p.tags.map((t) => tagPill(t, t === state.tag)).join('')}</div>`;
+        if (!p.images.length) {
+          return `
+            <div class="masonry-item post-masonry-text" data-post="${escapeHtml(p.id)}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
+              <div class="post-title">${escapeHtml(p.title)}</div>
+              ${tags}
+            </div>`;
+        }
+        return `
+          <figure class="masonry-item post-masonry-item${isFin(p.images[0]) ? ' fin' : ''}" data-post="${escapeHtml(p.id)}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
+            <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${dimAttrs(p.dims, p.images[0])}>
+            ${tags}
+          </figure>`;
+      });
+      parts.push(`<div class="masonry post-masonry">${items.join('')}</div>`);
     } else if (layout === 'grid') {
       const cards = list.map((p) => {
         const heroPos = /^\d{1,3}% \d{1,3}%$/.test(p.hero || '')
@@ -451,9 +479,10 @@
     // One flat lightbox list: finals first, then each ref section in order.
     // p.images is fin-first, so fin figures occupy the leading indices.
     const gallery = p.images.map((img) => img);
-    const figure = (file, alt, i, extra) => `
-      <figure class="post-image-item${extra || ''}">
-        <img loading="lazy" src="${imageUrl(p, file)}" alt="${escapeHtml(alt)}" data-lightbox="${i}">
+    const figure = (file, alt, i, extra, caption, styleAttr, imgStyle) => `
+      <figure class="post-image-item${extra || ''}"${styleAttr || ''}>
+        ${caption ? `<figcaption class="ref-label">${caption}</figcaption>` : ''}
+        <img loading="lazy" src="${imageUrl(p, file)}" alt="${escapeHtml(alt)}" data-lightbox="${i}"${dimAttrs(p.dims, file)}${imgStyle || ''}>
         <div class="img-actions">
           <a class="btn btn-sm" href="${imageUrl(p, file)}" download>Download</a>
           <button class="btn btn-sm" data-copy-img="${imageUrl(p, file)}">Copy</button>
@@ -463,10 +492,18 @@
     const finFiles = p.images.filter(isFin);
     const restFiles = p.images.filter((f) => !isFin(f));
 
-    // The fin final gets its own row; the rest keep the grid.
-    const finRow = finFiles.map((img, i) =>
-      figure(img, `${p.title} image ${i + 1}`, i, ' fin fin-hero')
-    ).join('');
+    // The fin final gets its own row, captioned as the result. Its width is
+    // sized so the image never exceeds 550px tall — computed here from the
+    // build-time dimensions, so the space is exact before the image loads.
+    const finRow = finFiles.map((img, i) => {
+      const d = p.dims?.[img];
+      const figStyle = d
+        ? ` style="width:min(700px, 50vw, ${Math.round(550 * d[0] / d[1])}px)"`
+        : '';
+      // explicit ratio reserves the box before the image loads
+      const imgStyle = d ? ` style="aspect-ratio:${d[0]}/${d[1]}"` : '';
+      return figure(img, `${p.title} image ${i + 1}`, i, ' fin fin-hero', 'Result', figStyle, imgStyle);
+    }).join('');
     const images = restFiles.length
       ? `<div class="post-images">${restFiles.map((img, j) =>
         figure(img, `${p.title} image ${finFiles.length + j + 1}`, finFiles.length + j)
@@ -536,7 +573,7 @@
 
     const items = assets.map((f, i) => `
       <figure class="masonry-item${isFin(f) ? ' fin' : ''}">
-        <img loading="lazy" src="data/${encodeURIComponent(f)}" alt="Asset ${escapeHtml(f)}" data-lightbox="${i}">
+        <img loading="lazy" src="data/${encodeURIComponent(f)}" alt="Asset ${escapeHtml(f)}" data-lightbox="${i}"${dimAttrs(assetDims, f)}>
         <a class="btn btn-sm" href="data/${encodeURIComponent(f)}" download>Download</a>
       </figure>`).join('');
 
@@ -849,6 +886,7 @@
       const manifest = await manifestRes.json();
       posts = manifest.posts || [];
       assets = manifest.assets || [];
+      assetDims = manifest.assetDims || {};
 
       if (potdRes.ok) {
         const potd = await potdRes.json();
