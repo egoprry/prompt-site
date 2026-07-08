@@ -1,0 +1,1 @@
+Cold blue palette, chrome type, scanner grain. Screenshot shows the board contents; samples below are outputs.

@@ -23,6 +23,8 @@
   };
 
   let posts = [];
+  let styles = [];
+  let styleTypeFilter = '';
   let assets = [];
   let assetDims = {};
   let promptOfDay = null;
@@ -313,6 +315,10 @@
       return { view: 'post', id: decodeURIComponent(path.slice(5)) };
     }
     if (path === 'assets') return { view: 'assets' };
+    if (path === 'styles') return { view: 'styles' };
+    if (path.startsWith('style/')) {
+      return { view: 'style', id: decodeURIComponent(path.slice(6)) };
+    }
     if (path === 'privacy') return { view: 'privacy' };
     if (path !== '') return { view: '404' };
     return {
@@ -589,6 +595,115 @@
     document.title = 'Assets — GARDEN';
   }
 
+  /* ---------------------------------------------------------- style catalog */
+
+  const STYLE_TYPE_META = {
+    sref: { label: 'Sref', flag: '--sref' },
+    profile: { label: 'Profile', flag: '--profile' },
+    mood: { label: 'Moodboard', flag: '--profile' },
+    style: { label: 'Style', flag: '' },
+  };
+
+  const styleCode = (s) => {
+    if (!s.code) return null;
+    const flag = STYLE_TYPE_META[s.type]?.flag;
+    return flag ? `${flag} ${s.code}` : s.code;
+  };
+
+  const codeChip = (s) => {
+    const full = styleCode(s);
+    return full
+      ? `<button class="code-chip" data-copy-text="${escapeHtml(full)}" title="Copy ${escapeHtml(full)}">${escapeHtml(full)}</button>`
+      : '';
+  };
+
+  const typeBadge = (type) =>
+    `<span class="style-type style-type-${escapeHtml(type)}">${escapeHtml(STYLE_TYPE_META[type]?.label || type)}</span>`;
+
+  function renderStyles() {
+    const list = styleTypeFilter ? styles.filter((s) => s.type === styleTypeFilter) : styles;
+    const typeButtons = [['', 'All'], ['sref', 'Srefs'], ['profile', 'Profiles'], ['mood', 'Moodboards']]
+      .map(([v, label]) =>
+        `<button class="btn btn-sm${styleTypeFilter === v ? ' active-filter' : ''}" data-style-type="${v}">${label}</button>`
+      ).join('');
+
+    const cards = list.map((s) => {
+      const img = s.images[0];
+      const media = img
+        ? `<div class="style-media"><img loading="lazy" src="styles/${encodeURIComponent(s.id)}/${encodeURIComponent(img)}" alt="${escapeHtml(s.title)}"${dimAttrs(s.dims, img)}></div>`
+        : '<div class="style-media empty">no samples</div>';
+      return `
+        <article class="style-card" data-style="${escapeHtml(s.id)}" tabindex="0" role="link" aria-label="${escapeHtml(s.title)}">
+          ${media}
+          <div class="style-card-meta">
+            <div class="style-card-top">${typeBadge(s.type)}${codeChip(s)}</div>
+            <div class="post-title">${escapeHtml(s.title)}</div>
+            ${s.tags.length ? `<div class="post-tags">${s.tags.map((t) => tagPill(t, false)).join('')}</div>` : ''}
+          </div>
+        </article>`;
+    }).join('');
+
+    app.innerHTML = `
+      <div class="list-tools">
+        <div class="count">${list.length} style${list.length === 1 ? '' : 's'}</div>
+        <div class="list-actions">${typeButtons}</div>
+      </div>
+      ${list.length
+        ? `<div class="style-grid">${cards}</div>`
+        : '<div class="status">No style entries yet. Add folders under styles/ and run <code>npm run build</code>.</div>'}`;
+
+    document.title = 'Styles — GARDEN';
+  }
+
+  function renderStyle(id) {
+    const s = styles.find((x) => x.id === id);
+    if (!s) { render404(); return; }
+
+    const imgUrl = (f) => `styles/${encodeURIComponent(s.id)}/${encodeURIComponent(f)}`;
+    lightboxImages = s.images.map(imgUrl);
+    zipTargets = s.images.map((f) => ({ path: imgUrl(f), name: f }));
+    zipName = `${s.id}.zip`;
+
+    const images = s.images.length
+      ? `<div class="post-images">${s.images.map((f, i) => `
+          <figure class="post-image-item${isFin(f) ? ' fin' : ''}">
+            <img loading="lazy" src="${imgUrl(f)}" alt="${escapeHtml(s.title)} sample ${i + 1}" data-lightbox="${i}"${dimAttrs(s.dims, f)}>
+            <div class="img-actions">
+              <a class="btn btn-sm" href="${imgUrl(f)}" download>Download</a>
+              <button class="btn btn-sm" data-copy-img="${imgUrl(f)}">Copy</button>
+            </div>
+          </figure>`).join('')}</div>`
+      : '';
+
+    const usedIn = s.code
+      ? posts.filter((p) => p.content.includes(s.code))
+      : [];
+    const usedInHtml = usedIn.length
+      ? `<div class="style-used">
+           <div class="ref-label">Used in</div>
+           <div class="style-used-list">${usedIn.map((p) =>
+             `<a class="tree-post" href="#/post/${encodeURIComponent(p.id)}">${escapeHtml(p.title)}</a>`).join('')}</div>
+         </div>`
+      : '';
+
+    app.innerHTML = `
+      <div class="post-view">
+        <div class="post-topnav">
+          <a class="back-link" href="#/styles">&#8592; Back to styles</a>
+        </div>
+        <h1 class="post-title">${escapeHtml(s.title)}</h1>
+        <div class="style-card-top" style="margin-top:8px">${typeBadge(s.type)}${codeChip(s)}</div>
+        ${s.tags.length ? `<div class="post-tags">${s.tags.map((t) => tagPill(t, false)).join('')}</div>` : ''}
+        <div class="post-date">${formatDate(s.date)}</div>
+        ${s.notes ? `<div class="post-content">${renderMarkdown(s.notes)}</div>` : ''}
+        ${s.images.length >= 2 ? '<button class="btn btn-sm post-zip" data-zip>Download samples (.zip)</button>' : ''}
+        ${images}
+        ${usedInHtml}
+      </div>`;
+
+    document.title = `${s.title} — GARDEN`;
+  }
+
   function renderPrivacy() {
     app.innerHTML = `
       <div class="post-view page-view">
@@ -632,6 +747,7 @@
     closeLightbox();
     closeTree();
     const navFor = state.view === 'assets' ? 'assets'
+      : (state.view === 'styles' || state.view === 'style') ? 'styles'
       : (state.view === 'list' || state.view === 'post') ? 'list' : '';
     document.querySelectorAll('.nav-link').forEach((a) => {
       a.classList.toggle('active', a.getAttribute('data-nav') === navFor);
@@ -641,6 +757,10 @@
       renderPost(state.id);
     } else if (state.view === 'assets') {
       renderAssets();
+    } else if (state.view === 'styles') {
+      renderStyles();
+    } else if (state.view === 'style') {
+      renderStyle(state.id);
     } else if (state.view === 'privacy') {
       renderPrivacy();
     } else if (state.view === '404') {
@@ -792,9 +912,22 @@
   app.addEventListener('click', (e) => {
     const copyText = e.target.closest('[data-copy-text]');
     if (copyText) {
+      e.stopPropagation();
       navigator.clipboard.writeText(copyText.getAttribute('data-copy-text'));
+      const original = copyText.textContent;
       copyText.textContent = 'Copied';
-      setTimeout(() => { copyText.textContent = 'Copy'; }, 1500);
+      setTimeout(() => { copyText.textContent = original; }, 1500);
+      return;
+    }
+    const styleType = e.target.closest('[data-style-type]');
+    if (styleType) {
+      styleTypeFilter = styleType.getAttribute('data-style-type');
+      renderStyles();
+      return;
+    }
+    const styleCard = e.target.closest('[data-style]');
+    if (styleCard && !e.target.closest('a') && !e.target.closest('[data-tag]')) {
+      location.hash = `#/style/${encodeURIComponent(styleCard.getAttribute('data-style'))}`;
       return;
     }
     const copyImgBtn = e.target.closest('[data-copy-img]');
@@ -848,6 +981,8 @@
     if (e.key === 'Enter') {
       const card = e.target.closest('[data-post]');
       if (card) location.hash = `#/post/${encodeURIComponent(card.getAttribute('data-post'))}`;
+      const style = e.target.closest('[data-style]');
+      if (style) location.hash = `#/style/${encodeURIComponent(style.getAttribute('data-style'))}`;
     }
   });
 
@@ -885,6 +1020,7 @@
       if (!manifestRes.ok) throw new Error(`manifest.json: HTTP ${manifestRes.status}`);
       const manifest = await manifestRes.json();
       posts = manifest.posts || [];
+      styles = manifest.styles || [];
       assets = manifest.assets || [];
       assetDims = manifest.assetDims || {};
 

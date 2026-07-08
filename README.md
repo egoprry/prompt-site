@@ -66,6 +66,23 @@ Or manually:
 | `npm run serve` | Local dev server at http://localhost:4173 |
 | `npm run placeholders` | Regenerate sample placeholder images (dev only) |
 
+## Style catalog
+
+Folders under `styles/` at the repo root appear on the **Styles** page (`#/styles`), filterable by type. Folder naming follows `[sref/profile/mood]-[topic]-[n]` — the prefix sets the type badge and the copy syntax (`--sref` vs `--profile`):
+
+```
+styles/sref-halftone-poster-1/
+  title.md      required — entry name
+  code.md       optional — the sref/profile code (copy button renders the full flag)
+  tags.md       optional — vibe tags (blue, y2k, halftone, …)
+  notes.md      optional — markdown notes shown on the detail page
+  date.md       optional — YYYY-MM-DD
+  *.png/…       sample outputs and moodboard screenshots; prefix the lead
+                image with "fin" so it fronts the card
+```
+
+Images get the same optimizer treatment as posts. Each entry's detail page has the copyable code, samples with download/copy/lightbox, a samples zip (2+ images), and links to any posts whose content mentions the code.
+
 ## Assets gallery
 
 Images dropped into `data/` at the repo root appear on the **Assets** page (`#/assets`) as a masonry gallery. They get the exact same treatment as post images: `npm run build` optimizes them to WebP and applies the naming standard (`fin`-prefixed files sort first with a red border). Every image has a download button, the lightbox works the same as in posts, and a "Download all (.zip)" button at the top bundles the whole gallery client-side (no server needed).

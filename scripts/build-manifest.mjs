@@ -164,6 +164,58 @@ for (const folder of folders) {
   });
 }
 
+// Style catalog from styles/ at the repo root. Folder naming:
+// [sref/profile/mood]-[topic]-[n]; each folder holds title.md, code.md
+// (the sref/profile code), optional tags.md / notes.md / date.md, and
+// sample images (moodboard screenshots included) — fin-prefixed first.
+const STYLES_DIR = path.resolve(CONTENT_DIR, '..', 'styles');
+const STYLE_TYPES = new Set(['sref', 'profile', 'mood']);
+const styles = [];
+try {
+  const styleFolders = (await readdir(STYLES_DIR, { withFileTypes: true }))
+    .filter((e) => e.isDirectory()).map((e) => e.name).sort();
+  for (const folder of styleFolders) {
+    const dir = path.join(STYLES_DIR, folder);
+    const [titleMd, codeMd, tagsMd, notesMd, dateMd] = await Promise.all([
+      readIfExists(path.join(dir, 'title.md')),
+      readIfExists(path.join(dir, 'code.md')),
+      readIfExists(path.join(dir, 'tags.md')),
+      readIfExists(path.join(dir, 'notes.md')),
+      readIfExists(path.join(dir, 'date.md')),
+    ]);
+
+    const images = (await readdir(dir))
+      .filter(isImage)
+      .sort((a, b) => (isFin(b) - isFin(a)) || a.localeCompare(b));
+    const dims = {};
+    for (const f of images) {
+      const d = await imageDims(path.join(dir, f));
+      if (d) dims[f] = d;
+    }
+
+    const code = (codeMd || '').split('\n').map((l) => l.trim()).find((l) => l.length > 0) || null;
+    let date = ((dateMd || '').match(/\d{4}-\d{2}-\d{2}/) || [])[0];
+    if (!date) {
+      try { date = (await stat(dir)).mtime.toISOString().slice(0, 10); }
+      catch { date = new Date().toISOString().slice(0, 10); }
+    }
+    const prefix = folder.split('-')[0].toLowerCase();
+
+    styles.push({
+      id: folder,
+      type: STYLE_TYPES.has(prefix) ? prefix : 'style',
+      title: parseTitle(titleMd, folder),
+      ...(code ? { code } : {}),
+      tags: parseTags(tagsMd),
+      date,
+      images,
+      ...(Object.keys(dims).length ? { dims } : {}),
+      notes: (notesMd || '').replace(/\r\n/g, '\n').trim(),
+    });
+  }
+  styles.sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
+} catch { /* no styles folder */ }
+
 // Static assets gallery from data/ at the repo root (fin-first, no cap).
 let assets = [];
 const assetDims = {};
@@ -178,6 +230,6 @@ try {
   }
 } catch { /* no data folder */ }
 
-const manifest = { generated: new Date().toISOString(), posts, assets, assetDims };
+const manifest = { generated: new Date().toISOString(), posts, styles, assets, assetDims };
 await writeFile(path.join(CONTENT_DIR, 'manifest.json'), JSON.stringify(manifest, null, 2));
-console.log(`Wrote content/manifest.json with ${posts.length} post(s) and ${assets.length} asset(s).`);
+console.log(`Wrote content/manifest.json with ${posts.length} post(s), ${styles.length} style(s), and ${assets.length} asset(s).`);

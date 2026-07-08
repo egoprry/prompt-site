@@ -26,6 +26,7 @@ import sharp from 'sharp';
 
 const CONTENT_DIR = path.resolve(import.meta.dirname, '..', 'content');
 const DATA_DIR = path.resolve(import.meta.dirname, '..', 'data');
+const STYLES_DIR = path.resolve(import.meta.dirname, '..', 'styles');
 const MAX_DIM = 2048;
 const QUALITY = 82;
 const MAX_IMAGES = 7;
@@ -159,4 +160,15 @@ if (folders.length === 0) {
 if (!onlyFolder || onlyFolder === 'data') {
   await processDir(DATA_DIR, 'data', false);
 }
+
+// Style catalog entries: same handling as post roots.
+try {
+  const styleFolders = (await readdir(STYLES_DIR, { withFileTypes: true }))
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name)
+    .filter((name) => !onlyFolder || name === onlyFolder);
+  for (const folder of styleFolders) {
+    await processDir(path.join(STYLES_DIR, folder), `styles/${folder}`, false);
+  }
+} catch { /* no styles folder */ }
 console.log('Done.');
