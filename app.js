@@ -10,6 +10,9 @@
     tag: document.getElementById('filter-tag'),
     images: document.getElementById('filter-images'),
     sort: document.getElementById('sort'),
+    treeModal: document.getElementById('tree-modal'),
+    treeBody: document.getElementById('tree-body'),
+    treeClose: document.getElementById('tree-close'),
     lightbox: document.getElementById('lightbox'),
     lbImg: document.getElementById('lb-img'),
     lbCounter: document.getElementById('lb-counter'),
@@ -52,6 +55,15 @@
 
   const authorLink = (handle) =>
     `<a class="author-link" href="https://x.com/${encodeURIComponent(handle)}" target="_blank" rel="noopener">@${escapeHtml(handle)}</a>`;
+
+  const getLayout = () => {
+    try { return localStorage.getItem('garden-layout') === 'grid' ? 'grid' : 'list'; }
+    catch { return 'list'; }
+  };
+
+  /* Newest-first order used for prev/next cycling in the post view. */
+  const postOrder = () =>
+    [...posts].sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
 
   /* Plain-text preview of markdown content for list cards. */
   const snippet = (md, len) => md
@@ -355,10 +367,40 @@
         </section>`);
     }
 
-    parts.push(`<div class="count">${list.length} post${list.length === 1 ? '' : 's'}</div>`);
+    const layout = getLayout();
+    parts.push(`
+      <div class="list-tools">
+        <div class="count">${list.length} post${list.length === 1 ? '' : 's'}</div>
+        <div class="list-actions">
+          <button class="btn btn-sm" data-tree>Content tree</button>
+          <div class="layout-toggle" role="group" aria-label="Layout">
+            <button class="btn btn-sm${layout === 'list' ? ' active' : ''}" data-layout="list">List</button>
+            <button class="btn btn-sm${layout === 'grid' ? ' active' : ''}" data-layout="grid">Grid</button>
+          </div>
+        </div>
+      </div>`);
 
     if (list.length === 0) {
       parts.push('<div class="status">No posts match the current filters.</div>');
+    } else if (layout === 'grid') {
+      const cards = list.map((p) => {
+        const heroPos = /^\d{1,3}% \d{1,3}%$/.test(p.hero || '')
+          ? ` style="object-position:${p.hero}"` : '';
+        const hero = p.images.length
+          ? `<div class="post-hero${isFin(p.images[0]) ? ' fin' : ''}">
+               <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${heroPos}>
+             </div>`
+          : '<div class="post-hero empty">text-only</div>';
+        return `
+          <article class="post-card post-card-grid" data-post="${escapeHtml(p.id)}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
+            ${hero}
+            <div class="post-meta">
+              <div class="post-title">${escapeHtml(p.title)}</div>
+              <div class="post-tags">${p.tags.map((t) => tagPill(t, t === state.tag)).join('')}</div>
+            </div>
+          </article>`;
+      });
+      parts.push(`<div class="post-list grid">${cards.join('')}</div>`);
     } else {
       const cards = list.map((p) => {
         // hero crop anchor from hero.md; re-validated here since it lands in
@@ -442,9 +484,24 @@
     zipTargets = zipFiles.map((img) => ({ path: imageUrl(p, img), name: img }));
     zipName = `${p.id}.zip`;
 
+    const order = postOrder();
+    const idx = order.findIndex((x) => x.id === p.id);
+    const prev = idx > 0 ? order[idx - 1] : null;
+    const next = idx < order.length - 1 ? order[idx + 1] : null;
+    const navBtn = (target, label) => target
+      ? `<a class="btn btn-sm" href="#/post/${encodeURIComponent(target.id)}" aria-label="${label} post">${label === 'Previous' ? '&#8592; Prev' : 'Next &#8594;'}</a>`
+      : `<button class="btn btn-sm" disabled>${label === 'Previous' ? '&#8592; Prev' : 'Next &#8594;'}</button>`;
+
     app.innerHTML = `
       <div class="post-view">
-        <a class="back-link" href="#/">&#8592; Back to all posts</a>
+        <div class="post-topnav">
+          <a class="back-link" href="#/">&#8592; Back to all posts</a>
+          <div class="post-cycle">
+            ${navBtn(prev, 'Previous')}
+            <span class="post-cycle-count">${idx + 1} / ${order.length}</span>
+            ${navBtn(next, 'Next')}
+          </div>
+        </div>
         <h1 class="post-title">${escapeHtml(p.title)}</h1>
         <div class="post-tags">
           ${p.tags.map((t) => tagPill(t, false)).join('')}
@@ -526,6 +583,7 @@
   function renderRoute() {
     const state = readHash();
     closeLightbox();
+    closeTree();
     const navFor = state.view === 'assets' ? 'assets'
       : (state.view === 'list' || state.view === 'post') ? 'list' : '';
     document.querySelectorAll('.nav-link').forEach((a) => {
@@ -549,6 +607,104 @@
       renderList(state);
     }
     window.scrollTo(0, 0);
+  }
+
+  /* ----------------------------------------------------------- content tree */
+
+  const TAG_COLORS = [
+    '#96a8ff', '#f43b52', '#3ddc5a', '#ffae00', '#e879f9',
+    '#22d3ee', '#fb923c', '#a3e635', '#f472b6', '#34d399',
+  ];
+
+  function tagColorMap() {
+    const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();
+    const map = {};
+    tags.forEach((t, i) => { map[t] = TAG_COLORS[i % TAG_COLORS.length]; });
+    return map;
+  }
+
+  /* Groups posts under their primary (first) tag; every tag→post
+     relationship is also drawn as a colored line, so posts with several
+     tags visibly connect across groups. */
+  function openTree() {
+    const colors = tagColorMap();
+    const groups = new Map();
+    for (const p of postOrder()) {
+      const primary = p.tags[0] || 'untagged';
+      if (!groups.has(primary)) groups.set(primary, []);
+      groups.get(primary).push(p);
+    }
+
+    const groupHtml = [...groups.entries()].map(([tag, list]) => `
+      <div class="tree-group">
+        <div class="tree-tag" data-tree-tag="${escapeHtml(tag)}">
+          <span class="tree-dot" style="background:${colors[tag] || 'var(--text-3)'}"></span>#${escapeHtml(tag)}
+        </div>
+        <div class="tree-posts">
+          ${list.map((p) => `
+            <a class="tree-post" data-tree-post="${escapeHtml(p.id)}" href="#/post/${encodeURIComponent(p.id)}">
+              ${escapeHtml(p.title)}
+            </a>`).join('')}
+        </div>
+      </div>`).join('');
+
+    els.treeBody.innerHTML = `
+      <div class="tree-graph" id="tree-graph">
+        <svg class="tree-lines" id="tree-lines" aria-hidden="true"></svg>
+        ${groupHtml}
+      </div>`;
+
+    els.treeModal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    drawTreeLines();
+  }
+
+  function drawTreeLines() {
+    const graph = document.getElementById('tree-graph');
+    const svg = document.getElementById('tree-lines');
+    if (!graph || !svg) return;
+    const colors = tagColorMap();
+    const graphRect = graph.getBoundingClientRect();
+
+    const rel = (r) => ({
+      x: r.left - graphRect.left,
+      y: r.top - graphRect.top,
+      w: r.width,
+      h: r.height,
+    });
+
+    const tagAnchors = {};
+    graph.querySelectorAll('[data-tree-tag]').forEach((el) => {
+      const r = rel(el.getBoundingClientRect());
+      tagAnchors[el.getAttribute('data-tree-tag')] = { x: r.x + r.w, y: r.y + r.h / 2 };
+    });
+
+    const lines = [];
+    graph.querySelectorAll('[data-tree-post]').forEach((el) => {
+      const id = el.getAttribute('data-tree-post');
+      const post = posts.find((p) => p.id === id);
+      if (!post) return;
+      const r = rel(el.getBoundingClientRect());
+      const to = { x: r.x, y: r.y + r.h / 2 };
+      for (const tag of (post.tags.length ? post.tags : ['untagged'])) {
+        const from = tagAnchors[tag];
+        if (!from) continue;
+        const bend = Math.max(24, Math.abs(to.y - from.y) / 4);
+        lines.push(`<path d="M ${from.x} ${from.y} C ${from.x + bend} ${from.y}, ${to.x - bend} ${to.y}, ${to.x} ${to.y}"
+          stroke="${colors[tag] || '#5f9e6d'}" stroke-width="1.5" fill="none" opacity="0.75"/>`);
+      }
+    });
+
+    svg.setAttribute('width', graph.scrollWidth);
+    svg.setAttribute('height', graph.scrollHeight);
+    svg.setAttribute('viewBox', `0 0 ${graph.scrollWidth} ${graph.scrollHeight}`);
+    svg.innerHTML = lines.join('');
+  }
+
+  function closeTree() {
+    if (els.treeModal.hidden) return;
+    els.treeModal.hidden = true;
+    document.body.style.overflow = '';
   }
 
   /* ------------------------------------------------------------- lightbox */
@@ -599,6 +755,17 @@
       downloadAllZip(zipBtn);
       return;
     }
+    const layoutBtn = e.target.closest('[data-layout]');
+    if (layoutBtn) {
+      try { localStorage.setItem('garden-layout', layoutBtn.getAttribute('data-layout')); } catch {}
+      renderRoute();
+      return;
+    }
+    const treeBtn = e.target.closest('[data-tree]');
+    if (treeBtn) {
+      openTree();
+      return;
+    }
     const copyBlock = e.target.closest('[data-copy]');
     if (copyBlock) {
       navigator.clipboard.writeText(copyBlock.parentElement.querySelector('pre').textContent);
@@ -632,6 +799,13 @@
     }
   });
 
+  els.treeClose.addEventListener('click', closeTree);
+  els.treeModal.addEventListener('click', (e) => {
+    if (e.target === els.treeModal) closeTree();
+    if (e.target.closest('.tree-post')) closeTree();
+  });
+  window.addEventListener('resize', () => { if (!els.treeModal.hidden) drawTreeLines(); });
+
   els.lbClose.addEventListener('click', closeLightbox);
   document.getElementById('lb-copy').addEventListener('click', (e) => {
     copyImage(lightboxImages[lightboxIndex], e.target);
@@ -641,6 +815,7 @@
   els.lightbox.addEventListener('click', (e) => { if (e.target === els.lightbox) closeLightbox(); });
 
   document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && els.lightbox.hidden) { closeTree(); return; }
     if (els.lightbox.hidden) return;
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft' && lightboxIndex > 0) { lightboxIndex--; updateLightbox(); }
