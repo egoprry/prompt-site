@@ -4,6 +4,16 @@ A static single-page site for sharing image-generation prompts, designed for Git
 
 ## Adding a post
 
+The fast way — run the guided creator and answer the prompts:
+
+```
+npm run new
+```
+
+It follows the naming schema `[gpt/mj/custom]-[core topic]-[version]`, picks the next version number automatically, and scaffolds `date.md`, `hero.md`, `tags.md`, `title.md`, and a `content.md` skeleton (plus empty `style-ref/`, `img-ref/`, `omni-ref/` folders for mj posts). Then drop in your images, fill in `content.md`, and run `npm run build`.
+
+Or manually:
+
 1. Create a folder in `content/` (the folder name becomes the post's URL slug):
 
    ```
@@ -49,6 +59,7 @@ A static single-page site for sharing image-generation prompts, designed for Git
 
 | Command | What it does |
 |---|---|
+| `npm run new` | Guided creator for a new post folder |
 | `npm run build` | Optimize all images, then rebuild the manifest |
 | `npm run images` | Optimize images only (`--keep` preserves originals, or pass a folder name) |
 | `npm run manifest` | Rebuild `content/manifest.json` only |

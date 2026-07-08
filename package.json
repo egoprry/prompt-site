@@ -5,6 +5,7 @@
   "description": "Static SPA for sharing image-generation prompts, hosted on GitHub Pages",
   "type": "module",
   "scripts": {
+    "new": "node scripts/new-post.mjs",
     "images": "node scripts/optimize-images.mjs",
     "manifest": "node scripts/build-manifest.mjs",
     "build": "node scripts/optimize-images.mjs && node scripts/build-manifest.mjs",
