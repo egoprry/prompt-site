@@ -1,0 +1,1 @@
+transfer likeness to inanimate 1

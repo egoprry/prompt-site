@@ -1,8 +1,8 @@
 {
-  "generated": "2026-07-07T23:31:08.282Z",
+  "generated": "2026-07-08T04:24:30.944Z",
   "posts": [
     {
-      "id": "gpt-candid-shirt-one",
+      "id": "gpt-candid-shirt-1",
       "title": "Fake scene with shirt reference #1",
       "tags": [
         "chatgpt-image-2",
@@ -16,7 +16,7 @@
       "content": "## Prompt\n\n```\ncrowded shopping mall in nebraska, teenage boy (athletic, white) is wearing a shirt with the graphic on the back (first image), they are photographed 80-100 feet away with a small crowd gathered around them as they play piano, 3:4 aspect ratio, high attention to details, should look real, as if it was shot on iphone 4\n```"
     },
     {
-      "id": "gpt-combine-one",
+      "id": "gpt-combine-1",
       "title": "Character fusion",
       "tags": [
         "chatgpt-image-2",
@@ -34,7 +34,22 @@
       "content": "## Prompt\n\n```\nA single unified composition formed by intermingling the distinctive visual qualities of character in first image and character in second. Not a collage or side-by-side, but an artistic chimera: weave together forms, textures, motifs, and stylistic signatures from both so they coexist within one coherent design. The result should preserve recognizable traits of each source while transforming them into a fused identity, emphasizing technique and aesthetic hybridity rather than contextual placement.\n```\n\n## Notes\n\n- Fuenter prompt"
     },
     {
-      "id": "gpt-mult-char-one",
+      "id": "gpt-inanimate-1",
+      "title": "transfer likeness to inanimate 1",
+      "tags": [
+        "chatgpt-image-2"
+      ],
+      "date": "2026-07-07",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp"
+      ],
+      "hero": "50% 50%",
+      "content": "## Prompt\n\n```\nthe man in the second image is wearing a balaclava that has the face of the man in the first image printed on it, 3:4 composition\n```"
+    },
+    {
+      "id": "gpt-mult-char-1",
       "title": "Add multiple characters to scene",
       "tags": [
         "chatgpt-image-2"
@@ -49,7 +64,37 @@
       "content": "## Prompt\n\n```\nLow-angle Dutch tilt shot, camera positioned near the floor directly in front of a wooden talk-show desk, lens tilted roughly 15–20 degrees to the right. In the foreground, four identical chubby green frog characters are stacked in a precarious but physically plausible totem-pole formation — smooth matte 3D-rendered style, sleepy half-lidded eyes with small pupils, flat horizontal brown mouth, pot-bellied bodies with stubby arms and legs, exactly matching reference image 1.\nTotem staging, bottom to top:\n\nFrog 1 (base): Stands flat-footed with feet planted wide for stability, knees slightly bent in a quarter-squat to absorb the weight above. Both stubby arms reach up and grip the ankles of Frog 2 above him, bracing the column. Face strained with effort, mouth pressed tight, eyes wide and focused straight ahead — the only one taking this seriously.\nFrog 2: Stands on Frog 1's shoulders with both feet, knees locked, one hand pressed flat against the back of Frog 1's head for balance, the other arm extended out to the side like a tightrope walker. Body twisted slightly off-axis, weight shifted to compensate for a wobble. Expression blank and unfocused, looking off in the wrong direction entirely — completely checked out.\nFrog 3: Crouched low on Frog 2's shoulders rather than standing, knees bent and hands gripping the top of Frog 2's head for stability — acting as the stable platform for the climber above. Looking up nervously at Frog 4, mouth slightly open in mild concern.\nFrog 4 (top, the climber): Balanced on ONE foot atop Frog 3's head, the other leg bent back behind him for counterweight. Both stubby arms stretched fully overhead, fingertips just barely curled around the bottom edge of the red McDonald's fry carton, beginning to tilt it toward himself. Only the top of his head from the eyes up peeks above the desk surface — sleepy half-lidded eyes locked on the prize, mouth set in flat determination. The strain of the one-foot balance is visible in the slight diagonal lean of his body.\n\nThe whole column has a subtle S-curve sway — not perfectly vertical, slightly off-center, the kind of stack that's holding together through sheer commitment. Visible micro-details of instability: a foot half off a shoulder, fingers gripping too tight, weight distributed unevenly.\nBehind the desk: preserve the exact likeness, framing, and styling of the man from reference image 2 — tousled wavy brown hair, light stubble, narrow face, olive-grey suit jacket over white dress shirt with a gold patterned tie. He is leaning toward his podcast microphone (large black shotgun mic on a boom arm, entering from the right side of the frame), gesturing animatedly with one open palm, mid-rant, expression focused on an off-camera point. Completely oblivious to the frog tower and the fry carton being lifted right in front of him.\nSet details: vertical warm-brown wood slat paneling on the back wall, large areca palm fronds framing both sides, glowing nighttime cityscape monitor in the background (warm orange building lights, blue accent). On the desk: a black ceramic mug with a circular \"AF America First\" logo to his right, a royal blue \"AMERICA FIRST\" baseball cap lying flat to his left. The red McDonald's fry carton sits at the very front edge of the desk, being delicately lifted from below by Frog 4's fingertips.\nLighting: warm key light on the man matching the original reference, cool fill from the city monitor on his left side, soft spill light catching the green frogs from above with subtle rim light on their backs and the top of Frog 4's head as he breaches the desk plane. Shallow depth of field — the frog totem in sharper focus in the foreground, the man in slightly softer focus behind.\nComposition: vertical 3:4 aspect ratio. The totem stacks dramatically up the center-left of the frame, occupying most of the vertical space. Desk edge cuts across the upper third of the frame, with Frog 4's head and arms just breaching that line as he reaches the fries. The man's torso and head fill the top portion of the frame behind the desk. Slight wide-angle lens distortion exaggerates the verticality.\nMood: absurdist deadpan physical comedy — varied character expressions (strained, checked-out, nervous, determined) sell the personalities of each frog. The joke is in the precariousness, the obliviousness of the host, and how close they are to pulling off the heist.\n```"
     },
     {
-      "id": "gpt-swap-mini-one",
+      "id": "gpt-perspective-1",
+      "title": "Perspective change 1",
+      "tags": [
+        "chatgpt-image-2",
+        "perspective"
+      ],
+      "date": "2026-07-07",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp"
+      ],
+      "hero": "50% 50%",
+      "content": "## Prompt\n\n```\nchange the perspective so that the shot looks like it is from his perspective, shot from the side of his head, hands in view (increase their size 20%), slight fish eye to mimic POV, camera in front, stacked monitors on left, right corner has a bunch of mcdonalds wrappers and bags overflowing from trash bin\n```"
+    },
+    {
+      "id": "gpt-swap-2",
+      "title": "Groyper swap (force)",
+      "tags": [
+        "chatgpt-image-2",
+        "swap"
+      ],
+      "date": "2026-07-07",
+      "images": [
+        "fin-01.webp",
+        "img-02.webp",
+        "img-03.webp"
+      ],
+      "content": "## Prompt\n\n```\nrecreate the first image with the green character in the second image, keep the color palette (including for character) from the original image, keep the expression of the original image, also update the second character to have the same texture as the original image, CRITICAL CHARACTER NOTE ABOUT GREEN CHARACTER: This character is NOT Pepe the Frog and must not be interpreted, restyled, or nudged toward Pepe's geometry. Specifically: Keep the rounded bulbous humanoid head shape from this green character second image reference. This is an original character that happens to be green-skinned and amphibian-adjacent; treat it as you would any original humanoid design. \n```"
+    },
+    {
+      "id": "gpt-swap-mini-1",
       "title": "Swap person and make them miniature",
       "tags": [
         "chatgpt-image-2",
@@ -64,7 +109,7 @@
       "content": "## Prompt\n\n```\nreplace the person on the right with the person in the second image, the person in the second image is miniature, they are further to the right down the steps\n```"
     },
     {
-      "id": "gpt-swap-mult-one",
+      "id": "gpt-swap-mult-1",
       "title": "Swap two people into an image",
       "tags": [
         "chatgpt-image-2",
@@ -81,22 +126,7 @@
       "content": "## Prompt\n\n```\nreplace the likeness of the man and woman with the man and woman in second and third images, keep scene the same, keep expressions of original image including lighting. update to be 3:4 image\n```\n\n## Notes\n\n- Base image made with Midjourney v8.1 no references prompt below\n\n```\nWide anamorphic two shot, slight low angle, dusty near abandoned 1880s frontier town main street. Two figures stride shoulder to shoulder toward camera mid stride. Left: Black woman, mid 20s, long dark hair, wide brim black cowboy hat, 3/4 face toward companion, cream rolled sleeve button down, deep cobalt blue bandana knotted at throat, tooled leather gun belt slung low, revolver holstered right hip, dark fitted denim, scuffed riding boots. Right: White man, mid 30s, full reddish brown beard, short tousled hair, black wide brim hat, 3/4 face front lit, gunmetal Oakley X Metal Juliet sunglasses with fire iridium red lenses catching lens flare, charcoal tailored suit jacket over dark dress shirt and patterned tie (deliberately anachronistic), right hand gripping a curved fixed blade knife. Background: sun bleached clapboard buildings, rutted dirt street, tumbleweeds, hitching post, distant church steeple. Editorial poster framing. Palette: bleached bone white sky, dusty ochre street, deep umber shadows, cobalt and fire red accents. 35mm film grain, faint halftone shadows, subtle CMYK registration offset on highlights for vintage litho poster feel. High noon stillness, suspended dust haze, sharp foreground, soft mid ground bokeh. --chaos 75 --ar 7:3 --raw --sref 2081446411 --profile ukmch4y mphr36g --stylize 1000 --hd\n```"
     },
     {
-      "id": "groyper-swap-series-one",
-      "title": "Groyper swap (force)",
-      "tags": [
-        "chatgpt-image-2",
-        "swap"
-      ],
-      "date": "2026-07-07",
-      "images": [
-        "fin-01.webp",
-        "img-02.webp",
-        "img-03.webp"
-      ],
-      "content": "## Prompt\n\n```\nrecreate the first image with the green character in the second image, keep the color palette (including for character) from the original image, keep the expression of the original image, also update the second character to have the same texture as the original image, CRITICAL CHARACTER NOTE ABOUT GREEN CHARACTER: This character is NOT Pepe the Frog and must not be interpreted, restyled, or nudged toward Pepe's geometry. Specifically: Keep the rounded bulbous humanoid head shape from this green character second image reference. This is an original character that happens to be green-skinned and amphibian-adjacent; treat it as you would any original humanoid design. \n```"
-    },
-    {
-      "id": "mj-buddycop-one",
+      "id": "mj-movie-1",
       "title": "Movie poster buddy cops",
       "tags": [
         "midjourney",
@@ -115,26 +145,7 @@
       "content": "## Prompt\n\n```\ncinematic 1980s buddy-cop action movie poster, two male detectives standing back to back in dramatic poses, one younger with wild long mullet hair and piercing blue eyes in a worn leather jacket, the other an older distinguished Black man with a graying mustache in a rumpled suit and loosened tie looking like he's too old for this, fiery explosion and cityscape silhouette behind them, dramatic orange and teal split lighting, the text \"DEFCON 3\" stylishly integrated into the composition in bold chrome metallic lettering with light reflections, cinematic typography woven into the smoke and light, anamorphic lens flares, high detail --chaos 20 --ar 3:4 --raw --profile canaos2 --stylize 1000 --v 8.0\n```"
     },
     {
-      "id": "mj-frutiger-dream-one",
-      "title": "Frutiger Aero Groyper one",
-      "tags": [
-        "midjourney",
-        "v7.0"
-      ],
-      "date": "2026-07-07",
-      "images": [
-        "fin-01.webp"
-      ],
-      "hero": "50% 0%",
-      "refs": {
-        "omni-ref": [
-          "ref-01.webp"
-        ]
-      },
-      "content": "## Prompt\n\n```\nFrutiger Aero dream poster featuring green character with sunglasses flying through clouds, bubbles, green pastures, dolphins, dreamlike atmosphere, clean and elegant, 2002 frutigeraero aesthetics --no text --chaos 35 --ar 3:4 --exp 100 --raw --profile ne1w54c hos1t17 --ow 800 --stylize 800 --v 7\n```"
-    },
-    {
-      "id": "mj-surreal-one",
+      "id": "mj-surreal-1",
       "title": "Surreal character MJ",
       "tags": [
         "midjourney",
@@ -161,7 +172,26 @@
       "content": "## Prompt\n\n```\ntwo-tone photographic poster, only black and deep olive, a man in a long cloak with a heavy ornate mask, standing on a smooth empty plane, the cloak has tiny reflective points like wet sequins, long shadow splits into strange shapes, extremely minimal background, print-scan texture, dust and grain --chaos 100 --ar 2:1 --exp 100 --raw --profile a15dut4 brkalbq --ow 550 --stylize 1000 --v 7\n```"
     },
     {
-      "id": "mj-text-af-one",
+      "id": "mj-surreal-2",
+      "title": "Frutiger Aero Groyper one",
+      "tags": [
+        "midjourney",
+        "v7.0"
+      ],
+      "date": "2026-07-07",
+      "images": [
+        "fin-01.webp"
+      ],
+      "hero": "50% 0%",
+      "refs": {
+        "omni-ref": [
+          "ref-01.webp"
+        ]
+      },
+      "content": "## Prompt\n\n```\nFrutiger Aero dream poster featuring green character with sunglasses flying through clouds, bubbles, green pastures, dolphins, dreamlike atmosphere, clean and elegant, 2002 frutigeraero aesthetics --no text --chaos 35 --ar 3:4 --exp 100 --raw --profile ne1w54c hos1t17 --ow 800 --stylize 800 --v 7\n```"
+    },
+    {
+      "id": "mj-text-1",
       "title": "AF Text MJ",
       "tags": [
         "midjourney",
