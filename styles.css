@@ -19,8 +19,10 @@
   --brand: #f43b52;
   --brand-dark: #59101c;
   --danger: #f43b52;
+  --app-mwidth: 1400px;
   --radius: 6px;
-  --post-height: 240px;
+  --hero-thumb: 45%;
+  --post-height: 280px;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
 }
@@ -163,7 +165,7 @@ body.assets-page .controls { display: none; }
 
 /* -------------------------------------------------------------------- main */
 
-#app { padding: 24px; max-width: 1400px; margin: 0 auto; }
+#app { padding: 24px; max-width: var(--app-mwidth); margin: 0 auto; }
 
 .status { color: var(--text-2); padding: 48px 0; text-align: center; }
 
@@ -259,11 +261,18 @@ body.assets-page .controls { display: none; }
   overflow: hidden;
   cursor: pointer;
 }
+/* get  */
+.post-card[data-source="GPT"] .post-meta {
+  background-color: var(--bg);
+}
+.post-card[data-source="MJ"] .post-meta {
+  background-color: var(--bg-2);
+}
 .post-card:hover { border-color: var(--border-strong); }
 
 /* single hero thumbnail filling the left ~36% of the card */
 .post-hero {
-  flex: 0 0 36%;
+  flex: 0 0 var(--hero-thumb);
   position: relative;
   min-height: var(--post-height);
   background: var(--bg-3);
@@ -425,7 +434,7 @@ body.assets-page .controls { display: none; }
 
 /* the fin final on its own row, shown uncropped */
 .post-image-item.fin-hero {
-  width: min(500px, 50vw);
+  width: min(700px, 50vw);
   margin: 20px 0 0;
 }
 .post-image-item.fin-hero img {

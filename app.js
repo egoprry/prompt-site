@@ -53,6 +53,11 @@
     ['omni-ref', 'Omni refs'],
   ];
 
+  const getSourceLabel = (postId) => {
+    const tpostId = postId.toLowerCase();
+    return tpostId.startsWith('gpt-') ? 'GPT' : tpostId.startsWith('mj-') ? 'MJ' : tpostId.startsWith('gem-') ? 'GEM' : '';
+  };
+
   const authorLink = (handle) =>
     `<a class="author-link" href="https://x.com/${encodeURIComponent(handle)}" target="_blank" rel="noopener">@${escapeHtml(handle)}</a>`;
 
@@ -391,8 +396,9 @@
                <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${heroPos}>
              </div>`
           : '<div class="post-hero empty">text-only</div>';
+
         return `
-          <article class="post-card post-card-grid" data-post="${escapeHtml(p.id)}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
+          <article class="post-card post-card-grid" data-post="${escapeHtml(p.id)}" data-source="${getSourceLabel(escapeHtml(p.id))}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
             ${hero}
             <div class="post-meta">
               <div class="post-title">${escapeHtml(p.title)}</div>
@@ -412,8 +418,9 @@
                <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${heroPos}>
              </div>`
           : '<div class="post-hero empty">text-only</div>';
+
         return `
-          <article class="post-card" data-post="${escapeHtml(p.id)}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
+          <article class="post-card" data-post="${escapeHtml(p.id)}" data-source="${getSourceLabel(escapeHtml(p.id))}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
             ${hero}
             <div class="post-meta">
               <div class="post-title">${escapeHtml(p.title)}</div>
@@ -459,8 +466,8 @@
     ).join('');
     const images = restFiles.length
       ? `<div class="post-images">${restFiles.map((img, j) =>
-          figure(img, `${p.title} image ${finFiles.length + j + 1}`, finFiles.length + j)
-        ).join('')}</div>`
+        figure(img, `${p.title} image ${finFiles.length + j + 1}`, finFiles.length + j)
+      ).join('')}</div>`
       : '';
 
     let refSections = '';
@@ -471,10 +478,10 @@
         <section class="ref-section">
           <div class="ref-label">${label}</div>
           <div class="post-images post-images-refs">${files.map((f, j) => {
-            const i = gallery.length;
-            gallery.push(`${dir}/${f}`);
-            return figure(`${dir}/${f}`, `${p.title} ${label.toLowerCase()} ${j + 1}`, i);
-          }).join('')}</div>
+        const i = gallery.length;
+        gallery.push(`${dir}/${f}`);
+        return figure(`${dir}/${f}`, `${p.title} ${label.toLowerCase()} ${j + 1}`, i);
+      }).join('')}</div>
         </section>`;
     }
 

@@ -63,7 +63,7 @@ function parseHero(md) {
   if (!line) return null;
   const v = line.toLowerCase();
   const keywords = {
-    top: '50% 0%',
+    top: '50% 10%',
     bottom: '50% 100%',
     center: '50% 50%',
     left: '0% 50%',
