@@ -1,1 +1,0 @@
-Heavy misregistration and screenprint grain. Pairs well with duotone palettes and --stylize 800+.

@@ -1,1 +1,0 @@
-Risograph grain profile

@@ -1,1 +1,0 @@
-Consistent halftone dot shading and poster composition across subjects.

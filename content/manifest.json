@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-08T07:32:54.567Z",
+  "generated": "2026-07-08T08:53:40.026Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -419,10 +419,56 @@
   ],
   "styles": [
     {
+      "id": "mood-akira-1",
+      "type": "mood",
+      "title": "Akira moodboard",
+      "code": "bte2fzr",
+      "tags": [
+        "anime",
+        "90s"
+      ],
+      "date": "2026-07-07",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp",
+        "img-03.webp",
+        "img-04.webp",
+        "img-05.webp"
+      ],
+      "dims": {
+        "fin-01.webp": [
+          367,
+          193
+        ],
+        "img-01.webp": [
+          2048,
+          688
+        ],
+        "img-02.webp": [
+          2048,
+          688
+        ],
+        "img-03.webp": [
+          2048,
+          688
+        ],
+        "img-04.webp": [
+          2048,
+          688
+        ],
+        "img-05.webp": [
+          1024,
+          1024
+        ]
+      },
+      "notes": "Akira feel, carefully curated"
+    },
+    {
       "id": "mood-blue-chrome-1",
       "type": "mood",
       "title": "Blue chrome Y2K moodboard",
-      "code": "8mjogxz",
+      "code": "3s6gtda",
       "tags": [
         "blue",
         "y2k",
@@ -431,68 +477,81 @@
       "date": "2026-07-07",
       "images": [
         "fin-01.webp",
-        "img-01.webp"
+        "img-01.webp",
+        "img-02.webp",
+        "img-03.webp",
+        "img-04.webp"
       ],
       "dims": {
         "fin-01.webp": [
-          2048,
-          1024
+          373,
+          201
         ],
         "img-01.webp": [
-          1600,
-          1600
+          928,
+          1232
+        ],
+        "img-02.webp": [
+          1533,
+          2048
+        ],
+        "img-03.webp": [
+          2048,
+          1146
+        ],
+        "img-04.webp": [
+          928,
+          1232
         ]
       },
       "notes": "Cold blue palette, chrome type, scanner grain. Screenshot shows the board contents; samples below are outputs."
     },
     {
-      "id": "profile-riso-grain-1",
-      "type": "profile",
-      "title": "Risograph grain profile",
-      "code": "x451od4",
+      "id": "mood-frutiger-aero-1",
+      "type": "mood",
+      "title": "Frutiger Aero moodboard",
+      "code": "xhoa6ex",
       "tags": [
-        "risograph",
-        "grain",
-        "duotone"
+        "frutigeraero",
+        "2000s",
+        "blue"
       ],
-      "date": "2026-07-06",
-      "images": [
-        "fin-01.webp"
-      ],
-      "dims": {
-        "fin-01.webp": [
-          1600,
-          2000
-        ]
-      },
-      "notes": "Heavy misregistration and screenprint grain. Pairs well with duotone palettes and --stylize 800+."
-    },
-    {
-      "id": "sref-halftone-poster-1",
-      "type": "sref",
-      "title": "Halftone poster sref",
-      "code": "1840170236",
-      "tags": [
-        "halftone",
-        "poster",
-        "print"
-      ],
-      "date": "2026-07-05",
+      "date": "2026-07-07",
       "images": [
         "fin-01.webp",
-        "img-01.webp"
+        "img-02.webp",
+        "img-03.webp",
+        "img-04.webp",
+        "img-05.webp",
+        "img-06.webp"
       ],
       "dims": {
         "fin-01.webp": [
-          1600,
-          1600
+          379,
+          203
         ],
-        "img-01.webp": [
-          1600,
-          2000
+        "img-02.webp": [
+          1456,
+          816
+        ],
+        "img-03.webp": [
+          928,
+          1232
+        ],
+        "img-04.webp": [
+          2048,
+          1146
+        ],
+        "img-05.webp": [
+          1533,
+          2048
+        ],
+        "img-06.webp": [
+          928,
+          1232
         ]
       },
-      "notes": "Consistent halftone dot shading and poster composition across subjects."
+      "notes": "Frutiger Aero, bright"
     }
   ],
   "assets": [

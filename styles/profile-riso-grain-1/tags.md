@@ -1,1 +1,0 @@
-risograph, grain, duotone
