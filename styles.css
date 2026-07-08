@@ -415,6 +415,10 @@ body.assets-page .controls { display: none; }
 
 .post-image-item { display: flex; flex-direction: column; gap: 6px; }
 
+/* fixed-width download/copy pair, left-aligned under the image */
+.img-actions { display: flex; gap: 6px; }
+.img-actions .btn { width: 92px; flex: 0 0 auto; }
+
 .post-image-item img {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -464,6 +468,9 @@ body.assets-page .controls { display: none; }
 }
 
 .post-content { margin-top: 20px; }
+
+/* prompt directly under the fin image, with breathing room after it */
+.post-content-prompt { margin-top: 16px; padding-bottom: 16px; }
 
 .post-content p { margin: 0 0 12px; color: var(--text); }
 .post-content h1, .post-content h2, .post-content h3 {

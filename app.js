@@ -454,7 +454,10 @@
     const figure = (file, alt, i, extra) => `
       <figure class="post-image-item${extra || ''}">
         <img loading="lazy" src="${imageUrl(p, file)}" alt="${escapeHtml(alt)}" data-lightbox="${i}">
-        <a class="btn btn-sm" href="${imageUrl(p, file)}" download>Download</a>
+        <div class="img-actions">
+          <a class="btn btn-sm" href="${imageUrl(p, file)}" download>Download</a>
+          <button class="btn btn-sm" data-copy-img="${imageUrl(p, file)}">Copy</button>
+        </div>
       </figure>`;
 
     const finFiles = p.images.filter(isFin);
@@ -516,10 +519,10 @@
         </div>
         <div class="post-date">${formatDate(p.date)}</div>
         ${finRow}
-        ${zipTargets.length >= 2 ? '<button class="btn btn-sm post-zip" data-zip>Download all (.zip)</button>' : ''}
+        <div class="post-content post-content-prompt">${renderMarkdown(p.content)}</div>
+        ${zipTargets.length >= 2 ? '<button class="btn btn-sm post-zip" data-zip>Download reference zip</button>' : ''}
         ${images}
         ${refSections}
-        <div class="post-content">${renderMarkdown(p.content)}</div>
       </div>`;
 
     lightboxImages = gallery.map((img) => imageUrl(p, img));
@@ -755,6 +758,11 @@
       navigator.clipboard.writeText(copyText.getAttribute('data-copy-text'));
       copyText.textContent = 'Copied';
       setTimeout(() => { copyText.textContent = 'Copy'; }, 1500);
+      return;
+    }
+    const copyImgBtn = e.target.closest('[data-copy-img]');
+    if (copyImgBtn) {
+      copyImage(copyImgBtn.getAttribute('data-copy-img'), copyImgBtn);
       return;
     }
     const zipBtn = e.target.closest('[data-zip]');
