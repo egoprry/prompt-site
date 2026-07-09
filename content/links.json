@@ -1,14 +1,66 @@
 {
   "resources": [
-    { "name": "Midjourney Docs", "url": "https://docs.midjourney.com", "desc": "Official parameter and feature reference" },
-    { "name": "Midjourney Explore", "url": "https://www.midjourney.com/explore", "desc": "Browse community generations for prompt ideas" },
-    { "name": "Photopea", "url": "https://www.photopea.com", "desc": "Free in-browser Photoshop for quick edits" },
-    { "name": "Squoosh", "url": "https://squoosh.app", "desc": "Compress and convert images in the browser" },
-    { "name": "ezgif", "url": "https://ezgif.com", "desc": "Quick GIF and video conversion tools" }
+    {
+      "name": "Squoosh",
+      "url": "https://squoosh.app",
+      "desc": "Compress and convert images in the browser"
+    },
+    {
+      "name": "Photopea",
+      "url": "https://www.photopea.com",
+      "desc": "Free in-browser Photoshop"
+    },
+    {
+      "name": "Grainrad",
+      "url": "https://grainrad.com/",
+      "desc": "ASCII/retro/dithering effects"
+    },
+    {
+      "name": "Cosmos",
+      "url": "https://www.cosmos.so/",
+      "desc": "Pinterest alternative"
+    },
+    {
+      "name": "Flickr",
+      "url": "https://www.flickr.com/",
+      "desc": "Find images from amateur photographers"
+    },
+    {
+      "name": "29a",
+      "url": "https://29a.ch/film-emulator/",
+      "desc": "analog image filters"
+    },
+    {
+      "name": "Powerthesaurus",
+      "url": "https://www.powerthesaurus.org",
+      "desc": "Use this for prompting"
+    },
+    {
+      "name": "Midjourney Docs",
+      "url": "https://docs.midjourney.com",
+      "desc": "Official parameter and feature reference"
+    },
+    {
+      "name": "MJ v7 prompt-gen",
+      "url": "https://egoprry.github.io/prompt-gen1/",
+      "desc": "prompt generation expirement"
+    }
   ],
   "social": [
-    { "name": "@groypergarden", "url": "https://x.com/groypergarden", "desc": "Main account" },
-    { "name": "@yourhandle2", "url": "https://x.com/yourhandle2", "desc": "Second account — edit me in content/links.json" },
-    { "name": "@yourhandle3", "url": "https://x.com/yourhandle3", "desc": "Third account — edit me in content/links.json" }
+    {
+      "name": "@egoprry",
+      "url": "https://x.com/egoprry",
+      "desc": "main"
+    },
+    {
+      "name": "@groypergarden",
+      "url": "https://x.com/groypergarden",
+      "desc": "blog"
+    },
+    {
+      "name": "@golemporium",
+      "url": "https://x.com/golemporium",
+      "desc": "gallery"
+    }
   ]
 }
