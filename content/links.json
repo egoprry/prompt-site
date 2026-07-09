@@ -1,0 +1,14 @@
+{
+  "resources": [
+    { "name": "Midjourney Docs", "url": "https://docs.midjourney.com", "desc": "Official parameter and feature reference" },
+    { "name": "Midjourney Explore", "url": "https://www.midjourney.com/explore", "desc": "Browse community generations for prompt ideas" },
+    { "name": "Photopea", "url": "https://www.photopea.com", "desc": "Free in-browser Photoshop for quick edits" },
+    { "name": "Squoosh", "url": "https://squoosh.app", "desc": "Compress and convert images in the browser" },
+    { "name": "ezgif", "url": "https://ezgif.com", "desc": "Quick GIF and video conversion tools" }
+  ],
+  "social": [
+    { "name": "@groypergarden", "url": "https://x.com/groypergarden", "desc": "Main account" },
+    { "name": "@yourhandle2", "url": "https://x.com/yourhandle2", "desc": "Second account — edit me in content/links.json" },
+    { "name": "@yourhandle3", "url": "https://x.com/yourhandle3", "desc": "Third account — edit me in content/links.json" }
+  ]
+}

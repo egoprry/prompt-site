@@ -8,8 +8,8 @@
   const els = {
     search: document.getElementById('search'),
     tag: document.getElementById('filter-tag'),
-    images: document.getElementById('filter-images'),
     sort: document.getElementById('sort'),
+    controls: document.getElementById('controls'),
     treeModal: document.getElementById('tree-modal'),
     treeBody: document.getElementById('tree-body'),
     treeClose: document.getElementById('tree-close'),
@@ -27,6 +27,7 @@
   let styleTypeFilter = '';
   let assets = [];
   let assetDims = {};
+  let linksData = null;
   let promptOfDay = null;
   let lightboxImages = [];
   let lightboxIndex = 0;
@@ -319,13 +320,13 @@
     if (path.startsWith('style/')) {
       return { view: 'style', id: decodeURIComponent(path.slice(6)) };
     }
+    if (path === 'links') return { view: 'links' };
     if (path === 'privacy') return { view: 'privacy' };
     if (path !== '') return { view: '404' };
     return {
       view: 'list',
       q: params.get('q') || '',
       tag: params.get('tag') || '',
-      images: params.get('images') || '',
       sort: params.get('sort') || 'date-desc',
     };
   }
@@ -334,7 +335,6 @@
     const params = new URLSearchParams();
     if (els.search.value) params.set('q', els.search.value);
     if (els.tag.value) params.set('tag', els.tag.value);
-    if (els.images.value) params.set('images', els.images.value);
     if (els.sort.value !== 'date-desc') params.set('sort', els.sort.value);
     const qs = params.toString();
     const next = qs ? `#/?${qs}` : '#/';
@@ -348,8 +348,6 @@
     const q = state.q.trim().toLowerCase();
     let result = posts.filter((p) => {
       if (state.tag && !p.tags.includes(state.tag)) return false;
-      if (state.images === 'with' && p.images.length === 0) return false;
-      if (state.images === 'without' && p.images.length > 0) return false;
       if (q) {
         const haystack = `${p.title}\n${p.content}`.toLowerCase();
         if (!haystack.includes(q)) return false;
@@ -378,15 +376,18 @@
     const parts = [];
 
     if (promptOfDay) {
+      const today = new Date().toISOString().slice(0, 10);
       parts.push(`
         <section class="potd">
           <div>
-            <div class="potd-label">Midjourney Prompt of the Day</div>
+            <div class="potd-label">Prompt of Day &middot; ${formatDate(today)}</div>
             <div class="potd-text">${escapeHtml(promptOfDay.prompt)}</div>
           </div>
-          <button class="btn" data-copy-text="${escapeHtml(promptOfDay.prompt)}">Copy</button>
+          <button class="btn btn-sm" data-copy-text="${escapeHtml(promptOfDay.prompt)}">Copy</button>
         </section>`);
     }
+
+    parts.push('<div class="home-controls" id="home-controls"></div>');
 
     const layout = getLayout();
     parts.push(`
@@ -471,6 +472,11 @@
     }
 
     app.innerHTML = parts.join('\n');
+
+    // Relocate the live tag/sort selects below the prompt of the day.
+    // Moving the nodes keeps their listeners and current values intact.
+    const slot = document.getElementById('home-controls');
+    if (slot && els.controls) slot.appendChild(els.controls);
   }
 
   function renderPost(id) {
@@ -704,6 +710,30 @@
     document.title = `${s.title} — GARDEN`;
   }
 
+  function renderLinks() {
+    const row = (l) => `
+      <div class="link-row">
+        <a href="${escapeHtml(l.url)}" target="_blank" rel="noopener">${escapeHtml(l.name)}</a>
+        ${l.desc ? `<span class="link-desc">${escapeHtml(l.desc)}</span>` : ''}
+      </div>`;
+    const section = (label, list) => (list && list.length)
+      ? `<section class="links-section">
+           <div class="ref-label">${label}</div>
+           ${list.map(row).join('')}
+         </section>`
+      : '';
+
+    app.innerHTML = `
+      <div class="post-view page-view">
+        <h1 class="post-title">Links</h1>
+        ${linksData
+          ? section('Resources', linksData.resources) + section('Social', linksData.social)
+          : '<div class="status">No links yet. Add them to <code>content/links.json</code>.</div>'}
+      </div>`;
+
+    document.title = 'Links — GARDEN';
+  }
+
   function renderPrivacy() {
     app.innerHTML = `
       <div class="post-view page-view">
@@ -748,6 +778,7 @@
     closeTree();
     const navFor = state.view === 'assets' ? 'assets'
       : (state.view === 'styles' || state.view === 'style') ? 'styles'
+      : state.view === 'links' ? 'links'
       : (state.view === 'list' || state.view === 'post') ? 'list' : '';
     document.querySelectorAll('.nav-link').forEach((a) => {
       a.classList.toggle('active', a.getAttribute('data-nav') === navFor);
@@ -761,6 +792,8 @@
       renderStyles();
     } else if (state.view === 'style') {
       renderStyle(state.id);
+    } else if (state.view === 'links') {
+      renderLinks();
     } else if (state.view === 'privacy') {
       renderPrivacy();
     } else if (state.view === '404') {
@@ -768,7 +801,6 @@
     } else {
       els.search.value = state.q;
       els.tag.value = state.tag;
-      els.images.value = state.images;
       els.sort.value = state.sort;
       document.title = 'GARDEN';
       renderList(state);
@@ -904,7 +936,6 @@
 
   els.search.addEventListener('input', writeListHash);
   els.tag.addEventListener('change', writeListHash);
-  els.images.addEventListener('change', writeListHash);
   els.sort.addEventListener('change', writeListHash);
 
   window.addEventListener('hashchange', renderRoute);
@@ -1013,9 +1044,10 @@
 
   async function init() {
     try {
-      const [manifestRes, potdRes] = await Promise.all([
+      const [manifestRes, potdRes, linksRes] = await Promise.all([
         fetch('content/manifest.json'),
         fetch('content/prompt-of-day.json'),
+        fetch('content/links.json'),
       ]);
       if (!manifestRes.ok) throw new Error(`manifest.json: HTTP ${manifestRes.status}`);
       const manifest = await manifestRes.json();
@@ -1027,6 +1059,10 @@
       if (potdRes.ok) {
         const potd = await potdRes.json();
         promptOfDay = pickPromptOfDay(potd.prompts || potd);
+      }
+
+      if (linksRes.ok) {
+        try { linksData = await linksRes.json(); } catch { linksData = null; }
       }
 
       const tags = [...new Set(posts.flatMap((p) => p.tags))].sort();

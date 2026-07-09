@@ -99,6 +99,12 @@ a:hover { text-decoration: underline; }
 
 .controls { display: flex; gap: 8px; flex-wrap: wrap; }
 
+/* the tag/sort selects live below the prompt of the day on the home page;
+   hide them while they're still parked in the topbar */
+.topbar .controls { display: none; }
+.home-controls { margin-bottom: 12px; }
+.home-controls:empty { display: none; }
+
 /* the post filters don't apply outside the posts views */
 body.assets-page .search,
 body.assets-page .controls { display: none; }
@@ -177,15 +183,14 @@ body.assets-page .controls { display: none; }
   background: var(--bg-2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 24px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: flex-start;
   justify-content: space-between;
-  max-height:140px;
-  overflow-y: auto;  
 }
+.potd > div { min-width: 0; }
 
 /* styled after the periwinkle "GARDEN" sign */
 .potd-label {
@@ -204,9 +209,11 @@ body.assets-page .controls { display: none; }
 
 .potd-text {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text);
   word-break: break-word;
+  max-height: 58px; /* ~3 lines; long prompts scroll, Copy stays visible */
+  overflow-y: auto;
 }
 
 /* -------------------------------------------------------------- post cards */
@@ -845,6 +852,22 @@ body.assets-page .controls { display: none; }
 .lightbox-nav.prev { left: 12px; }
 .lightbox-nav.next { right: 12px; }
 .lightbox-nav[disabled] { opacity: 0.3; cursor: default; }
+
+/* ------------------------------------------------------------------- links */
+
+.links-section { margin-top: 20px; }
+
+.link-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.link-row:last-child { border-bottom: none; }
+.link-row a { white-space: nowrap; }
+
+.link-desc { color: var(--text-2); font-size: 13px; }
 
 /* ------------------------------------------------------------------ footer */
 
