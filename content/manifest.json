@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-08T08:53:40.026Z",
+  "generated": "2026-07-09T02:23:53.013Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -174,6 +174,35 @@
         ]
       },
       "content": "## Prompt\n\n```\nchange the perspective so that the shot looks like it is from his perspective, shot from the side of his head, hands in view (increase their size 20%), slight fish eye to mimic POV, camera in front, stacked monitors on left, right corner has a bunch of mcdonalds wrappers and bags overflowing from trash bin\n```"
+    },
+    {
+      "id": "gpt-recreate-1",
+      "title": "Recreate/Retexture scene",
+      "tags": [
+        "chatgpt-image-2"
+      ],
+      "date": "2026-07-08",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "fin-01.webp": [
+          1086,
+          1448
+        ],
+        "img-01.webp": [
+          1379,
+          721
+        ],
+        "img-02.webp": [
+          928,
+          1232
+        ]
+      },
+      "content": "## Prompt\n\n```\nrecreate the angle and no wall from the first image with the second image character/studio\n```"
     },
     {
       "id": "gpt-swap-2",
