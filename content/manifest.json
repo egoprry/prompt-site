@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-09T02:26:00.286Z",
+  "generated": "2026-07-09T02:51:13.127Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -203,6 +203,36 @@
         ]
       },
       "content": "## Prompt\n\n```\nrecreate the angle and no wall from the first image with the second image character/studio\n```"
+    },
+    {
+      "id": "gpt-style-1",
+      "title": "Simple style transfer",
+      "tags": [
+        "chatgpt-image-2",
+        "style-transfer"
+      ],
+      "date": "2026-07-08",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "fin-01.webp": [
+          1086,
+          1448
+        ],
+        "img-01.webp": [
+          1170,
+          1344
+        ],
+        "img-02.webp": [
+          1532,
+          2048
+        ]
+      },
+      "content": "## Prompt\n\n```\nrecreate the second image in the style of the first image, 3:4 aspect ratio\n```"
     },
     {
       "id": "gpt-swap-2",
