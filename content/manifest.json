@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-09T05:43:25.688Z",
+  "generated": "2026-07-09T12:00:44.159Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -217,7 +217,7 @@
         "img-01.webp",
         "img-02.webp"
       ],
-      "hero": "50% 50%",
+      "hero": "50% 10%",
       "dims": {
         "fin-01.webp": [
           1086,
