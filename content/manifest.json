@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-09T05:09:17.631Z",
+  "generated": "2026-07-09T05:43:25.688Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -477,6 +477,58 @@
     }
   ],
   "styles": [
+    {
+      "id": "mood-batman-animated-1",
+      "type": "mood",
+      "title": "Batman animated moodboard",
+      "code": "xt8pi47",
+      "tags": [
+        "anime",
+        "90s",
+        "dark"
+      ],
+      "date": "2026-07-08",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp",
+        "img-03.webp",
+        "img-04.webp",
+        "img-05.webp",
+        "img-06.webp"
+      ],
+      "dims": {
+        "fin-01.webp": [
+          369,
+          194
+        ],
+        "img-01.webp": [
+          928,
+          1232
+        ],
+        "img-02.webp": [
+          928,
+          1232
+        ],
+        "img-03.webp": [
+          928,
+          1232
+        ],
+        "img-04.webp": [
+          928,
+          1232
+        ],
+        "img-05.webp": [
+          928,
+          1232
+        ],
+        "img-06.webp": [
+          928,
+          1232
+        ]
+      },
+      "notes": "From scenes of batman animated (1990s)"
+    },
     {
       "id": "mood-akira-1",
       "type": "mood",
