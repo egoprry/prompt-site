@@ -32,7 +32,7 @@ const QUALITY = 82;
 const MAX_IMAGES = 7;
 const IMAGE_EXT = new Set(['.png', '.jpg', '.jpeg', '.gif', '.tif', '.tiff', '.bmp', '.avif', '.webp']);
 const REF_DIRS = ['style-ref', 'img-ref', 'omni-ref'];
-const FINAL_RE = /^(fin|img|ref)-\d{2}\.webp$/;
+const FINAL_RE = /^(?:(?:fin|img|ref|mult)-\d{2}|res-[a-z](?:-\d{2})?)\.webp$/;
 
 const args = process.argv.slice(2);
 const keepOriginals = args.includes('--keep');
@@ -46,11 +46,19 @@ async function listPostFolders() {
     .filter((name) => !onlyFolder || name === onlyFolder);
 }
 
-/* Target prefix for a file: post-root images starting with "fin" are finals,
-   ref-folder images are always "ref", everything else is "img". */
+/* Target prefix for a file. Post root:
+     fin…    -> fin   (single featured final)
+     mult…   -> mult  (a set of finals shown together)
+     res-a…  -> res-a (ordered resource — the letter fixes "first/second image")
+     else    -> img
+   Ref-folder images are always "ref". */
 function targetPrefix(file, isRefDir) {
   if (isRefDir) return 'ref';
-  return /^fin/i.test(file) ? 'fin' : 'img';
+  if (/^fin/i.test(file)) return 'fin';
+  if (/^mult/i.test(file)) return 'mult';
+  const res = file.match(/^res[-_ ]([a-z])(?![a-z0-9])/i);
+  if (res) return `res-${res[1].toLowerCase()}`;
+  return 'img';
 }
 
 async function processDir(dir, label, isRefDir) {
@@ -65,19 +73,20 @@ async function processDir(dir, label, isRefDir) {
   // Already-conformant files (correct prefix for their location, within
   // limits) are left alone; everything else is converted or renamed.
   // Numbering continues per-prefix after existing conformant files.
-  const nextNum = { fin: 1, img: 1, ref: 1 };
+  const nextNum = { fin: 1, img: 1, ref: 1, mult: 1 };
   const toProcess = [];
   const taken = new Set(files);
   let untouched = 0;
 
   for (const file of files.sort()) {
     if (FINAL_RE.test(file)) {
-      const prefix = file.slice(0, 3);
+      const numbered = file.match(/^(fin|img|ref|mult)-(\d{2})\.webp$/);
+      const prefix = numbered ? numbered[1] : 'res';
       const prefixOk = isRefDir ? prefix === 'ref' : prefix !== 'ref';
       if (prefixOk) {
         const meta = await sharp(path.join(dir, file)).metadata();
         if (meta.width <= MAX_DIM && meta.height <= MAX_DIM) {
-          nextNum[prefix] = Math.max(nextNum[prefix], Number(file.slice(4, 6)) + 1);
+          if (numbered) nextNum[prefix] = Math.max(nextNum[prefix], Number(numbered[2]) + 1);
           untouched++;
           continue;
         }
@@ -92,10 +101,19 @@ async function processDir(dir, label, isRefDir) {
     const src = path.join(dir, file);
     const prefix = targetPrefix(file, isRefDir);
     let finalName;
-    do {
-      finalName = `${prefix}-${String(nextNum[prefix]).padStart(2, '0')}.webp`;
-      nextNum[prefix]++;
-    } while (taken.has(finalName) && finalName !== file);
+    if (prefix.startsWith('res-')) {
+      // ordered resource: res-a.webp, res-b.webp… (letter is the order)
+      finalName = `${prefix}.webp`;
+      let n = 2;
+      while (taken.has(finalName) && finalName !== file) {
+        finalName = `${prefix}-${String(n++).padStart(2, '0')}.webp`;
+      }
+    } else {
+      do {
+        finalName = `${prefix}-${String(nextNum[prefix]).padStart(2, '0')}.webp`;
+        nextNum[prefix]++;
+      } while (taken.has(finalName) && finalName !== file);
+    }
     taken.add(finalName);
     const dest = path.join(dir, finalName);
 

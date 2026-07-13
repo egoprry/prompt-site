@@ -47,9 +47,11 @@ Or manually:
 
    | Original name | Becomes | Meaning |
    |---|---|---|
-   | starts with `fin` | `fin-01.webp`, `fin-02.webp`, … | Featured finals — always shown first, red border, set apart from other thumbnails |
-   | anything else | `img-01.webp`, `img-02.webp`, … | Regular post images |
-   | inside `style-ref/`, `img-ref/`, `omni-ref/` | `ref-01.webp`, `ref-02.webp`, … | Reference images — shown in their own labeled sections in the post, don't count toward the 7-image cap |
+   | starts with `fin` | `fin-01.webp`, … | Featured final — the Result, shown first with a red border |
+   | starts with `mult` | `mult-01.webp`, … | A set of finals — shown as a grid on the card and side by side in the post's Result section |
+   | starts with `res-a`, `res-b`, … | `res-a.webp`, `res-b.webp`, … | Ordered resources — the letter fixes "first image / second image" order and shows as a badge |
+   | anything else | `img-01.webp`, … | Regular resource images |
+   | inside `style-ref/`, `img-ref/`, `omni-ref/` | `ref-01.webp`, … | Reference images — grouped in the post's Resources panel, don't count toward the 7-image cap |
 
    To mark an image as a final, name the file with a `fin` prefix (e.g. `fin cover.png`) before running the build; already-optimized `fin-NN.webp` files keep their status.
 

@@ -30,6 +30,11 @@ const MAX_IMAGES = 7;
 const isImage = (f) => IMAGE_EXT.has(path.extname(f).toLowerCase());
 const isFin = (f) => /^fin/i.test(f);
 
+/* Display order: fin finals, mult final sets, res-lettered resources
+   (alphabetical = the "first image / second image" order), other images. */
+const imageRank = (f) => isFin(f) ? 0 : /^mult/i.test(f) ? 1 : /^res-/i.test(f) ? 2 : 3;
+const byImageOrder = (a, b) => (imageRank(a) - imageRank(b)) || a.localeCompare(b);
+
 /* Pixel dimensions, so the site can reserve space before images load
    (prevents layout shift). Returns [width, height] or null. */
 async function imageDims(file) {
@@ -120,7 +125,7 @@ for (const folder of folders) {
 
   const allImages = (await readdir(dir))
     .filter(isImage)
-    .sort((a, b) => (isFin(b) - isFin(a)) || a.localeCompare(b));
+    .sort(byImageOrder);
   if (allImages.length > MAX_IMAGES) {
     console.warn(`  ! ${folder}: ${allImages.length} images — only the first ${MAX_IMAGES} are shown`);
   }

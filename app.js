@@ -50,6 +50,28 @@
     `content/${encodeURIComponent(post.id)}/${file.split('/').map(encodeURIComponent).join('/')}`;
 
   const isFin = (file) => /^fin/i.test(file);
+  const isMult = (file) => /^mult/i.test(file);
+  const isRes = (file) => /^res-[a-z]/i.test(file);
+  const resLetter = (file) => (file.match(/^res-([a-z])/i) || [])[1]?.toUpperCase() || '';
+
+  /* Card thumbnail area: a 2-column grid when the post has a "mult" final
+     set, otherwise the single first image (fin-first). */
+  function cardHero(p) {
+    const multFiles = p.images.filter(isMult);
+    if (multFiles.length >= 2) {
+      return `<div class="post-hero post-hero-multi">
+        <div class="post-hero-grid">${multFiles.slice(0, 4).map((img, i) =>
+          `<img loading="lazy" src="${imageUrl(p, img)}" alt="${escapeHtml(p.title)} image ${i + 1}">`
+        ).join('')}</div>
+      </div>`;
+    }
+    if (!p.images.length) return '<div class="post-hero empty">text-only</div>';
+    const heroPos = /^\d{1,3}% \d{1,3}%$/.test(p.hero || '')
+      ? ` style="object-position:${p.hero}"` : '';
+    return `<div class="post-hero${isFin(p.images[0]) ? ' fin' : ''}">
+      <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${heroPos}>
+    </div>`;
+  }
 
   const REF_SECTIONS = [
     ['style-ref', 'Style refs'],
@@ -424,17 +446,9 @@
       parts.push(`<div class="masonry post-masonry">${items.join('')}</div>`);
     } else if (layout === 'grid') {
       const cards = list.map((p) => {
-        const heroPos = /^\d{1,3}% \d{1,3}%$/.test(p.hero || '')
-          ? ` style="object-position:${p.hero}"` : '';
-        const hero = p.images.length
-          ? `<div class="post-hero${isFin(p.images[0]) ? ' fin' : ''}">
-               <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${heroPos}>
-             </div>`
-          : '<div class="post-hero empty">text-only</div>';
-
         return `
           <article class="post-card post-card-grid" data-post="${escapeHtml(p.id)}" data-source="${getSourceLabel(escapeHtml(p.id))}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
-            ${hero}
+            ${cardHero(p)}
             <div class="post-meta">
               <div class="post-title">${escapeHtml(p.title)}</div>
               <div class="post-tags">${p.tags.map((t) => tagPill(t, t === state.tag)).join('')}</div>
@@ -444,19 +458,9 @@
       parts.push(`<div class="post-list grid">${cards.join('')}</div>`);
     } else {
       const cards = list.map((p) => {
-        // hero crop anchor from hero.md; re-validated here since it lands in
-        // a style attribute
-        const heroPos = /^\d{1,3}% \d{1,3}%$/.test(p.hero || '')
-          ? ` style="object-position:${p.hero}"` : '';
-        const hero = p.images.length
-          ? `<div class="post-hero${isFin(p.images[0]) ? ' fin' : ''}">
-               <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${heroPos}>
-             </div>`
-          : '<div class="post-hero empty">text-only</div>';
-
         return `
           <article class="post-card" data-post="${escapeHtml(p.id)}" data-source="${getSourceLabel(escapeHtml(p.id))}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
-            ${hero}
+            ${cardHero(p)}
             <div class="post-meta">
               <div class="post-title">${escapeHtml(p.title)}</div>
               <div class="post-snippet">${escapeHtml(snippet(p.content, 220))}</div>
@@ -491,9 +495,9 @@
     // One flat lightbox list: finals first, then each ref section in order.
     // p.images is fin-first, so fin figures occupy the leading indices.
     const gallery = p.images.map((img) => img);
-    const figure = (file, alt, i, extra, caption, styleAttr, imgStyle) => `
+    const figure = (file, alt, i, extra, badge, styleAttr, imgStyle) => `
       <figure class="post-image-item${extra || ''}"${styleAttr || ''}>
-        ${caption ? `<figcaption class="ref-label">${caption}</figcaption>` : ''}
+        ${badge || ''}
         <img loading="lazy" src="${imageUrl(p, file)}" alt="${escapeHtml(alt)}" data-lightbox="${i}"${dimAttrs(p.dims, file)}${imgStyle || ''}>
         <div class="img-actions">
           <a class="btn btn-sm" href="${imageUrl(p, file)}" download>Download</a>
@@ -501,25 +505,26 @@
         </div>
       </figure>`;
 
-    const finFiles = p.images.filter(isFin);
-    const restFiles = p.images.filter((f) => !isFin(f));
+    // Results are fin finals plus any "mult" final set; everything else in
+    // the post root (res-lettered + img) is a resource. p.images is sorted
+    // fin, mult, res, img, so results occupy the leading lightbox indices.
+    const resultFiles = p.images.filter((f) => isFin(f) || isMult(f));
+    const resourceFiles = p.images.filter((f) => !isFin(f) && !isMult(f));
 
-    // The fin final gets its own row, captioned as the result. Its width is
-    // sized so the image never exceeds 550px tall — computed here from the
-    // build-time dimensions, so the space is exact before the image loads.
-    const finRow = finFiles.map((img, i) => {
-      const d = p.dims?.[img];
-      const figStyle = d
-        ? ` style="width:min(700px, 50vw, ${Math.round(550 * d[0] / d[1])}px)"`
-        : '';
-      // explicit ratio reserves the box before the image loads
-      const imgStyle = d ? ` style="aspect-ratio:${d[0]}/${d[1]}"` : '';
-      return figure(img, `${p.title} image ${i + 1}`, i, ' fin fin-hero', 'Result', figStyle, imgStyle);
-    }).join('');
-    const images = restFiles.length
-      ? `<div class="post-images">${restFiles.map((img, j) =>
-        figure(img, `${p.title} image ${finFiles.length + j + 1}`, finFiles.length + j)
-      ).join('')}</div>`
+    // Single result keeps the 550px-tall hero treatment; a mult set wraps
+    // side by side. Widths come from build-time dims so boxes are exact
+    // before the images load.
+    const resultRow = resultFiles.length
+      ? `<div class="ref-label result-label">Result</div>
+         <div class="result-row">${resultFiles.map((img, i) => {
+           const d = p.dims?.[img];
+           const single = resultFiles.length === 1;
+           const figStyle = d
+             ? ` style="width:min(${single ? '700px, 50vw' : '360px, 44vw'}, ${Math.round((single ? 550 : 420) * d[0] / d[1])}px)"`
+             : '';
+           const imgStyle = d ? ` style="aspect-ratio:${d[0]}/${d[1]}"` : '';
+           return figure(img, `${p.title} image ${i + 1}`, i, ` fin fin-hero${single ? '' : ' result-multi'}`, '', figStyle, imgStyle);
+         }).join('')}</div>`
       : '';
 
     let refSections = '';
@@ -537,11 +542,32 @@
         </section>`;
     }
 
-    // Zip bundles the images the final was created from: non-fin post
-    // images plus refs, never the fin final itself.
-    const zipFiles = [...restFiles, ...gallery.slice(p.images.length)];
+    // Zip bundles the images the final was created from: resources plus
+    // refs, never the fin/mult finals themselves.
+    const zipFiles = [...resourceFiles, ...gallery.slice(p.images.length)];
     zipTargets = zipFiles.map((img) => ({ path: imageUrl(p, img), name: img }));
     zipName = `${p.id}.zip`;
+
+    // Resources live in one inset panel (header + zip button) so they read
+    // clearly apart from the Result section. res-lettered images carry
+    // their order badge (A, B, …) for "first image / second image" prompts.
+    const resourceGrid = resourceFiles.length
+      ? `<div class="post-images post-images-resources">${resourceFiles.map((img, j) => {
+          const i = resultFiles.length + j;
+          const badge = isRes(img) ? `<span class="res-badge">${resLetter(img)}</span>` : '';
+          return figure(img, `${p.title} resource ${j + 1}`, i, '', badge);
+        }).join('')}</div>`
+      : '';
+    const resourcesPanel = (resourceGrid || refSections)
+      ? `<section class="resources-panel">
+           <div class="resources-head">
+             <div class="ref-label">Resources</div>
+             ${zipTargets.length >= 2 ? '<button class="btn btn-sm" data-zip>Download reference zip</button>' : ''}
+           </div>
+           ${resourceGrid}
+           ${refSections}
+         </section>`
+      : '';
 
     const order = postOrder();
     const idx = order.findIndex((x) => x.id === p.id);
@@ -567,11 +593,9 @@
           ${p.author ? `<span class="post-author"><span class="author-label">Author</span>${authorLink(p.author)}</span>` : ''}
         </div>
         <div class="post-date">${formatDate(p.date)}</div>
-        ${finRow}
+        ${resultRow}
         <div class="post-content post-content-prompt">${renderMarkdown(p.content)}</div>
-        ${zipTargets.length >= 2 ? '<button class="btn btn-sm post-zip" data-zip>Download reference zip</button>' : ''}
-        ${images}
-        ${refSections}
+        ${resourcesPanel}
       </div>`;
 
     lightboxImages = gallery.map((img) => imageUrl(p, img));
