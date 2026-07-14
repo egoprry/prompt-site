@@ -1,0 +1,1 @@
+Alter style with prompt only

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-14T07:21:05.441Z",
+  "generated": "2026-07-14T09:09:42.553Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -91,6 +91,36 @@
         ]
       },
       "content": "## Prompt\n\n```\nA single unified composition formed by intermingling the distinctive visual qualities of character in first image and character in second. Not a collage or side-by-side, but an artistic chimera: weave together forms, textures, motifs, and stylistic signatures from both so they coexist within one coherent design. The result should preserve recognizable traits of each source while transforming them into a fused identity, emphasizing technique and aesthetic hybridity rather than contextual placement.\n```\n\n## Notes\n\n- Fuenter prompt"
+    },
+    {
+      "id": "gpt-combine-2",
+      "title": "Layer and stylize two images",
+      "tags": [
+        "chatgpt-image-2",
+        "combine"
+      ],
+      "date": "2026-07-14",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "fin-01.webp": [
+          1086,
+          1448
+        ],
+        "img-01.webp": [
+          928,
+          1232
+        ],
+        "img-02.webp": [
+          1638,
+          2048
+        ]
+      },
+      "content": "## Prompt\n\n```\nRender an image a person would see if they fell asleep looking at the first reference image while thinking about the second reference\n```"
     },
     {
       "id": "gpt-inanimate-1",
@@ -233,6 +263,30 @@
         ]
       },
       "content": "## Prompt\n\n```\nrecreate the second image in the style of the first image, 3:4 aspect ratio\n```"
+    },
+    {
+      "id": "gpt-style-2",
+      "title": "Alter style with prompt only",
+      "tags": [
+        "chatgpt-image-2"
+      ],
+      "date": "2026-07-14",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "fin-01.webp": [
+          1672,
+          941
+        ],
+        "img-01.webp": [
+          1374,
+          713
+        ]
+      },
+      "content": "## Prompt\n\n```\noutside the window is water, shark swimming around, the inside of the room is relit and shows the ripples in the water, dramatic/moody lighting, keep man and rest of the room the same\n```"
     },
     {
       "id": "gpt-swap-2",
