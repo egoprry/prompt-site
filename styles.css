@@ -1173,10 +1173,9 @@ body.assets-page .controls {
   border-radius: var(--radius);
   width: min(720px, 100%);
   /* width: 100%; */
-
   max-height: calc(100vh - 48px);
   display: flex;
-  overflow:hidden;
+  overflow: hidden;
   flex-direction: column;
 }
 
@@ -1197,8 +1196,8 @@ body.assets-page .controls {
 .tree-body {
   overflow: auto;
   padding: 16px;
-    min-width: 540px;
-    width: 100%;
+  min-width: 540px;
+  width: 100%;
 }
 
 .tree-graph {
@@ -1373,7 +1372,6 @@ body.assets-page .controls {
 }
 
 /* ------------------------------------------------------------- back to top */
-
 .back-top {
   position: fixed;
   bottom: 20px;
@@ -1383,7 +1381,10 @@ body.assets-page .controls {
   height: 36px;
   background: var(--bg-2);
 }
-.back-top[hidden] { display: none; }
+
+.back-top[hidden] {
+  display: none;
+}
 
 /* ------------------------------------------------------------------ footer */
 .footer {
@@ -1458,6 +1459,19 @@ body.assets-page .controls {
     height: 180px;
   }
 
+  .post-card-grid .post-meta {
+    padding: 8px;
+  }
+
+  .post-card-grid .post-meta .post-title {
+    font-size: 12px;
+  }
+
+  .post-card-grid .post-meta .post-tags .tag {
+    padding: 0 2px;
+    height: 22px;
+  }
+
   .list-tools {
     flex-wrap: wrap;
   }
@@ -1469,6 +1483,7 @@ body.assets-page .controls {
   .tree-tag {
     flex-basis: 110px;
   }
+
   .post-meta {
     padding: 6px;
   }
@@ -1515,9 +1530,11 @@ body.assets-page .controls {
     bottom: 12px;
     transform: none;
   }
+
   .social {
-    display:none;
+    display: none;
   }
+
   .post-view {
     padding: 6px;
   }

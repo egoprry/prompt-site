@@ -3,17 +3,17 @@
     {
       "name": "Squoosh",
       "url": "https://squoosh.app",
-      "desc": "Compress and convert images in the browser"
+      "desc": "Compress/convert images"
     },
     {
       "name": "Photopea",
       "url": "https://www.photopea.com",
-      "desc": "Free in-browser Photoshop"
+      "desc": "Free Photoshop"
     },
     {
       "name": "Grainrad",
       "url": "https://grainrad.com/",
-      "desc": "ASCII/retro/dithering effects"
+      "desc": "ASCII/retro/dithering"
     },
     {
       "name": "Cosmos",
@@ -28,42 +28,42 @@
     {
       "name": "Gandr collage",
       "url": "https://gandr.io/online-collage-maker.html",
-      "desc": "Best browser collage builder"
+      "desc": "Collage buiider"
     },
     {
-      "name": "Free browser upscaler",
+      "name": "Free upscaler",
       "url": "https://huggingface.co/spaces/bookbot/Image-Upscaling-Playground",
       "desc": "Fast/Free upscaler"
     },
     {
-      "name": "NOBG Best free browser background remover",
+      "name": "NOBG",
       "url": "https://www.nobg.space/removebg",
-      "desc": "Doesn't reduce quality like remove.bg"
+      "desc": "BG remover"
     },
     {
       "name": "Flickr",
       "url": "https://www.flickr.com/",
-      "desc": "Find images from amateur photographers"
+      "desc": "Images from amateur photographers"
     },
     {
       "name": "29a",
       "url": "https://29a.ch/film-emulator/",
-      "desc": "analog image filters"
+      "desc": "Analog image filters"
     },
     {
       "name": "Powerthesaurus",
       "url": "https://www.powerthesaurus.org",
-      "desc": "Use this for prompting"
-    },
-    {
-      "name": "Midjourney Docs",
-      "url": "https://docs.midjourney.com",
-      "desc": "Official parameter and feature reference"
+      "desc": "For prompting"
     },
     {
       "name": "MJ v7 prompt-gen",
       "url": "https://egoprry.github.io/prompt-gen1/",
-      "desc": "prompt generation expirement"
+      "desc": "prompt gen expirement"
+    },
+    {
+      "name": "Midjourney Docs",
+      "url": "https://docs.midjourney.com",
+      "desc": ""
     }
   ],
   "social": [
