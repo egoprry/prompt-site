@@ -49,6 +49,26 @@
   const imageUrl = (post, file) =>
     `content/${encodeURIComponent(post.id)}/${file.split('/').map(encodeURIComponent).join('/')}`;
 
+  /* Icon-only button contents (stroke inherits currentColor). */
+  const ICONS = {
+    download: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8m0 0l3.2-3.2M8 10L4.8 6.8M3 13.5h10"/></svg>',
+    copy: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2"/></svg>',
+    check: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 4.5"/></svg>',
+    fail: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>',
+  };
+
+  const downloadIconBtn = (href, sm) =>
+    `<a class="btn${sm ? ' btn-sm' : ''} btn-icon" href="${href}" download aria-label="Download image" title="Download">${ICONS.download}</a>`;
+  const copyIconBtn = (src, sm) =>
+    `<button class="btn${sm ? ' btn-sm' : ''} btn-icon" data-copy-img="${src}" aria-label="Copy image" title="Copy">${ICONS.copy}</button>`;
+
+  /* Briefly swap a button's content for success/failure feedback. */
+  function flashButton(btn, ok) {
+    const original = btn.innerHTML;
+    btn.innerHTML = ok ? ICONS.check : ICONS.fail;
+    setTimeout(() => { btn.innerHTML = original; }, 1500);
+  }
+
   const isFin = (file) => /^fin/i.test(file);
   const isMult = (file) => /^mult/i.test(file);
   const isRes = (file) => /^res-[a-z]/i.test(file);
@@ -143,7 +163,7 @@
         if (/^```/.test(raw)) {
           out.push(
             `<div class="codeblock"><pre>${escapeHtml(code.join('\n'))}</pre>` +
-            `<button class="btn btn-sm copy-btn" data-copy>Copy</button></div>`
+            `<button class="btn btn-sm btn-icon copy-btn" data-copy aria-label="Copy prompt" title="Copy">${ICONS.copy}</button></div>`
           );
           code = null;
         } else {
@@ -296,7 +316,6 @@
   /* Copy an image to the clipboard (converted to PNG, the only format
      browsers accept). Falls back to copying the image URL as text. */
   async function copyImage(src, button) {
-    const original = 'Copy';
     try {
       const res = await fetch(src);
       const bitmap = await createImageBitmap(await res.blob());
@@ -306,16 +325,15 @@
       canvas.getContext('2d').drawImage(bitmap, 0, 0);
       const png = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
       await navigator.clipboard.write([new ClipboardItem({ 'image/png': png })]);
-      button.textContent = 'Copied';
+      flashButton(button, true);
     } catch {
       try {
         await navigator.clipboard.writeText(new URL(src, location.href).href);
-        button.textContent = 'Copied URL';
+        flashButton(button, true);
       } catch {
-        button.textContent = 'Failed';
+        flashButton(button, false);
       }
     }
-    setTimeout(() => { button.textContent = original; }, 1500);
   }
 
   /* Deterministic "random" pick per calendar day. */
@@ -405,7 +423,7 @@
             <div class="potd-label">Prompt of Day &middot; ${formatDate(today)}</div>
             <div class="potd-text">${escapeHtml(promptOfDay.prompt)}</div>
           </div>
-          <button class="btn btn-sm" data-copy-text="${escapeHtml(promptOfDay.prompt)}">Copy</button>
+          <button class="btn btn-sm btn-icon" data-copy-text="${escapeHtml(promptOfDay.prompt)}" aria-label="Copy prompt" title="Copy">${ICONS.copy}</button>
         </section>`);
     }
 
@@ -500,8 +518,8 @@
         ${badge || ''}
         <img loading="lazy" src="${imageUrl(p, file)}" alt="${escapeHtml(alt)}" data-lightbox="${i}"${dimAttrs(p.dims, file)}${imgStyle || ''}>
         <div class="img-actions">
-          <a class="btn btn-sm" href="${imageUrl(p, file)}" download>Download</a>
-          <button class="btn btn-sm" data-copy-img="${imageUrl(p, file)}">Copy</button>
+          ${downloadIconBtn(imageUrl(p, file), true)}
+          ${copyIconBtn(imageUrl(p, file), true)}
         </div>
       </figure>`;
 
@@ -610,7 +628,10 @@
     const items = assets.map((f, i) => `
       <figure class="masonry-item${isFin(f) ? ' fin' : ''}">
         <img loading="lazy" src="data/${encodeURIComponent(f)}" alt="Asset ${escapeHtml(f)}" data-lightbox="${i}"${dimAttrs(assetDims, f)}>
-        <a class="btn btn-sm" href="data/${encodeURIComponent(f)}" download>Download</a>
+        <div class="img-actions">
+          ${downloadIconBtn(`data/${encodeURIComponent(f)}`, true)}
+          ${copyIconBtn(`data/${encodeURIComponent(f)}`, true)}
+        </div>
       </figure>`).join('');
 
     app.innerHTML = `
@@ -699,8 +720,8 @@
           <figure class="post-image-item${isFin(f) ? ' fin' : ''}">
             <img loading="lazy" src="${imgUrl(f)}" alt="${escapeHtml(s.title)} sample ${i + 1}" data-lightbox="${i}"${dimAttrs(s.dims, f)}>
             <div class="img-actions">
-              <a class="btn btn-sm" href="${imgUrl(f)}" download>Download</a>
-              <button class="btn btn-sm" data-copy-img="${imgUrl(f)}">Copy</button>
+              ${downloadIconBtn(imgUrl(f), true)}
+              ${copyIconBtn(imgUrl(f), true)}
             </div>
           </figure>`).join('')}</div>`
       : '';
@@ -968,10 +989,8 @@
     const copyText = e.target.closest('[data-copy-text]');
     if (copyText) {
       e.stopPropagation();
-      navigator.clipboard.writeText(copyText.getAttribute('data-copy-text'));
-      const original = copyText.textContent;
-      copyText.textContent = 'Copied';
-      setTimeout(() => { copyText.textContent = original; }, 1500);
+      navigator.clipboard.writeText(copyText.getAttribute('data-copy-text'))
+        .then(() => flashButton(copyText, true), () => flashButton(copyText, false));
       return;
     }
     const styleType = e.target.closest('[data-style-type]');
@@ -1008,9 +1027,8 @@
     }
     const copyBlock = e.target.closest('[data-copy]');
     if (copyBlock) {
-      navigator.clipboard.writeText(copyBlock.parentElement.querySelector('pre').textContent);
-      copyBlock.textContent = 'Copied';
-      setTimeout(() => { copyBlock.textContent = 'Copy'; }, 1500);
+      navigator.clipboard.writeText(copyBlock.parentElement.querySelector('pre').textContent)
+        .then(() => flashButton(copyBlock, true), () => flashButton(copyBlock, false));
       return;
     }
     const tag = e.target.closest('[data-tag]');
@@ -1050,7 +1068,7 @@
 
   els.lbClose.addEventListener('click', closeLightbox);
   document.getElementById('lb-copy').addEventListener('click', (e) => {
-    copyImage(lightboxImages[lightboxIndex], e.target);
+    copyImage(lightboxImages[lightboxIndex], e.currentTarget);
   });
   els.lbPrev.addEventListener('click', () => { if (lightboxIndex > 0) { lightboxIndex--; updateLightbox(); } });
   els.lbNext.addEventListener('click', () => { if (lightboxIndex < lightboxImages.length - 1) { lightboxIndex++; updateLightbox(); } });

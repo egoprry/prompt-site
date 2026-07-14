@@ -698,9 +698,13 @@ body.assets-page .controls {
 }
 
 .img-actions .btn {
-  width: 92px;
   flex: 0 0 auto;
 }
+
+/* icon-only buttons: square, glyph centered */
+.btn-icon { padding: 0; width: 32px; }
+.btn-icon.btn-sm { width: 28px; }
+.btn-icon svg { display: block; }
 
 .post-image-item img {
   width: 100%;
