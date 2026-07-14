@@ -31,6 +31,16 @@
       "desc": "Best browser collage builder"
     },
     {
+      "name": "Free browser upscaler",
+      "url": "https://huggingface.co/spaces/bookbot/Image-Upscaling-Playground",
+      "desc": "Fast/Free upscaler"
+    },
+    {
+      "name": "NOBG Best free browser background remover",
+      "url": "https://www.nobg.space/removebg",
+      "desc": "Doesn't reduce quality like remove.bg"
+    },
+    {
       "name": "Flickr",
       "url": "https://www.flickr.com/",
       "desc": "Find images from amateur photographers"

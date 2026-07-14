@@ -20,8 +20,8 @@
   --danger: #f43b52;
   --app-mwidth: 1340px;
   --radius: 6px;
-  --hero-thumb: 40%;
-  --post-height: 340px;
+  --hero-thumb: 50%;
+  --post-height: 280px;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
 }
@@ -504,10 +504,12 @@ body.assets-page .controls {
   height: 26px;
   padding: 0 8px;
   border: 1px solid var(--border);
+  border-radius: 8px;
   /* border-radius: 9999px; */
   font-size: 12px;
   color: var(--text-2);
-  background: rgba(0, 0, 0, .7);
+  background-color: var(--bg-2);
+  /* background: rgba(0, 0, 0, .7); */
   cursor: pointer;
 }
 
@@ -528,7 +530,7 @@ body.assets-page .controls {
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .post-foot .post-date {
@@ -536,8 +538,9 @@ body.assets-page .controls {
 }
 
 .post-date {
-  color: var(--text-3);
+  color: var(--text-2);
   font-size: 12px;
+  font-family: monospace;
   margin-top: 8px;
 }
 
@@ -985,7 +988,7 @@ body.assets-page .controls {
 
 .masonry-item {
   break-inside: avoid;
-  margin: 0 0 12px;
+  margin: 0 0 2px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -1061,7 +1064,8 @@ body.assets-page .controls {
 
 .masonry-item.fin img {
   /* border: var(--border-dark); */
-  border: 1px solid var(--brand-dark);
+  border: 1px solid transparent;
+  /* border: 1px solid var(--brand-dark); */
 }
 
 .masonry-item.fin img:hover {
