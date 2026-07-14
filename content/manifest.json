@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-14T09:39:06.726Z",
+  "generated": "2026-07-14T13:37:15.097Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -380,6 +380,36 @@
         ]
       },
       "content": "## Prompt\n\n```\nreplace the likeness of the man and woman with the man and woman in second and third images, keep scene the same, keep expressions of original image including lighting. update to be 3:4 image\n```\n\n## Notes\n\n- Base image made with Midjourney v8.1 no references prompt below\n\n```\nWide anamorphic two shot, slight low angle, dusty near abandoned 1880s frontier town main street. Two figures stride shoulder to shoulder toward camera mid stride. Left: Black woman, mid 20s, long dark hair, wide brim black cowboy hat, 3/4 face toward companion, cream rolled sleeve button down, deep cobalt blue bandana knotted at throat, tooled leather gun belt slung low, revolver holstered right hip, dark fitted denim, scuffed riding boots. Right: White man, mid 30s, full reddish brown beard, short tousled hair, black wide brim hat, 3/4 face front lit, gunmetal Oakley X Metal Juliet sunglasses with fire iridium red lenses catching lens flare, charcoal tailored suit jacket over dark dress shirt and patterned tie (deliberately anachronistic), right hand gripping a curved fixed blade knife. Background: sun bleached clapboard buildings, rutted dirt street, tumbleweeds, hitching post, distant church steeple. Editorial poster framing. Palette: bleached bone white sky, dusty ochre street, deep umber shadows, cobalt and fire red accents. 35mm film grain, faint halftone shadows, subtle CMYK registration offset on highlights for vintage litho poster feel. High noon stillness, suspended dust haze, sharp foreground, soft mid ground bokeh. --chaos 75 --ar 7:3 --raw --sref 2081446411 --profile ukmch4y mphr36g --stylize 1000 --hd\n```"
+    },
+    {
+      "id": "mj-misc-1",
+      "title": "Y2k isometric at computer",
+      "tags": [
+        "midjourney",
+        "v8.1"
+      ],
+      "date": "2026-07-14",
+      "images": [
+        "mult-01.webp",
+        "mult-02.webp",
+        "mult-03.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "mult-01.webp": [
+          928,
+          1232
+        ],
+        "mult-02.webp": [
+          928,
+          1232
+        ],
+        "mult-03.webp": [
+          928,
+          1232
+        ]
+      },
+      "content": "## Prompt\n\n```\nY2K isometric poster hunched-over figure coding at a translucent bubble iMac glowing HTML pop-ups, pixel fonts, spinning 3D icons, chrome scrollbars, and loading bars everywhere chaotic fusion of skeuomorphic UI, glitch overlays, scrolling terminal code exaggerated lens flares, techie stickers, metallic textures silver, neon blue, soft magenta, cyber lime brutalist grid meets millennial plastic high-gloss maximalist aesthetic, ultra-detailed layout, poster format --chaos 30 --ar 3:4 --raw --profile mphr36g bte2fzr x451od4 --stylize 700 --v 8.1\n```"
     },
     {
       "id": "mj-movie-1",
