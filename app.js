@@ -497,14 +497,15 @@
             ${cardHero(p)}
             <div class="post-meta">
               <div class="post-title">${escapeHtml(p.title)}</div>
+              ${p.tags.some((t) => /gemini|chatgpt|midjourney/i.test(t)) ? `
               <div class="prompt-preview">
                 <div class="prompt-preview-text">${escapeHtml(promptText(p.content))}</div>
                 <button class="btn btn-sm btn-icon prompt-copy" data-copy-text="${escapeHtml(promptText(p.content))}" aria-label="Copy prompt" title="Copy">${ICONS.copy}</button>
-              </div>
+              </div>` : ''}
               <div class="post-tags">${p.tags.map((t) => tagPill(t, t === state.tag)).join('')}</div>
               <div class="post-foot">
+                ${p.author ? authorLink(p.author) : '<span></span>'}
                 <div class="post-date">${formatDate(p.date)}</div>
-                ${p.author ? authorLink(p.author) : ''}
               </div>
             </div>
           </article>`;
@@ -514,10 +515,13 @@
 
     app.innerHTML = parts.join('\n');
 
-    // Relocate the live tag/sort selects below the prompt of the day.
-    // Moving the nodes keeps their listeners and current values intact.
+    // Relocate the live search input and tag/sort selects below the prompt
+    // of the day. Moving the nodes keeps listeners and values intact.
     const slot = document.getElementById('home-controls');
-    if (slot && els.controls) slot.appendChild(els.controls);
+    if (slot && els.controls) {
+      els.controls.prepend(els.search);
+      slot.appendChild(els.controls);
+    }
   }
 
   function renderPost(id) {
@@ -998,7 +1002,29 @@
 
   /* --------------------------------------------------------------- events */
 
-  els.search.addEventListener('input', writeListHash);
+  // Re-rendering the list moves the search node, which can drop focus —
+  // restore it (and the caret) so typing is uninterrupted.
+  els.search.addEventListener('input', () => {
+    const pos = els.search.selectionStart;
+    writeListHash();
+    if (document.activeElement !== els.search) {
+      els.search.focus({ preventScroll: true });
+      try { els.search.setSelectionRange(pos, pos); } catch { /* not focusable yet */ }
+    }
+  });
+
+  // Back to top: appears after scrolling, instant jump (no animations).
+  const backTop = document.getElementById('back-top');
+  window.addEventListener('scroll', () => {
+    backTop.hidden = window.scrollY < 400;
+  }, { passive: true });
+  backTop.addEventListener('click', () => window.scrollTo(0, 0));
+
+  // Clicking the logo or the nav link for the page you're already on
+  // wouldn't change the hash, so scroll to the top explicitly.
+  document.querySelectorAll('.brand, .site-nav .nav-link').forEach((a) => {
+    a.addEventListener('click', () => window.scrollTo(0, 0));
+  });
   els.tag.addEventListener('change', writeListHash);
   els.sort.addEventListener('change', writeListHash);
 

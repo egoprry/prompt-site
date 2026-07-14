@@ -137,9 +137,10 @@ a:hover {
   flex-wrap: wrap;
 }
 
-/* the tag/sort selects live below the prompt of the day on the home page;
-   hide them while they're still parked in the topbar */
-.topbar .controls {
+/* the search and tag/sort selects live below the prompt of the day on the
+   home page; hide them while they're still parked in the topbar */
+.topbar .controls,
+.topbar .search {
   display: none;
 }
 
@@ -1362,6 +1363,19 @@ body.assets-page .controls {
   color: var(--text-2);
   font-size: 13px;
 }
+
+/* ------------------------------------------------------------- back to top */
+
+.back-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 90;
+  width: 36px;
+  height: 36px;
+  background: var(--bg-2);
+}
+.back-top[hidden] { display: none; }
 
 /* ------------------------------------------------------------------ footer */
 .footer {
