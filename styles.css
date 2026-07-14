@@ -758,6 +758,9 @@ body.assets-page .controls {
 /* fixed-width download/copy pair, left-aligned under the image */
 .img-actions {
   display: flex;
+  margin-top: -36px;
+  margin-bottom: 4px;
+  padding: 2px;
   gap: 6px;
 }
 
@@ -1157,7 +1160,7 @@ body.assets-page .controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 8px;
 }
 
 .tree-modal[hidden] {
@@ -1169,8 +1172,11 @@ body.assets-page .controls {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   width: min(720px, 100%);
+  /* width: 100%; */
+
   max-height: calc(100vh - 48px);
   display: flex;
+  overflow:hidden;
   flex-direction: column;
 }
 
@@ -1191,6 +1197,8 @@ body.assets-page .controls {
 .tree-body {
   overflow: auto;
   padding: 16px;
+    min-width: 540px;
+    width: 100%;
 }
 
 .tree-graph {
@@ -1417,7 +1425,7 @@ body.assets-page .controls {
 /* ------------------------------------------------------------------ mobile */
 @media (max-width: 640px) {
   #app {
-    padding: 16px;
+    padding: 8px;
   }
 
   .topbar-row {
@@ -1454,6 +1462,9 @@ body.assets-page .controls {
 
   .tree-tag {
     flex-basis: 110px;
+  }
+  .post-meta {
+    padding: 6px;
   }
 
   .post-card {
@@ -1497,5 +1508,11 @@ body.assets-page .controls {
     top: auto;
     bottom: 12px;
     transform: none;
+  }
+  .social {
+    display:none;
+  }
+  .post-view {
+    padding: 6px;
   }
 }

@@ -81,6 +81,11 @@
       "name": "@golemporium",
       "url": "https://x.com/golemporium",
       "desc": "gallery"
+    },
+    {
+      "github": "egoprry",
+      "url": "https://github.com/egoprry",
+      "desc": "github profile"
     }
   ]
 }
