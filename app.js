@@ -55,6 +55,7 @@
     copy: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 5.5v-2a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2"/></svg>',
     check: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 4.5"/></svg>',
     fail: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>',
+    image: '<svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5"/><circle cx="6" cy="6.5" r="0.5" fill="currentColor"/><path d="M14 10.5L11 7.5l-5 5"/></svg>',
   };
 
   const downloadIconBtn = (href, sm) =>
@@ -91,7 +92,9 @@
 
   const resourceBadge = (p) => {
     const n = resourceCount(p);
-    return n ? `<span class="hero-badge">${n} resource${n === 1 ? '' : 's'}</span>` : '';
+    if (!n) return '';
+    const label = `${n} resource${n === 1 ? '' : 's'}`;
+    return `<span class="hero-badge" title="${label}" aria-label="${label}">${n}${ICONS.image}</span>`;
   };
 
   /* Card thumbnail area: a 2-column grid when the post has a "mult" final
