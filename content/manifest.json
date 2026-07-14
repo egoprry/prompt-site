@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-13T13:39:10.769Z",
+  "generated": "2026-07-14T07:02:57.720Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -474,6 +474,35 @@
         ]
       },
       "content": "## Prompt\n\n```\ntext: \"AF\", realistic dark distented liquid metal typography medium weight, soft RGB spectrum reflections on chrome, serif, centered composition, sharp details, elegant, clean, retro-futuristic, background is extremely intricate crashing black waves, slight reflection of red moon --chaos 40 --ar 4:3 --exp 32 --raw --profile etymmj8 sjcj9wq --stylize 1000 --v 8.0\n```"
+    },
+    {
+      "id": "photoshop-editing-1",
+      "title": "Remove the AI-render look in photoshop",
+      "tags": [
+        "photoshop"
+      ],
+      "date": "2026-07-13",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "fin-01.webp": [
+          1920,
+          1080
+        ],
+        "img-01.webp": [
+          1672,
+          941
+        ],
+        "img-02.webp": [
+          1672,
+          941
+        ]
+      },
+      "content": "# Photoshop\n\nQuick Photoshop pass to remove AI-render look\n\n## Lens Blur\n**Filter > Blur > Lens Blur**\n\n- **Depth Map Source:** None\n- **Iris Shape:** Hexagon (6)\n- **Radius:** 4–8 (start at 6)\n- **Blade Curvature:** 20–30\n- **Rotation:** 0\n- **Specular Highlights:** Brightness 2–5, Threshold ~230\n- **Noise:** 0\n- Use **More Accurate** for the final render\n- **After:** add a layer mask, paint blur off the figure + near floor\n\n## Grain\n**Filter > Camera Raw Filter > Effects > Grain**\n\n- **Amount:** 15–25\n- **Size:** 8\n- **Roughness:** 50\n- Apply to a merged copy on top so grain covers the whole image\n\n> **Quick alternative:** Filter > Noise > Add Noise — 3–5%, Gaussian, Monochromatic ✓"
     }
   ],
   "styles": [
@@ -670,7 +699,26 @@
     "img-02.webp",
     "img-03.webp",
     "img-04.webp",
-    "img-05.webp"
+    "img-05.webp",
+    "img-06.webp",
+    "img-07.webp",
+    "img-08.webp",
+    "img-09.webp",
+    "img-10.webp",
+    "img-11.webp",
+    "img-12.webp",
+    "img-13.webp",
+    "img-14.webp",
+    "img-15.webp",
+    "img-16.webp",
+    "img-17.webp",
+    "img-18.webp",
+    "img-19.webp",
+    "img-20.webp",
+    "img-21.webp",
+    "img-22.webp",
+    "img-23.webp",
+    "img-24.webp"
   ],
   "assetDims": {
     "img-01.webp": [
@@ -692,6 +740,82 @@
     "img-05.webp": [
       1080,
       1457
+    ],
+    "img-06.webp": [
+      735,
+      760
+    ],
+    "img-07.webp": [
+      1590,
+      2048
+    ],
+    "img-08.webp": [
+      1254,
+      1254
+    ],
+    "img-09.webp": [
+      1170,
+      1344
+    ],
+    "img-10.webp": [
+      1086,
+      1448
+    ],
+    "img-11.webp": [
+      1086,
+      1448
+    ],
+    "img-12.webp": [
+      896,
+      1200
+    ],
+    "img-13.webp": [
+      662,
+      753
+    ],
+    "img-14.webp": [
+      1536,
+      2048
+    ],
+    "img-15.webp": [
+      1781,
+      2048
+    ],
+    "img-16.webp": [
+      736,
+      736
+    ],
+    "img-17.webp": [
+      619,
+      638
+    ],
+    "img-18.webp": [
+      2048,
+      2048
+    ],
+    "img-19.webp": [
+      848,
+      1264
+    ],
+    "img-20.webp": [
+      530,
+      728
+    ],
+    "img-21.webp": [
+      2048,
+      2048
+    ],
+    "img-22.webp": [
+      1072,
+      1136
+    ],
+    "img-23.webp": [
+      1037,
+      1517
+    ],
+    "img-24.webp": [
+      768,
+      1024
     ]
   }
 }
