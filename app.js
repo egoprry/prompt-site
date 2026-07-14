@@ -74,6 +74,26 @@
   const isRes = (file) => /^res-[a-z]/i.test(file);
   const resLetter = (file) => (file.match(/^res-([a-z])/i) || [])[1]?.toUpperCase() || '';
 
+  /* The prompt itself: the first code fence in content.md, or the raw
+     content when there is no fence. */
+  const promptText = (md) => {
+    const m = md.match(/```[^\n]*\n([\s\S]*?)```/);
+    return (m ? m[1] : md).trim();
+  };
+
+  /* Resources = everything that isn't a fin/mult final: lettered and plain
+     root images plus all ref-folder images. */
+  const resourceCount = (p) => {
+    const root = p.images.filter((f) => !isFin(f) && !isMult(f)).length;
+    const refs = p.refs ? Object.values(p.refs).reduce((n, arr) => n + arr.length, 0) : 0;
+    return root + refs;
+  };
+
+  const resourceBadge = (p) => {
+    const n = resourceCount(p);
+    return n ? `<span class="hero-badge">${n} resource${n === 1 ? '' : 's'}</span>` : '';
+  };
+
   /* Card thumbnail area: a 2-column grid when the post has a "mult" final
      set, otherwise the single first image (fin-first). */
   function cardHero(p) {
@@ -83,6 +103,7 @@
         <div class="post-hero-grid">${multFiles.slice(0, 4).map((img, i) =>
           `<img loading="lazy" src="${imageUrl(p, img)}" alt="${escapeHtml(p.title)} image ${i + 1}">`
         ).join('')}</div>
+        ${resourceBadge(p)}
       </div>`;
     }
     if (!p.images.length) return '<div class="post-hero empty">text-only</div>';
@@ -90,6 +111,7 @@
       ? ` style="object-position:${p.hero}"` : '';
     return `<div class="post-hero${isFin(p.images[0]) ? ' fin' : ''}">
       <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${heroPos}>
+      ${resourceBadge(p)}
     </div>`;
   }
 
@@ -124,16 +146,6 @@
   /* Newest-first order used for prev/next cycling in the post view. */
   const postOrder = () =>
     [...posts].sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
-
-  /* Plain-text preview of markdown content for list cards. */
-  const snippet = (md, len) => md
-    .replace(/```[^\n]*\n?/g, '')
-    .replace(/^#+\s*/gm, '')
-    .replace(/^[-*\d.]+\s+/gm, '')
-    .replace(/[*_`]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, len);
 
   /* Minimal markdown renderer: headings, lists, code fences, inline code,
      bold, italic, links, paragraphs. Everything is HTML-escaped first. */
@@ -459,6 +471,7 @@
           <figure class="masonry-item post-masonry-item${isFin(p.images[0]) ? ' fin' : ''}" data-post="${escapeHtml(p.id)}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
             <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${dimAttrs(p.dims, p.images[0])}>
             ${tags}
+            ${resourceBadge(p)}
           </figure>`;
       });
       parts.push(`<div class="masonry post-masonry">${items.join('')}</div>`);
@@ -481,7 +494,10 @@
             ${cardHero(p)}
             <div class="post-meta">
               <div class="post-title">${escapeHtml(p.title)}</div>
-              <div class="post-snippet">${escapeHtml(snippet(p.content, 220))}</div>
+              <div class="prompt-preview">
+                <div class="prompt-preview-text">${escapeHtml(promptText(p.content))}</div>
+                <button class="btn btn-sm btn-icon prompt-copy" data-copy-text="${escapeHtml(promptText(p.content))}" aria-label="Copy prompt" title="Copy">${ICONS.copy}</button>
+              </div>
               <div class="post-tags">${p.tags.map((t) => tagPill(t, t === state.tag)).join('')}</div>
               <div class="post-foot">
                 <div class="post-date">${formatDate(p.date)}</div>
