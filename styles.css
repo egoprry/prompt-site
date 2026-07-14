@@ -1448,8 +1448,14 @@ body.assets-page .controls {
     min-width: 0;
   }
 
+  /* grid stays at least two-up even on small screens; shorter thumbnails
+     so half-width cards keep sane proportions */
   .post-list.grid {
-    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .post-card-grid .post-hero {
+    height: 180px;
   }
 
   .list-tools {
