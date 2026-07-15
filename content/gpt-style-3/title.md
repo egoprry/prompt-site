@@ -1,0 +1,1 @@
+Transfer style render strategy

@@ -51,6 +51,11 @@
       "desc": "Analog image filters"
     },
     {
+      "name": "Movie screencaps",
+      "url": "https://movie-screencaps.com/",
+      "desc": "screencaps"
+    },
+    {
       "name": "Powerthesaurus",
       "url": "https://www.powerthesaurus.org",
       "desc": "For prompting"

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-15T11:13:33.081Z",
+  "generated": "2026-07-15T12:09:50.239Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -316,6 +316,35 @@
         ]
       },
       "content": "## Prompt\n\n```\noutside the window is water, shark swimming around, the inside of the room is relit and shows the ripples in the water, dramatic/moody lighting, keep man and rest of the room the same\n```"
+    },
+    {
+      "id": "gpt-style-3",
+      "title": "Transfer style render strategy",
+      "tags": [
+        "chatgpt-image-2"
+      ],
+      "date": "2026-07-15",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "fin-01.webp": [
+          1254,
+          1254
+        ],
+        "img-01.webp": [
+          1254,
+          1254
+        ],
+        "img-02.webp": [
+          736,
+          1104
+        ]
+      },
+      "content": "## Prompt\n\n```\nrender the first image as if it were created by the artist of the second image\n```"
     },
     {
       "id": "gpt-swap-2",
