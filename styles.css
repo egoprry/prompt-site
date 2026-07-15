@@ -539,6 +539,11 @@ body.assets-page .controls {
   min-height: var(--list-post-height);
 }
 
+/* posts without a prompt preview (no gpt/mj/gem prefix) sit half as tall */
+.post-card-short:not(.post-card-grid) .post-hero {
+  min-height: calc(var(--list-post-height) / 2);
+}
+
 .prompt-copy {
   position: absolute;
   bottom: 6px;

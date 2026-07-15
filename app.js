@@ -510,8 +510,10 @@
           <div class="card-thumbs">${resFiles.map((f, i) =>
             `<img class="card-thumb" loading="lazy" width="320" height="320" src="${thumbUrl(p, f)}" data-card-thumb data-full="${imageUrl(p, f)}" alt="${escapeHtml(p.title)} resource ${i + 1}">`
           ).join('')}</div>` : '';
+        // non-gpt/mj/gem posts carry no prompt preview, so the card is half height
+        const short = !/^(gpt|mj|gem)-/i.test(p.id);
         return `
-          <article class="post-card" data-post="${escapeHtml(p.id)}" data-source="${getSourceLabel(escapeHtml(p.id))}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
+          <article class="post-card${short ? ' post-card-short' : ''}" data-post="${escapeHtml(p.id)}" data-source="${getSourceLabel(escapeHtml(p.id))}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
             ${cardHero(p)}
             <div class="post-meta">
               <div class="post-title">${escapeHtml(p.title)}</div>
