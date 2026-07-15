@@ -1,0 +1,1 @@
+Add camoflouged character to scene

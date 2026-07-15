@@ -20,7 +20,7 @@
  *   node scripts/optimize-images.mjs my-post   # process a single folder
  */
 
-import { readdir, readFile, copyFile, stat, rename, unlink } from 'node:fs/promises';
+import { readdir, readFile, copyFile, stat, rename, unlink, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
@@ -29,6 +29,8 @@ const DATA_DIR = path.resolve(import.meta.dirname, '..', 'data');
 const STYLES_DIR = path.resolve(import.meta.dirname, '..', 'styles');
 const MAX_DIM = 2048;
 const QUALITY = 82;
+const THUMB_SIZE = 320;   // square-cropped, covers 2x screens at ~150px
+const THUMB_QUALITY = 70;
 const MAX_IMAGES = 7;
 const IMAGE_EXT = new Set(['.png', '.jpg', '.jpeg', '.gif', '.tif', '.tiff', '.bmp', '.avif', '.webp']);
 const REF_DIRS = ['style-ref', 'img-ref', 'omni-ref'];
@@ -155,14 +157,53 @@ async function processDir(dir, label, isRefDir) {
   return files.length;
 }
 
+/* Square thumbnails for resource images (post-root img-/res- files and all
+   ref-folder images), written to a thumbs/ subfolder next to the originals.
+   The site shows these small versions; full images load only in the
+   lightbox or via download. Skips thumbs that already exist and removes
+   orphans whose source image is gone. */
+async function generateThumbs(dir, label, isRefDir) {
+  let files;
+  try {
+    files = (await readdir(dir)).filter((f) => IMAGE_EXT.has(path.extname(f).toLowerCase()));
+  } catch {
+    return;
+  }
+  const eligible = files.filter((f) => (isRefDir ? true : /^(img|res)-/i.test(f)));
+  const tdir = path.join(dir, 'thumbs');
+
+  let existing = [];
+  try { existing = await readdir(tdir); } catch { /* no thumbs dir yet */ }
+
+  for (const t of existing) {
+    if (!eligible.includes(t)) {
+      await unlink(path.join(tdir, t));
+      console.log(`  - ${label}/thumbs/${t} (orphan removed)`);
+    }
+  }
+
+  if (!eligible.length) return;
+  await mkdir(tdir, { recursive: true });
+  for (const f of eligible) {
+    if (existing.includes(f)) continue;
+    await sharp(await readFile(path.join(dir, f)))
+      .resize(THUMB_SIZE, THUMB_SIZE, { fit: 'cover' })
+      .webp({ quality: THUMB_QUALITY })
+      .toFile(path.join(tdir, f));
+    console.log(`  + ${label}/thumbs/${f}`);
+  }
+}
+
 async function processFolder(folder) {
   const dir = path.join(CONTENT_DIR, folder);
   const rootCount = await processDir(dir, folder, false);
   if (rootCount > MAX_IMAGES) {
     console.warn(`  ! ${folder}: ${rootCount} images found — the site shows a max of ${MAX_IMAGES} per post`);
   }
+  await generateThumbs(dir, folder, false);
   for (const ref of REF_DIRS) {
     await processDir(path.join(dir, ref), `${folder}/${ref}`, true);
+    await generateThumbs(path.join(dir, ref), `${folder}/${ref}`, true);
   }
 }
 

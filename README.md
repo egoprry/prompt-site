@@ -41,7 +41,7 @@ Or manually:
    npm run build
    ```
 
-   This converts images to WebP (max 2048px on the long edge, quality 82) and regenerates `content/manifest.json`.
+   This converts images to WebP (max 2048px on the long edge, quality 82), generates 320px square thumbnails for resource images into `thumbs/` subfolders (the site shows these; full images load only in the lightbox or on download), and regenerates `content/manifest.json`.
 
    **Image naming standard** (applied automatically by the optimizer):
 

@@ -22,6 +22,7 @@
   --radius: 6px;
   --hero-thumb: 50%;
   --post-height: 320px;
+  --list-post-height: 400px;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
 }
@@ -499,10 +500,43 @@ body.assets-page .controls {
   line-height: 1.55;
   white-space: pre-wrap;
   word-break: break-word;
-  max-height: 88px;
+  max-height: 168px;
   overflow-y: auto;
   padding: 8px 40px 8px 10px;
   /* right gap clears the pinned copy button */
+}
+
+/* resource thumbnails on the card: small squares, no per-image actions;
+   clicking opens the full image in the lightbox */
+.card-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.card-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-3);
+  cursor: zoom-in;
+}
+.card-thumb:hover { border-color: var(--border-strong); }
+
+/* tags + date pinned to the card's bottom edge */
+.post-meta {
+  display: flex;
+  flex-direction: column;
+}
+.post-bottom { margin-top: auto; padding-top: 12px; }
+.post-bottom .post-tags { margin-top: 0; }
+
+/* taller list cards (grid/masonry keep --post-height) */
+.post-card:not(.post-card-grid) .post-hero {
+  min-height: var(--list-post-height);
 }
 
 .prompt-copy {
