@@ -808,9 +808,15 @@
         <a class="back-link" href="#/">&#8592; Back to all posts</a>
         <h1 class="post-title">Privacy</h1>
         <div class="post-content">
-          <p>GARDEN is a static site. It sets no cookies, runs no analytics or
-          tracking scripts, and has no accounts, forms, or comment systems.
-          Nothing you do here is collected or stored by this site.</p>
+          <p>GARDEN is a static site. It sets no cookies and has no accounts,
+          forms, or comment systems.</p>
+          <h2>Analytics</h2>
+          <p>The site counts pageviews with
+          <a href="https://www.goatcounter.com" target="_blank" rel="noopener">GoatCounter</a>,
+          a privacy-friendly analytics service: no cookies, no persistent
+          identifiers, no cross-site tracking, and no personal data stored —
+          only aggregate counts (page, referrer, browser, country). See the
+          <a href="https://www.goatcounter.com/help/privacy" target="_blank" rel="noopener">GoatCounter privacy policy</a>.</p>
           <h2>Hosting</h2>
           <p>The site is hosted on GitHub Pages. GitHub may log basic technical
           information about visits (such as IP addresses) for security and
@@ -838,6 +844,30 @@
         <a class="btn" href="#/">Back to GARDEN</a>
       </div>`;
     document.title = '404 — GARDEN';
+  }
+
+  /* GoatCounter SPA pageviews: report the logical route (query excluded) as
+     a virtual path, once per route change — filter/search keystrokes rewrite
+     the hash but stay on the same path and aren't recounted. */
+  let lastTrackedPath = null;
+  function trackPageview() {
+    const path = '/' + location.hash.replace(/^#\/?/, '').split('?')[0];
+    if (path === lastTrackedPath) return;
+    lastTrackedPath = path;
+    const send = () => {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path });
+        return true;
+      }
+      return false;
+    };
+    // count.js loads async; retry briefly so the first view isn't lost
+    if (!send()) {
+      let tries = 0;
+      const timer = setInterval(() => {
+        if (send() || ++tries >= 10) clearInterval(timer);
+      }, 500);
+    }
   }
 
   function renderRoute() {
@@ -874,6 +904,7 @@
       renderList(state);
     }
     window.scrollTo(0, 0);
+    trackPageview();
   }
 
   /* ----------------------------------------------------------- content tree */
