@@ -143,7 +143,7 @@
   const getLayout = () => {
     try {
       const v = localStorage.getItem('garden-layout');
-      return v === 'grid' || v === 'masonry' ? v : 'list';
+      return ['grid', 'masonry', 'prompts'].includes(v) ? v : 'list';
     } catch { return 'list'; }
   };
 
@@ -453,21 +453,37 @@
     parts.push('<div class="home-controls" id="home-controls"></div>');
 
     const layout = getLayout();
+    // prompts mode only lists posts that actually carry a prompt
+    const hasPrompt = (p) => /^(gpt|mj|gem)-/i.test(p.id)
+      || p.tags.some((t) => /gemini|chatgpt|midjourney/i.test(t));
+    const shown = layout === 'prompts' ? list.filter(hasPrompt) : list;
     parts.push(`
       <div class="list-tools">
-        <div class="count">${list.length} post${list.length === 1 ? '' : 's'}</div>
+        <div class="count">${shown.length} post${shown.length === 1 ? '' : 's'}</div>
         <div class="list-actions">
           <button class="btn btn-sm" data-tree>Content tree</button>
           <div class="layout-toggle" role="group" aria-label="Layout">
             <button class="btn btn-sm${layout === 'list' ? ' active' : ''}" data-layout="list">List</button>
             <button class="btn btn-sm${layout === 'grid' ? ' active' : ''}" data-layout="grid">Grid</button>
             <button class="btn btn-sm${layout === 'masonry' ? ' active' : ''}" data-layout="masonry">Masonry</button>
+            <button class="btn btn-sm${layout === 'prompts' ? ' active' : ''}" data-layout="prompts">Prompts</button>
           </div>
         </div>
       </div>`);
 
-    if (list.length === 0) {
+    if (shown.length === 0) {
       parts.push('<div class="status">No posts match the current filters.</div>');
+    } else if (layout === 'prompts') {
+      const rows = shown.map((p) => {
+        const prompt = promptText(p.content);
+        return `
+          <div class="prompt-row" data-post="${escapeHtml(p.id)}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
+            <div class="prompt-row-title">${escapeHtml(p.title)}</div>
+            <div class="prompt-row-text">${escapeHtml(prompt)}</div>
+            <button class="btn btn-sm btn-icon" data-copy-text="${escapeHtml(prompt)}" aria-label="Copy prompt" title="Copy">${ICONS.copy}</button>
+          </div>`;
+      });
+      parts.push(`<div class="prompt-rows">${rows.join('')}</div>`);
     } else if (layout === 'masonry') {
       const items = list.map((p) => {
         const tags = `<div class="masonry-tags">${p.tags.map((t) => tagPill(t, t === state.tag)).join('')}</div>`;
