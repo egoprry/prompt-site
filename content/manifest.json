@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-15T12:09:50.239Z",
+  "generated": "2026-07-16T10:04:03.129Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -583,6 +583,46 @@
         ]
       },
       "content": "## Prompt\n\n```\nFrutiger Aero dream poster featuring green character with sunglasses flying through clouds, bubbles, green pastures, dolphins, dreamlike atmosphere, clean and elegant, 2002 frutigeraero aesthetics --no text --chaos 35 --ar 3:4 --exp 100 --raw --profile ne1w54c hos1t17 --ow 800 --stylize 800 --v 7\n```"
+    },
+    {
+      "id": "mj-surreal-3",
+      "title": "Wormhole",
+      "tags": [
+        "midjourney"
+      ],
+      "date": "2026-07-16",
+      "images": [
+        "mult-01.webp",
+        "mult-02.webp"
+      ],
+      "hero": "50% 50%",
+      "refs": {
+        "style-ref": [
+          "ref-01.webp"
+        ],
+        "omni-ref": [
+          "ref-01.webp"
+        ]
+      },
+      "dims": {
+        "mult-01.webp": [
+          928,
+          1232
+        ],
+        "mult-02.webp": [
+          928,
+          1232
+        ],
+        "style-ref/ref-01.webp": [
+          736,
+          917
+        ],
+        "omni-ref/ref-01.webp": [
+          607,
+          595
+        ]
+      },
+      "content": "## Prompt\n\n```\nMan, horror parasitism, seal, repetition, clinical sharp, constructivist poster aesthetic, worm's eye looking up --chaos 60 --ar 3:4 --exp 100 --raw --sref https://s.mj.run/Dq_b3gDpcwc --profile a15dut4 brkalbq rq1hb5e u4fepp9 --stylize 1000 --v 7\n```"
     },
     {
       "id": "mj-text-1",
