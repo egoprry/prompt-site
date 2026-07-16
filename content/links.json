@@ -6,6 +6,11 @@
       "desc": "Compress/convert images"
     },
     {
+      "name": "Strip metadata",
+      "url": "https://egoprry.github.io/strip-signed-gen/",
+      "desc": "remove ai flag from gpt img"
+    },
+    {
       "name": "Photopea",
       "url": "https://www.photopea.com",
       "desc": "Free Photoshop"
@@ -88,7 +93,7 @@
       "desc": "gallery"
     },
     {
-      "github": "egoprry",
+      "name": "github.com/egoprry",
       "url": "https://github.com/egoprry",
       "desc": "github profile"
     }
