@@ -1387,7 +1387,8 @@ body.assets-page .controls {
   border-radius: var(--radius);
   width: min(720px, 100%);
   /* width: 100%; */
-  max-height: calc(100vh - 48px);
+  /* max-height: calc(100vh - 48px); */
+  max-height: 80vh;
   display: flex;
   overflow: hidden;
   flex-direction: column;
@@ -1421,27 +1422,38 @@ body.assets-page .controls {
   gap: 20px;
 }
 
-.tree-lines {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
 .tree-group {
   display: flex;
   gap: 48px;
   align-items: flex-start;
 }
 
+/* collapsed groups show just their tag chip */
+.tree-group.collapsed .tree-posts { display: none; }
+
+.tree-tag { cursor: pointer; font-family: var(--font-sans); }
+
+.tree-count {
+  margin-left: 4px;
+  color: var(--text-3);
+  font-size: 11px;
+}
+
+.tree-chevron {
+  margin-left: auto;
+  display: inline-flex;
+  color: var(--text-3);
+}
+
 .tree-tag {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   flex: 0 0 160px;
   height: 24px;
-  padding: 0 8px;
+  padding: 0 4px;
   border: 1px solid var(--border-strong);
-  border-radius: 9999px;
+  /* border-radius: 9999px; */
   background: var(--bg);
   font-size: 12px;
   color: var(--text-2);
