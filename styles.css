@@ -801,6 +801,12 @@ body.assets-page .controls {
   margin-top: 0;
 }
 
+.foot-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .post-date {
   color: var(--text-2);
   font-size: 12px;

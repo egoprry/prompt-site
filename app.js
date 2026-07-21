@@ -56,6 +56,7 @@
     check: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 4.5"/></svg>',
     fail: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>',
     image: '<svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5"/><circle cx="6" cy="6.5" r="0.5" fill="currentColor"/><path d="M14 10.5L11 7.5l-5 5"/></svg>',
+    x: '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
     chevronDown: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>',
     chevronUp: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg>',
   };
@@ -150,6 +151,14 @@
 
   const authorLink = (handle) =>
     `<a class="author-link" href="https://x.com/${encodeURIComponent(handle)}" target="_blank" rel="noopener">@${escapeHtml(handle)}</a>`;
+
+  /* Share-on-X button: opens the compose intent pre-filled with the post
+     title and its permalink. */
+  const shareXBtn = (p, sm) => {
+    const permalink = `${location.origin}${location.pathname}#/post/${encodeURIComponent(p.id)}`;
+    const intent = `https://x.com/intent/post?text=${encodeURIComponent(p.title)}&url=${encodeURIComponent(permalink)}`;
+    return `<a class="btn${sm ? ' btn-sm' : ''} btn-icon" href="${escapeHtml(intent)}" target="_blank" rel="noopener" aria-label="Share on X" title="Share on X">${ICONS.x}</a>`;
+  };
 
   const getLayout = () => {
     try {
@@ -623,7 +632,10 @@
                 <div class="post-tags">${p.tags.map((t) => tagPill(t, t === state.tag)).join('')}</div>
                 <div class="post-foot">
                   ${p.author ? authorLink(p.author) : '<span></span>'}
-                  <div class="post-date">${formatDate(p.date)}</div>
+                  <div class="foot-right">
+                    ${shareXBtn(p, true)}
+                    <div class="post-date">${formatDate(p.date)}</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -751,6 +763,7 @@
         <div class="post-topnav">
           <a class="back-link" href="#/">&#8592; Back to all posts</a>
           <div class="post-cycle">
+            ${shareXBtn(p, true)}
             ${navBtn(prev, 'Previous')}
             <span class="post-cycle-count">${idx + 1} / ${order.length}</span>
             ${navBtn(next, 'Next')}
