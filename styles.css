@@ -22,7 +22,7 @@
   --radius: 6px;
   --hero-thumb: 50%;
   --post-height: 320px;
-  --list-post-height: 400px;
+  --list-post-height: 340px;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, "Liberation Mono", monospace;
 }
@@ -502,8 +502,24 @@ body.assets-page .controls {
   word-break: break-word;
   max-height: 168px;
   overflow-y: auto;
-  padding: 8px 40px 8px 10px;
-  /* right gap clears the pinned copy button */
+  padding: 8px 76px 8px 10px;
+  /* right gap clears the pinned toggle + copy buttons */
+}
+
+/* collapsed: a single ellipsized line until toggled open */
+.prompt-preview.collapsed .prompt-preview-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: none;
+}
+
+.prompt-actions {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  gap: 4px;
 }
 
 /* resource thumbnails on the card: small squares, no per-image actions;
@@ -539,10 +555,53 @@ body.assets-page .controls {
   min-height: var(--list-post-height);
 }
 
-/* posts without a prompt preview (no gpt/mj/gem prefix) sit half as tall */
+/* posts without a prompt preview (no gpt/mj/gem prefix) keep their height */
 .post-card-short:not(.post-card-grid) .post-hero {
-  min-height: calc(var(--list-post-height) / 2);
+  min-height: 200px;
 }
+
+/* list mode: main column + sticky mini-thumbnail rail */
+.list-wrap {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.list-wrap .post-list {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.post-rail {
+  position: sticky;
+  top: 84px;
+  flex: 0 0 64px;
+  max-height: 62vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.rail-thumb {
+  width: 50px;
+  height: 50px;
+  flex: 0 0 auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-3);
+  cursor: pointer;
+}
+.rail-thumb:hover { border-color: var(--border-strong); }
+.rail-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* rail jumps land below the sticky topbar */
+.post-card { scroll-margin-top: 84px; }
 
 /* prompts mode: compact title + copyable prompt rows */
 .prompt-rows {
@@ -586,12 +645,7 @@ body.assets-page .controls {
 
 .prompt-row .btn-icon { flex: 0 0 auto; }
 
-.prompt-copy {
-  position: absolute;
-  bottom: 6px;
-  right: 6px;
-  background: var(--bg-2);
-}
+.prompt-actions .btn { background: var(--bg-2); }
 
 /* small resource-count badge on card thumbnails */
 .hero-badge {
@@ -1533,6 +1587,9 @@ body.assets-page .controls {
   /* prompts mode: title stacks above the prompt on narrow screens */
   .prompt-row { flex-wrap: wrap; }
   .prompt-row-title { flex-basis: 100%; }
+
+  /* no thumbnail rail on small screens */
+  .post-rail { display: none; }
 
   /* grid stays at least two-up even on small screens; shorter thumbnails
      so half-width cards keep sane proportions */

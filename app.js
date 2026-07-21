@@ -56,6 +56,8 @@
     check: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.5 3.5L13 4.5"/></svg>',
     fail: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>',
     image: '<svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5"/><circle cx="6" cy="6.5" r="0.5" fill="currentColor"/><path d="M14 10.5L11 7.5l-5 5"/></svg>',
+    chevronDown: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>',
+    chevronUp: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg>',
   };
 
   const downloadIconBtn = (href, sm) =>
@@ -85,6 +87,10 @@
      without a fin) keep the original, since their thumbs are tiny squares. */
   const heroSrc = (post, file) =>
     (isFin(file) || isMult(file)) ? thumbUrl(post, file) : imageUrl(post, file);
+
+  /* Rail mini: square mini- copy for finals, plain square thumb otherwise. */
+  const railSrc = (post, file) =>
+    (isFin(file) || isMult(file)) ? thumbUrl(post, `mini-${file}`) : thumbUrl(post, file);
   const isRes = (file) => /^res-[a-z]/i.test(file);
   const resLetter = (file) => (file.match(/^res-([a-z])/i) || [])[1]?.toUpperCase() || '';
 
@@ -539,9 +545,12 @@
             <div class="post-meta">
               <div class="post-title">${escapeHtml(p.title)}</div>
               ${p.tags.some((t) => /gemini|chatgpt|midjourney/i.test(t)) ? `
-              <div class="prompt-preview">
+              <div class="prompt-preview collapsed">
                 <div class="prompt-preview-text">${escapeHtml(promptText(p.content))}</div>
-                <button class="btn btn-sm btn-icon prompt-copy" data-copy-text="${escapeHtml(promptText(p.content))}" aria-label="Copy prompt" title="Copy">${ICONS.copy}</button>
+                <div class="prompt-actions">
+                  <button class="btn btn-sm btn-icon" data-prompt-toggle aria-label="Expand prompt" title="Expand">${ICONS.chevronDown}</button>
+                  <button class="btn btn-sm btn-icon" data-copy-text="${escapeHtml(promptText(p.content))}" aria-label="Copy prompt" title="Copy">${ICONS.copy}</button>
+                </div>
               </div>` : ''}
               ${cardThumbs}
               <div class="post-bottom">
@@ -554,7 +563,18 @@
             </div>
           </article>`;
       });
-      parts.push(`<div class="post-list">${cards.join('')}</div>`);
+      // sticky mini-thumbnail rail for jumping between posts (list mode only)
+      const railItems = shown
+        .filter((p) => p.images.length)
+        .map((p) => `
+          <button class="rail-thumb" data-rail="${escapeHtml(p.id)}" title="${escapeHtml(p.title)}" aria-label="Jump to ${escapeHtml(p.title)}">
+            <img loading="lazy" src="${railSrc(p, p.images[0])}" alt="">
+          </button>`).join('');
+      parts.push(`
+        <div class="list-wrap">
+          <div class="post-list">${cards.join('')}</div>
+          ${railItems ? `<aside class="post-rail" aria-label="Post thumbnails">${railItems}</aside>` : ''}
+        </div>`);
     }
 
     app.innerHTML = parts.join('\n');
@@ -1159,6 +1179,21 @@
       els.tag.value = tag.getAttribute('data-tag');
       location.hash = '#/';
       writeListHash();
+      return;
+    }
+    const promptToggle = e.target.closest('[data-prompt-toggle]');
+    if (promptToggle) {
+      const box = promptToggle.closest('.prompt-preview');
+      const collapsed = box.classList.toggle('collapsed');
+      promptToggle.innerHTML = collapsed ? ICONS.chevronDown : ICONS.chevronUp;
+      promptToggle.setAttribute('aria-label', collapsed ? 'Expand prompt' : 'Collapse prompt');
+      promptToggle.setAttribute('title', collapsed ? 'Expand' : 'Collapse');
+      return;
+    }
+    const railBtn = e.target.closest('[data-rail]');
+    if (railBtn) {
+      const card = document.querySelector(`.post-card[data-post="${CSS.escape(railBtn.getAttribute('data-rail'))}"]`);
+      if (card) card.scrollIntoView({ block: 'start' });
       return;
     }
     const cardThumb = e.target.closest('[data-card-thumb]');

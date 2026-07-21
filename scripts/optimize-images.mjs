@@ -174,26 +174,36 @@ async function generateThumbs(dir, label, isRefDir) {
   } catch {
     return;
   }
-  const eligible = files.filter((f) => (isRefDir ? true : /^(img|res|fin|mult)-/i.test(f)));
+  // artifact plan: square thumbs for resources/refs; fin/mult finals get a
+  // 1400px display copy plus a mini- square for the sidebar rail
+  const artifacts = [];
+  for (const f of files) {
+    if (isRefDir || /^(img|res)-/i.test(f)) {
+      artifacts.push({ name: f, src: f, kind: 'square' });
+    } else if (/^(fin|mult)-/i.test(f)) {
+      artifacts.push({ name: f, src: f, kind: 'display' });
+      artifacts.push({ name: `mini-${f}`, src: f, kind: 'square' });
+    }
+  }
   const tdir = path.join(dir, 'thumbs');
 
   let existing = [];
   try { existing = await readdir(tdir); } catch { /* no thumbs dir yet */ }
 
+  const expected = new Set(artifacts.map((a) => a.name));
   for (const t of existing) {
-    if (!eligible.includes(t)) {
+    if (!expected.has(t)) {
       await unlink(path.join(tdir, t));
       console.log(`  - ${label}/thumbs/${t} (orphan removed)`);
     }
   }
 
-  if (!eligible.length) return;
+  if (!artifacts.length) return;
   await mkdir(tdir, { recursive: true });
-  for (const f of eligible) {
-    if (existing.includes(f)) continue;
-    const isDisplay = !isRefDir && /^(fin|mult)-/i.test(f);
-    const pipeline = sharp(await readFile(path.join(dir, f)));
-    if (isDisplay) {
+  for (const a of artifacts) {
+    if (existing.includes(a.name)) continue;
+    const pipeline = sharp(await readFile(path.join(dir, a.src)));
+    if (a.kind === 'display') {
       pipeline
         .resize(DISPLAY_SIZE, DISPLAY_SIZE, { fit: 'inside', withoutEnlargement: true })
         .webp({ quality: DISPLAY_QUALITY });
@@ -202,8 +212,8 @@ async function generateThumbs(dir, label, isRefDir) {
         .resize(THUMB_SIZE, THUMB_SIZE, { fit: 'cover' })
         .webp({ quality: THUMB_QUALITY });
     }
-    await pipeline.toFile(path.join(tdir, f));
-    console.log(`  + ${label}/thumbs/${f}${isDisplay ? ' (display)' : ''}`);
+    await pipeline.toFile(path.join(tdir, a.name));
+    console.log(`  + ${label}/thumbs/${a.name}${a.kind === 'display' ? ' (display)' : ''}`);
   }
 }
 
