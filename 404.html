@@ -54,9 +54,12 @@
     <a id="home" href="/">Back to GARDEN</a>
   </div>
   <script>
-    // On project pages the site root is /<repo>/ — point home there.
-    var seg = location.pathname.split('/')[1];
-    if (seg) document.getElementById('home').href = '/' + seg + '/';
+    // On github.io project pages the site root is /<repo>/; on the custom
+    // domain (groypergarden.com) the root is simply /.
+    if (/\.github\.io$/.test(location.hostname)) {
+      var seg = location.pathname.split('/')[1];
+      if (seg) document.getElementById('home').href = '/' + seg + '/';
+    }
   </script>
 </body>
 </html>

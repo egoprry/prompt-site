@@ -99,6 +99,6 @@ Posts with more than one image also get a "Download all (.zip)" button, which in
 
 1. Push this repo to GitHub.
 2. Settings → Pages → deploy from the `main` branch, root folder.
-3. Done — the site uses relative paths and hash routing, so it works at `https://<user>.github.io/<repo>/` without configuration.
+3. Done — the site uses relative paths and hash routing, so it works at `https://<user>.github.io/<repo>/` or behind a custom domain (the `CNAME` file points Pages at groypergarden.com) without configuration.
 
 Note: `node_modules/` is only needed locally for the scripts; it's gitignored and never deployed.
