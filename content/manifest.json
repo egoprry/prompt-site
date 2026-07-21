@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-21T08:57:19.096Z",
+  "generated": "2026-07-21T09:59:08.195Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -121,6 +121,46 @@
         ]
       },
       "content": "## Prompt\n\n```\nRender an image a person would see if they fell asleep looking at the first reference image while thinking about the second reference\n```"
+    },
+    {
+      "id": "gpt-complex-swap-1",
+      "title": "Complex swap 1",
+      "tags": [
+        "chatgpt-image-2",
+        "swap"
+      ],
+      "date": "2026-07-21",
+      "images": [
+        "mult-01.webp",
+        "mult-02.webp",
+        "img-01.webp",
+        "img-02.webp",
+        "img-03.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "mult-01.webp": [
+          1672,
+          941
+        ],
+        "mult-02.webp": [
+          1672,
+          941
+        ],
+        "img-01.webp": [
+          600,
+          343
+        ],
+        "img-02.webp": [
+          1660,
+          836
+        ],
+        "img-03.webp": [
+          1489,
+          670
+        ]
+      },
+      "content": "## Prompt\n\n```\nFront-on studio photograph:\n-same man from image 1, identical face, expression\n-sitting in the driver's seat of the black 1992 Honda NSX-R from image 2.\n-car is photographed dead-on from the front, \n-perfectly centered and symmetrical,\n-zero-degree angle,\n-entire front of the car visible in frame. \n-Man seen through the windshield, looking directly into the camera lens through the glass\n-Man seated naturally low as the car sits close to the ground\n-Man appears slightly lower in the frame than in image 1. \n-The navy \"AMERICA FIRST\" cap rests on the dashboard, visible through the windshield.\n-Same exact environment as image 1\n-The studio lights and background reflect softly and realistically in the windshield glass and the car's black paint\n-His face remains clearly visible through the glass. Cinematic broadcast-studio color grade matching image 1.\n```\n\n### Second Pass\n\n```\nbring forward to match framing of the original image\n```\n\n### Photoshop\n\n```\nI took other versions with better windshield reflections and photoshopped over the second pass. Also took a mic from another version\n```"
     },
     {
       "id": "gpt-inanimate-1",
