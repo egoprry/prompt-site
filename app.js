@@ -169,6 +169,49 @@
   const postOrder = () =>
     [...posts].sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
 
+  /* ------------------------------------------- windowed list rendering */
+
+  const PAGE_SIZE = 12;
+  let pager = null; // {container, items, build, index, sentinel}
+
+  function setupPager(container, items, build) {
+    pager = null;
+    if (!container || items.length <= PAGE_SIZE) return;
+    const sentinel = document.createElement('div');
+    sentinel.className = 'list-sentinel';
+    app.appendChild(sentinel);
+    pager = {
+      container,
+      items,
+      build,
+      index: PAGE_SIZE,
+      sentinel,
+      append() {
+        if (this.index >= this.items.length) return false;
+        const next = this.items.slice(this.index, this.index + PAGE_SIZE);
+        this.index += next.length;
+        this.container.insertAdjacentHTML('beforeend', next.map(this.build).join(''));
+        if (this.index >= this.items.length) this.sentinel.remove();
+        return true;
+      },
+    };
+    // deferred: renderRoute scrolls to the top right after rendering, and the
+    // initial fill-check must measure from there, not the old scroll position
+    setTimeout(checkPager, 0);
+  }
+
+  /* Append the next batch whenever the sentinel nears the viewport. */
+  function checkPager() {
+    while (pager && pager.index < pager.items.length &&
+           pager.sentinel.getBoundingClientRect().top < window.innerHeight + 600) {
+      pager.append();
+    }
+    if (pager && pager.index >= pager.items.length) pager = null;
+  }
+
+  window.addEventListener('scroll', checkPager, { passive: true });
+  window.addEventListener('resize', checkPager);
+
   /* Minimal markdown renderer: headings, lists, code fences, inline code,
      bold, italic, links, paragraphs. Everything is HTML-escaped first. */
   function renderMarkdown(md) {
@@ -461,31 +504,37 @@
         </section>`);
     }
 
-    parts.push('<div class="home-controls" id="home-controls"></div>');
-
     const layout = getLayout();
     // prompts mode only lists posts that actually carry a prompt
     const hasPrompt = (p) => /^(gpt|mj|gem)-/i.test(p.id)
       || p.tags.some((t) => /gemini|chatgpt|midjourney/i.test(t));
     const shown = layout === 'prompts' ? list.filter(hasPrompt) : list;
+
+    // search/filters + tools stick just below the topbar while scrolling
     parts.push(`
-      <div class="list-tools">
-        <div class="count">${shown.length} post${shown.length === 1 ? '' : 's'}</div>
-        <div class="list-actions">
-          <button class="btn btn-sm" data-tree>Content tree</button>
-          <div class="layout-toggle" role="group" aria-label="Layout">
-            <button class="btn btn-sm${layout === 'list' ? ' active' : ''}" data-layout="list">List</button>
-            <button class="btn btn-sm${layout === 'grid' ? ' active' : ''}" data-layout="grid">Grid</button>
-            <button class="btn btn-sm${layout === 'masonry' ? ' active' : ''}" data-layout="masonry">Masonry</button>
-            <button class="btn btn-sm${layout === 'prompts' ? ' active' : ''}" data-layout="prompts">Prompts</button>
+      <div class="home-sticky">
+        <div class="home-controls" id="home-controls"></div>
+        <div class="list-tools">
+          <div class="count">${shown.length} post${shown.length === 1 ? '' : 's'}</div>
+          <div class="list-actions">
+            <button class="btn btn-sm" data-tree>Content tree</button>
+            <div class="layout-toggle" role="group" aria-label="Layout">
+              <button class="btn btn-sm${layout === 'list' ? ' active' : ''}" data-layout="list">List</button>
+              <button class="btn btn-sm${layout === 'grid' ? ' active' : ''}" data-layout="grid">Grid</button>
+              <button class="btn btn-sm${layout === 'masonry' ? ' active' : ''}" data-layout="masonry">Masonry</button>
+              <button class="btn btn-sm${layout === 'prompts' ? ' active' : ''}" data-layout="prompts">Prompts</button>
+            </div>
           </div>
         </div>
       </div>`);
 
+    // each branch defines a per-item builder so the pager can append more
+    let pagerPlan = null; // {selector, items, build}
+
     if (shown.length === 0) {
       parts.push('<div class="status">No posts match the current filters.</div>');
     } else if (layout === 'prompts') {
-      const rows = shown.map((p) => {
+      const buildRow = (p) => {
         const prompt = promptText(p.content);
         return `
           <div class="prompt-row" data-post="${escapeHtml(p.id)}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
@@ -493,10 +542,11 @@
             <div class="prompt-row-text">${escapeHtml(prompt)}</div>
             <button class="btn btn-sm btn-icon" data-copy-text="${escapeHtml(prompt)}" aria-label="Copy prompt" title="Copy">${ICONS.copy}</button>
           </div>`;
-      });
-      parts.push(`<div class="prompt-rows">${rows.join('')}</div>`);
+      };
+      parts.push(`<div class="prompt-rows">${shown.slice(0, PAGE_SIZE).map(buildRow).join('')}</div>`);
+      pagerPlan = { selector: '.prompt-rows', items: shown, build: buildRow };
     } else if (layout === 'masonry') {
-      const items = list.map((p) => {
+      const buildItem = (p) => {
         const tags = `<div class="masonry-tags">${p.tags.map((t) => tagPill(t, t === state.tag)).join('')}</div>`;
         if (!p.images.length) {
           return `
@@ -511,10 +561,11 @@
             ${tags}
             ${resourceBadge(p)}
           </figure>`;
-      });
-      parts.push(`<div class="masonry post-masonry">${items.join('')}</div>`);
+      };
+      parts.push(`<div class="masonry post-masonry">${shown.slice(0, PAGE_SIZE).map(buildItem).join('')}</div>`);
+      pagerPlan = { selector: '.post-masonry', items: shown, build: buildItem };
     } else if (layout === 'grid') {
-      const cards = list.map((p) => {
+      const buildCard = (p) => {
         return `
           <article class="post-card post-card-grid" data-post="${escapeHtml(p.id)}" data-source="${getSourceLabel(escapeHtml(p.id))}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
             ${cardHero(p)}
@@ -523,10 +574,11 @@
               <div class="post-tags">${p.tags.map((t) => tagPill(t, t === state.tag)).join('')}</div>
             </div>
           </article>`;
-      });
-      parts.push(`<div class="post-list grid">${cards.join('')}</div>`);
+      };
+      parts.push(`<div class="post-list grid">${shown.slice(0, PAGE_SIZE).map(buildCard).join('')}</div>`);
+      pagerPlan = { selector: '.post-list.grid', items: shown, build: buildCard };
     } else {
-      const cards = list.map((p) => {
+      const buildCard = (p) => {
         // resource thumbnails: small squares opening the full image in the
         // lightbox; the full files load only when clicked
         const resFiles = [
@@ -562,8 +614,9 @@
               </div>
             </div>
           </article>`;
-      });
-      // sticky mini-thumbnail rail for jumping between posts (list mode only)
+      };
+      // sticky mini-thumbnail rail: always lists EVERY shown post, even the
+      // ones the pager hasn't rendered yet
       const railItems = shown
         .filter((p) => p.images.length)
         .map((p) => `
@@ -572,9 +625,10 @@
           </button>`).join('');
       parts.push(`
         <div class="list-wrap">
-          <div class="post-list">${cards.join('')}</div>
+          <div class="post-list">${shown.slice(0, PAGE_SIZE).map(buildCard).join('')}</div>
           ${railItems ? `<aside class="post-rail" aria-label="Post thumbnails">${railItems}</aside>` : ''}
         </div>`);
+      pagerPlan = { selector: '.list-wrap .post-list', items: shown, build: buildCard };
     }
 
     app.innerHTML = parts.join('\n');
@@ -585,6 +639,12 @@
     if (slot && els.controls) {
       els.controls.prepend(els.search);
       slot.appendChild(els.controls);
+    }
+
+    if (pagerPlan) {
+      setupPager(app.querySelector(pagerPlan.selector), pagerPlan.items, pagerPlan.build);
+    } else {
+      pager = null;
     }
   }
 
@@ -938,6 +998,7 @@
 
   function renderRoute() {
     const state = readHash();
+    pager = null; // stale pagers must not append into detached nodes
     closeLightbox();
     closeTree();
     const navFor = state.view === 'assets' ? 'assets'
@@ -1110,6 +1171,15 @@
     }
   });
 
+  // The sticky home controls sit directly below the topbar, whose height
+  // varies as it wraps — expose it as a CSS variable.
+  const setTopbarHeight = () => {
+    const topbar = document.getElementById('topbar');
+    if (topbar) document.documentElement.style.setProperty('--topbar-h', `${topbar.offsetHeight}px`);
+  };
+  setTopbarHeight();
+  window.addEventListener('resize', setTopbarHeight);
+
   // Back to top: appears after scrolling, instant jump (no animations).
   const backTop = document.getElementById('back-top');
   window.addEventListener('scroll', () => {
@@ -1192,7 +1262,12 @@
     }
     const railBtn = e.target.closest('[data-rail]');
     if (railBtn) {
-      const card = document.querySelector(`.post-card[data-post="${CSS.escape(railBtn.getAttribute('data-rail'))}"]`);
+      const sel = `.post-card[data-post="${CSS.escape(railBtn.getAttribute('data-rail'))}"]`;
+      let card = document.querySelector(sel);
+      // the target may be beyond the rendered window — append until it exists
+      while (!card && pager && pager.append()) {
+        card = document.querySelector(sel);
+      }
       if (card) card.scrollIntoView({ block: 'start' });
       return;
     }

@@ -201,6 +201,21 @@ a:hover {
   display: none;
 }
 
+/* search/filters + list tools stick below the topbar while scrolling */
+.home-sticky {
+  position: sticky;
+  top: var(--topbar-h, 61px);
+  z-index: 90;
+  background: black;
+  border-bottom: 1px solid var(--border);
+  margin: 0 -24px 12px;
+  padding: 10px 24px 10px;
+}
+.home-sticky .home-controls { margin-bottom: 10px; }
+.home-sticky .list-tools { margin-bottom: 0; }
+
+.list-sentinel { height: 1px; }
+
 /* the post filters don't apply outside the posts views */
 body.assets-page .search,
 body.assets-page .controls {
@@ -621,7 +636,7 @@ body.assets-page .controls {
 
 .post-rail {
   position: sticky;
-  top: 84px;
+  top: calc(var(--topbar-h, 61px) + 110px);
   flex: 0 0 64px;
   max-height: 62vh;
   overflow-y: auto;
@@ -660,8 +675,8 @@ body.assets-page .controls {
 .rail-thumb:hover { border-color: var(--border-strong); }
 .rail-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* rail jumps land below the sticky topbar */
-.post-card { scroll-margin-top: 84px; }
+/* rail jumps land below the sticky topbar + home controls */
+.post-card { scroll-margin-top: calc(var(--topbar-h, 61px) + 118px); }
 
 /* prompts mode: compact title + copyable prompt rows */
 .prompt-rows {
@@ -1650,6 +1665,11 @@ body.assets-page .controls {
 
   /* no thumbnail rail on small screens */
   .post-rail { display: none; }
+
+  .home-sticky {
+    margin: 0 -16px 12px;
+    padding: 8px 16px;
+  }
 
   /* grid stays at least two-up even on small screens; shorter thumbnails
      so half-width cards keep sane proportions */
