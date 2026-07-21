@@ -80,6 +80,11 @@
 
   const isFin = (file) => /^fin/i.test(file);
   const isMult = (file) => /^mult/i.test(file);
+
+  /* Heroes show the 1400px display copy for finals; other files (posts
+     without a fin) keep the original, since their thumbs are tiny squares. */
+  const heroSrc = (post, file) =>
+    (isFin(file) || isMult(file)) ? thumbUrl(post, file) : imageUrl(post, file);
   const isRes = (file) => /^res-[a-z]/i.test(file);
   const resLetter = (file) => (file.match(/^res-([a-z])/i) || [])[1]?.toUpperCase() || '';
 
@@ -112,7 +117,7 @@
     if (multFiles.length >= 2) {
       return `<div class="post-hero post-hero-multi">
         <div class="post-hero-grid">${multFiles.slice(0, 4).map((img, i) =>
-          `<img loading="lazy" src="${imageUrl(p, img)}" alt="${escapeHtml(p.title)} image ${i + 1}">`
+          `<img loading="lazy" src="${heroSrc(p, img)}" alt="${escapeHtml(p.title)} image ${i + 1}">`
         ).join('')}</div>
         ${resourceBadge(p)}
       </div>`;
@@ -121,7 +126,7 @@
     const heroPos = /^\d{1,3}% \d{1,3}%$/.test(p.hero || '')
       ? ` style="object-position:${p.hero}"` : '';
     return `<div class="post-hero${isFin(p.images[0]) ? ' fin' : ''}">
-      <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${heroPos}>
+      <img loading="lazy" src="${heroSrc(p, p.images[0])}" alt="${escapeHtml(p.title)}"${heroPos}>
       ${resourceBadge(p)}
     </div>`;
   }
@@ -496,7 +501,7 @@
         }
         return `
           <figure class="masonry-item post-masonry-item${isFin(p.images[0]) ? ' fin' : ''}" data-post="${escapeHtml(p.id)}" tabindex="0" role="link" aria-label="${escapeHtml(p.title)}">
-            <img loading="lazy" src="${imageUrl(p, p.images[0])}" alt="${escapeHtml(p.title)}"${dimAttrs(p.dims, p.images[0])}>
+            <img loading="lazy" src="${heroSrc(p, p.images[0])}" alt="${escapeHtml(p.title)}"${dimAttrs(p.dims, p.images[0])}>
             ${tags}
             ${resourceBadge(p)}
           </figure>`;
@@ -575,12 +580,12 @@
     // One flat lightbox list: finals first, then each ref section in order.
     // p.images is fin-first, so fin figures occupy the leading indices.
     const gallery = p.images.map((img) => img);
-    // thumb figures display the small thumbs/ version; the lightbox index
-    // and download link always point at the full image
-    const figure = (file, alt, i, extra, badge, styleAttr, imgStyle, thumb) => `
+    // variant 'thumb' shows the 320px square, 'display' the 1400px copy;
+    // the lightbox index and download link always point at the full image
+    const figure = (file, alt, i, extra, badge, styleAttr, imgStyle, variant) => `
       <figure class="post-image-item${extra || ''}"${styleAttr || ''}>
         ${badge || ''}
-        <img loading="lazy" src="${thumb ? thumbUrl(p, file) : imageUrl(p, file)}" alt="${escapeHtml(alt)}" data-lightbox="${i}"${thumb ? ' width="320" height="320"' : dimAttrs(p.dims, file)}${imgStyle || ''}>
+        <img loading="lazy" src="${variant ? thumbUrl(p, file) : imageUrl(p, file)}" alt="${escapeHtml(alt)}" data-lightbox="${i}"${variant === 'thumb' ? ' width="320" height="320"' : dimAttrs(p.dims, file)}${imgStyle || ''}>
         <div class="img-actions">
           ${downloadIconBtn(imageUrl(p, file), true)}
           ${copyIconBtn(imageUrl(p, file), true)}
@@ -605,7 +610,7 @@
              ? ` style="width:min(${single ? '700px, 50vw' : '360px, 44vw'}, ${Math.round((single ? 550 : 420) * d[0] / d[1])}px)"`
              : '';
            const imgStyle = d ? ` style="aspect-ratio:${d[0]}/${d[1]}"` : '';
-           return figure(img, `${p.title} image ${i + 1}`, i, ` fin fin-hero${single ? '' : ' result-multi'}`, '', figStyle, imgStyle);
+           return figure(img, `${p.title} image ${i + 1}`, i, ` fin fin-hero${single ? '' : ' result-multi'}`, '', figStyle, imgStyle, 'display');
          }).join('')}</div>`
       : '';
 
@@ -619,7 +624,7 @@
           <div class="post-images post-images-refs">${files.map((f, j) => {
         const i = gallery.length;
         gallery.push(`${dir}/${f}`);
-        return figure(`${dir}/${f}`, `${p.title} ${label.toLowerCase()} ${j + 1}`, i, '', '', '', '', true);
+        return figure(`${dir}/${f}`, `${p.title} ${label.toLowerCase()} ${j + 1}`, i, '', '', '', '', 'thumb');
       }).join('')}</div>
         </section>`;
     }
@@ -637,7 +642,7 @@
       ? `<div class="post-images post-images-resources">${resourceFiles.map((img, j) => {
           const i = resultFiles.length + j;
           const badge = isRes(img) ? `<span class="res-badge">${resLetter(img)}</span>` : '';
-          return figure(img, `${p.title} resource ${j + 1}`, i, '', badge, '', '', true);
+          return figure(img, `${p.title} resource ${j + 1}`, i, '', badge, '', '', 'thumb');
         }).join('')}</div>`
       : '';
     const resourcesPanel = (resourceGrid || refSections)

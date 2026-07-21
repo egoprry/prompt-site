@@ -31,6 +31,8 @@ const MAX_DIM = 2048;
 const QUALITY = 82;
 const THUMB_SIZE = 320;   // square-cropped, covers 2x screens at ~150px
 const THUMB_QUALITY = 70;
+const DISPLAY_SIZE = 1400;   // fin/mult display copies: retina-safe at ~700px
+const DISPLAY_QUALITY = 78;
 const MAX_IMAGES = 7;
 const IMAGE_EXT = new Set(['.png', '.jpg', '.jpeg', '.gif', '.tif', '.tiff', '.bmp', '.avif', '.webp']);
 const REF_DIRS = ['style-ref', 'img-ref', 'omni-ref'];
@@ -157,11 +159,14 @@ async function processDir(dir, label, isRefDir) {
   return files.length;
 }
 
-/* Square thumbnails for resource images (post-root img-/res- files and all
-   ref-folder images), written to a thumbs/ subfolder next to the originals.
-   The site shows these small versions; full images load only in the
-   lightbox or via download. Skips thumbs that already exist and removes
-   orphans whose source image is gone. */
+/* Downscaled copies in a thumbs/ subfolder next to the originals:
+     - resource images (post-root img-/res- and all ref-folder files) get
+       320px square-cropped thumbnails
+     - fin/mult finals get aspect-preserved 1400px display copies, so heroes
+       and Result sections never load the full file
+   The site shows these; full images load only in the lightbox or via
+   download. Skips copies that already exist and removes orphans whose
+   source image is gone. */
 async function generateThumbs(dir, label, isRefDir) {
   let files;
   try {
@@ -169,7 +174,7 @@ async function generateThumbs(dir, label, isRefDir) {
   } catch {
     return;
   }
-  const eligible = files.filter((f) => (isRefDir ? true : /^(img|res)-/i.test(f)));
+  const eligible = files.filter((f) => (isRefDir ? true : /^(img|res|fin|mult)-/i.test(f)));
   const tdir = path.join(dir, 'thumbs');
 
   let existing = [];
@@ -186,11 +191,19 @@ async function generateThumbs(dir, label, isRefDir) {
   await mkdir(tdir, { recursive: true });
   for (const f of eligible) {
     if (existing.includes(f)) continue;
-    await sharp(await readFile(path.join(dir, f)))
-      .resize(THUMB_SIZE, THUMB_SIZE, { fit: 'cover' })
-      .webp({ quality: THUMB_QUALITY })
-      .toFile(path.join(tdir, f));
-    console.log(`  + ${label}/thumbs/${f}`);
+    const isDisplay = !isRefDir && /^(fin|mult)-/i.test(f);
+    const pipeline = sharp(await readFile(path.join(dir, f)));
+    if (isDisplay) {
+      pipeline
+        .resize(DISPLAY_SIZE, DISPLAY_SIZE, { fit: 'inside', withoutEnlargement: true })
+        .webp({ quality: DISPLAY_QUALITY });
+    } else {
+      pipeline
+        .resize(THUMB_SIZE, THUMB_SIZE, { fit: 'cover' })
+        .webp({ quality: THUMB_QUALITY });
+    }
+    await pipeline.toFile(path.join(tdir, f));
+    console.log(`  + ${label}/thumbs/${f}${isDisplay ? ' (display)' : ''}`);
   }
 }
 
