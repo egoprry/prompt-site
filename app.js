@@ -531,6 +531,20 @@
     // each branch defines a per-item builder so the pager can append more
     let pagerPlan = null; // {selector, items, build}
 
+    // sticky mini-thumbnail rail, shared by every layout: always lists EVERY
+    // shown post, even ones the pager hasn't rendered yet
+    const railItems = shown
+      .filter((p) => p.images.length)
+      .map((p) => `
+        <button class="rail-thumb" data-rail="${escapeHtml(p.id)}" title="${escapeHtml(p.title)}" aria-label="Jump to ${escapeHtml(p.title)}">
+          <img loading="lazy" src="${railSrc(p, p.images[0])}" alt="">
+        </button>`).join('');
+    const withRail = (inner) => `
+      <div class="list-wrap">
+        ${inner}
+        ${railItems ? `<aside class="post-rail" aria-label="Post thumbnails">${railItems}</aside>` : ''}
+      </div>`;
+
     if (shown.length === 0) {
       parts.push('<div class="status">No posts match the current filters.</div>');
     } else if (layout === 'prompts') {
@@ -543,7 +557,7 @@
             <button class="btn btn-sm btn-icon" data-copy-text="${escapeHtml(prompt)}" aria-label="Copy prompt" title="Copy">${ICONS.copy}</button>
           </div>`;
       };
-      parts.push(`<div class="prompt-rows">${shown.slice(0, PAGE_SIZE).map(buildRow).join('')}</div>`);
+      parts.push(withRail(`<div class="prompt-rows">${shown.slice(0, PAGE_SIZE).map(buildRow).join('')}</div>`));
       pagerPlan = { selector: '.prompt-rows', items: shown, build: buildRow };
     } else if (layout === 'masonry') {
       const buildItem = (p) => {
@@ -562,7 +576,7 @@
             ${resourceBadge(p)}
           </figure>`;
       };
-      parts.push(`<div class="masonry post-masonry">${shown.slice(0, PAGE_SIZE).map(buildItem).join('')}</div>`);
+      parts.push(withRail(`<div class="masonry post-masonry">${shown.slice(0, PAGE_SIZE).map(buildItem).join('')}</div>`));
       pagerPlan = { selector: '.post-masonry', items: shown, build: buildItem };
     } else if (layout === 'grid') {
       const buildCard = (p) => {
@@ -575,7 +589,7 @@
             </div>
           </article>`;
       };
-      parts.push(`<div class="post-list grid">${shown.slice(0, PAGE_SIZE).map(buildCard).join('')}</div>`);
+      parts.push(withRail(`<div class="post-list grid">${shown.slice(0, PAGE_SIZE).map(buildCard).join('')}</div>`));
       pagerPlan = { selector: '.post-list.grid', items: shown, build: buildCard };
     } else {
       const buildCard = (p) => {
@@ -615,19 +629,7 @@
             </div>
           </article>`;
       };
-      // sticky mini-thumbnail rail: always lists EVERY shown post, even the
-      // ones the pager hasn't rendered yet
-      const railItems = shown
-        .filter((p) => p.images.length)
-        .map((p) => `
-          <button class="rail-thumb" data-rail="${escapeHtml(p.id)}" title="${escapeHtml(p.title)}" aria-label="Jump to ${escapeHtml(p.title)}">
-            <img loading="lazy" src="${railSrc(p, p.images[0])}" alt="">
-          </button>`).join('');
-      parts.push(`
-        <div class="list-wrap">
-          <div class="post-list">${shown.slice(0, PAGE_SIZE).map(buildCard).join('')}</div>
-          ${railItems ? `<aside class="post-rail" aria-label="Post thumbnails">${railItems}</aside>` : ''}
-        </div>`);
+      parts.push(withRail(`<div class="post-list">${shown.slice(0, PAGE_SIZE).map(buildCard).join('')}</div>`));
       pagerPlan = { selector: '.list-wrap .post-list', items: shown, build: buildCard };
     }
 
@@ -1262,7 +1264,7 @@
     }
     const railBtn = e.target.closest('[data-rail]');
     if (railBtn) {
-      const sel = `.post-card[data-post="${CSS.escape(railBtn.getAttribute('data-rail'))}"]`;
+      const sel = `#app [data-post="${CSS.escape(railBtn.getAttribute('data-rail'))}"]`;
       let card = document.querySelector(sel);
       // the target may be beyond the rendered window — append until it exists
       while (!card && pager && pager.append()) {

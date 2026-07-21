@@ -629,7 +629,9 @@ body.assets-page .controls {
   gap: 16px;
   align-items: flex-start;
 }
-.list-wrap .post-list {
+.list-wrap > .post-list,
+.list-wrap > .masonry,
+.list-wrap > .prompt-rows {
   flex: 1 1 auto;
   min-width: 0;
 }
@@ -676,7 +678,9 @@ body.assets-page .controls {
 .rail-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* rail jumps land below the sticky topbar + home controls */
-.post-card { scroll-margin-top: calc(var(--topbar-h, 61px) + 118px); }
+.post-card,
+.masonry-item,
+.prompt-row { scroll-margin-top: calc(var(--topbar-h, 61px) + 118px); }
 
 /* prompts mode: compact title + copyable prompt rows */
 .prompt-rows {
