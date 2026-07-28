@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-21T10:25:17.425Z",
+  "generated": "2026-07-28T17:28:34.645Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -90,7 +90,7 @@
           1200
         ]
       },
-      "content": "## Prompt\n\n```\nA single unified composition formed by intermingling the distinctive visual qualities of character in first image and character in second. Not a collage or side-by-side, but an artistic chimera: weave together forms, textures, motifs, and stylistic signatures from both so they coexist within one coherent design. The result should preserve recognizable traits of each source while transforming them into a fused identity, emphasizing technique and aesthetic hybridity rather than contextual placement.\n```\n\n## Notes\n\n- Fuenter prompt"
+      "content": "## Prompt\n\n```\nA single unified composition formed by intermingling the distinctive visual qualities of character in first image and character in second. Not a collage or side-by-side, but an artistic chimera: weave together forms, textures, motifs, and stylistic signatures from both so they coexist within one coherent design. The result should preserve recognizable traits of each source while transforming them into a fused identity, emphasizing technique and aesthetic hybridity rather than contextual placement.\n```\n\n```\nFuse both characters into one coherent being. one silhouette/identity. Merge anatomy/forms of 1st with textures/palette/style of second. No split/collage. Keep 2–3 traits from each, transformed by the fusion, as if one artist always drew this hybrid.\n```\n\n## Notes\n\n- Fuenter prompt"
     },
     {
       "id": "gpt-combine-2",
@@ -337,7 +337,8 @@
       "id": "gpt-style-2",
       "title": "Alter style with prompt only",
       "tags": [
-        "chatgpt-image-2"
+        "chatgpt-image-2",
+        "style-transfer"
       ],
       "date": "2026-07-14",
       "images": [
@@ -361,7 +362,8 @@
       "id": "gpt-style-3",
       "title": "Transfer style render strategy",
       "tags": [
-        "chatgpt-image-2"
+        "chatgpt-image-2",
+        "style-transfer"
       ],
       "date": "2026-07-15",
       "images": [
@@ -385,6 +387,71 @@
         ]
       },
       "content": "## Prompt\n\n```\nrender the first image as if it were created by the artist of the second image\n```"
+    },
+    {
+      "id": "gpt-style-4",
+      "title": "80s style transfer prompts",
+      "tags": [
+        "chatgpt-image-2",
+        "style-transfer"
+      ],
+      "date": "2026-07-28",
+      "images": [
+        "mult-01.webp",
+        "mult-02.webp",
+        "img-01.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "mult-01.webp": [
+          1672,
+          941
+        ],
+        "mult-02.webp": [
+          1536,
+          1024
+        ],
+        "img-01.webp": [
+          1920,
+          1080
+        ]
+      },
+      "content": "## Prompt\n\n```\nRegrade this photo to look like a 1985 anamorphic film frame: tungsten-and-neon mixed lighting pushed heavily toward red/magenta, gobo shadows from window blinds raking diagonally across the subject, ISO 800 pushed film grain, lens chromatic aberration at frame edges, glowing halation around light sources, background reduced to abstract warm bokeh. Facial identity and hair must remain exactly as shown.\n```\n\n```\nTransform this image into a retro synthwave / 1980s Michael Mann-style film still: nighttime, moody, saturated crimson and violet lighting, venetian blind shadow stripes, grainy Kodak film texture, dreamy blur, city skyline bokeh through a window. Keep the man's face, expression, and hairstyle unchanged and photorealistic. same person & outfit just regraded\n```\n\n```\nRe-render this man as a still from a 1980s neo-noir thriller shot on 35mm film. He sits in a dark high-rise office at night, bathed in intense red and magenta neon light slicing through venetian blinds across his face and navy suit. Background is out-of-focus city lights rendered as soft bokeh. Add heavy analog film grain, chromatic aberration, halation on highlights, and a slightly soft focus. Preserve his exact facial likeness and wavy dark hair.\n```"
+    },
+    {
+      "id": "gpt-style-5",
+      "title": "Flash photo at night",
+      "tags": [
+        "chatgpt-image-2",
+        "style-transfer"
+      ],
+      "date": "2026-07-28",
+      "images": [
+        "mult-01.webp",
+        "mult-02.webp",
+        "img-01.webp",
+        "img-02.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "mult-01.webp": [
+          1448,
+          1086
+        ],
+        "mult-02.webp": [
+          1464,
+          1074
+        ],
+        "img-01.webp": [
+          736,
+          679
+        ],
+        "img-02.webp": [
+          736,
+          552
+        ]
+      },
+      "content": "## Prompt\n\n```\nPoint-and-shoot flash photography, 2003. direct harsh flash, same environment, the flash overexposing his face and the trees in background barely visible \n```\n\n```\nPoint-and-shoot flash photography, 2003. direct harsh flash, red-eye glow, the man at his desk placed in an endless empty parking garage at night, sodium vapor lamps receding into infinity, wet concrete reflections, the flash overexposing his face while everything 20 feet back falls into total black\n```"
     },
     {
       "id": "gpt-swap-2",
@@ -1062,26 +1129,48 @@
     "img-02.webp",
     "img-03.webp",
     "img-04.webp",
-    "img-05.webp",
     "img-06.webp",
     "img-07.webp",
-    "img-08.webp",
     "img-09.webp",
-    "img-10.webp",
-    "img-11.webp",
     "img-12.webp",
     "img-13.webp",
     "img-14.webp",
     "img-15.webp",
     "img-16.webp",
-    "img-17.webp",
-    "img-18.webp",
-    "img-19.webp",
-    "img-20.webp",
-    "img-21.webp",
-    "img-22.webp",
-    "img-23.webp",
-    "img-24.webp"
+    "img-24.webp",
+    "img-25.webp",
+    "img-26.webp",
+    "img-27.webp",
+    "img-28.webp",
+    "img-29.webp",
+    "img-30.webp",
+    "img-31.webp",
+    "img-32.webp",
+    "img-33.webp",
+    "img-34.webp",
+    "img-35.webp",
+    "img-36.webp",
+    "img-37.webp",
+    "img-38.webp",
+    "img-39.webp",
+    "img-40.webp",
+    "img-41.webp",
+    "img-42.webp",
+    "img-43.webp",
+    "img-44.webp",
+    "img-45.webp",
+    "img-46.webp",
+    "img-47.webp",
+    "img-48.webp",
+    "img-49.webp",
+    "img-50.webp",
+    "img-51.webp",
+    "img-52.webp",
+    "img-53.webp",
+    "img-54.webp",
+    "img-55.webp",
+    "img-56.webp",
+    "img-57.webp"
   ],
   "assetDims": {
     "img-01.webp": [
@@ -1100,10 +1189,6 @@
       1280,
       714
     ],
-    "img-05.webp": [
-      1080,
-      1457
-    ],
     "img-06.webp": [
       735,
       760
@@ -1112,21 +1197,9 @@
       1590,
       2048
     ],
-    "img-08.webp": [
-      1254,
-      1254
-    ],
     "img-09.webp": [
       1170,
       1344
-    ],
-    "img-10.webp": [
-      1086,
-      1448
-    ],
-    "img-11.webp": [
-      1086,
-      1448
     ],
     "img-12.webp": [
       896,
@@ -1148,37 +1221,141 @@
       736,
       736
     ],
-    "img-17.webp": [
-      619,
-      638
-    ],
-    "img-18.webp": [
-      2048,
-      2048
-    ],
-    "img-19.webp": [
-      848,
-      1264
-    ],
-    "img-20.webp": [
-      530,
-      728
-    ],
-    "img-21.webp": [
-      2048,
-      2048
-    ],
-    "img-22.webp": [
-      1072,
-      1136
-    ],
-    "img-23.webp": [
-      1037,
-      1517
-    ],
     "img-24.webp": [
       768,
       1024
+    ],
+    "img-25.webp": [
+      2048,
+      2048
+    ],
+    "img-26.webp": [
+      1086,
+      1448
+    ],
+    "img-27.webp": [
+      1086,
+      1448
+    ],
+    "img-28.webp": [
+      1086,
+      1448
+    ],
+    "img-29.webp": [
+      1254,
+      1254
+    ],
+    "img-30.webp": [
+      1254,
+      1254
+    ],
+    "img-31.webp": [
+      1086,
+      1448
+    ],
+    "img-32.webp": [
+      1684,
+      934
+    ],
+    "img-33.webp": [
+      744,
+      804
+    ],
+    "img-34.webp": [
+      832,
+      728
+    ],
+    "img-35.webp": [
+      318,
+      386
+    ],
+    "img-36.webp": [
+      829,
+      1080
+    ],
+    "img-37.webp": [
+      736,
+      679
+    ],
+    "img-38.webp": [
+      420,
+      420
+    ],
+    "img-39.webp": [
+      653,
+      653
+    ],
+    "img-40.webp": [
+      928,
+      1232
+    ],
+    "img-41.webp": [
+      928,
+      1232
+    ],
+    "img-42.webp": [
+      419,
+      595
+    ],
+    "img-43.webp": [
+      491,
+      508
+    ],
+    "img-44.webp": [
+      484,
+      516
+    ],
+    "img-45.webp": [
+      436,
+      446
+    ],
+    "img-46.webp": [
+      1086,
+      1448
+    ],
+    "img-47.webp": [
+      1037,
+      1517
+    ],
+    "img-48.webp": [
+      2048,
+      2048
+    ],
+    "img-49.webp": [
+      619,
+      638
+    ],
+    "img-50.webp": [
+      2048,
+      2048
+    ],
+    "img-51.webp": [
+      848,
+      1264
+    ],
+    "img-52.webp": [
+      530,
+      728
+    ],
+    "img-53.webp": [
+      1080,
+      1457
+    ],
+    "img-54.webp": [
+      1086,
+      1448
+    ],
+    "img-55.webp": [
+      1072,
+      1136
+    ],
+    "img-56.webp": [
+      1254,
+      1254
+    ],
+    "img-57.webp": [
+      1280,
+      714
     ]
   }
 }
