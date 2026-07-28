@@ -40,9 +40,7 @@
 }
 
 *::-webkit-scrollbar-track {
-  /* background-color: rgba(255,255,255,.1); */
   background-color: #b1b4b4 !important;
-  /* background-color: #afb0b1; */
   border-radius: 3px;
   padding: 1px;
 }
@@ -206,15 +204,33 @@ a:hover {
   position: sticky;
   top: var(--topbar-h, 61px);
   z-index: 90;
-  background: black;
-  border-bottom: 1px solid var(--border);
+  /* background: rgba(0, 0, 0, .10); */
+  /* backdrop-filter: blur(8px); */
+  /* -webkit-backdrop-filter: blur(16px); */
+  /* Safari support */
+  /* Enhances the colors behind the blur for an Apple-like finish */
+  backdrop-filter: blur(4px) saturate(180%);
+  -webkit-backdrop-filter: blur(4px) saturate(180%);
+  /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); */
+  /* background: #04100A; */
+  /* background: linear-gradient(180deg,rgba(4, 16, 10, 1) 0%, rgba(7, 26, 16, 1) 50%, rgba(255, 255, 255, 0) 75%); */
+  /* background: black; */
+  /* border-bottom: 1px solid var(--border); */
   margin: 0 -24px 12px;
-  padding: 10px 24px 10px;
+  padding: 5px 24px;
 }
-.home-sticky .home-controls { margin-bottom: 10px; }
-.home-sticky .list-tools { margin-bottom: 0; }
 
-.list-sentinel { height: 1px; }
+.home-sticky .home-controls {
+  margin-bottom: 10px;
+}
+
+.home-sticky .list-tools {
+  margin-bottom: 0;
+}
+
+.list-sentinel {
+  height: 1px;
+}
 
 /* the post filters don't apply outside the posts views */
 body.assets-page .search,
@@ -603,15 +619,25 @@ body.assets-page .controls {
   background: var(--bg-3);
   cursor: zoom-in;
 }
-.card-thumb:hover { border-color: var(--border-strong); }
+
+.card-thumb:hover {
+  border-color: var(--border-strong);
+}
 
 /* tags + date pinned to the card's bottom edge */
 .post-meta {
   display: flex;
   flex-direction: column;
 }
-.post-bottom { margin-top: auto; padding-top: 12px; }
-.post-bottom .post-tags { margin-top: 0; }
+
+.post-bottom {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.post-bottom .post-tags {
+  margin-top: 0;
+}
 
 /* taller list cards (grid/masonry keep --post-height) */
 .post-card:not(.post-card-grid) .post-hero {
@@ -629,6 +655,7 @@ body.assets-page .controls {
   gap: 16px;
   align-items: flex-start;
 }
+
 .list-wrap > .post-list,
 .list-wrap > .masonry,
 .list-wrap > .prompt-rows {
@@ -642,27 +669,31 @@ body.assets-page .controls {
   flex: 0 0 64px;
   max-height: 62vh;
   overflow-y: auto;
-  overflow-x:hidden;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   /* padding-right: 2px; */
   /* gap: 6px; */
   /* padding: 2px; */
   background: var(--bg);
-    scrollbar-width: none;     /* Hides scrollbar in Firefox */
+  scrollbar-width: none;
+  /* Hides scrollbar in Firefox */
   /* border: 1px solid var(--border); */
   /* border-radius: var(--radius); */
 }
 
 .post-rail::-webkit-scrollbar {
-  display:none;
+  display: none;
 }
+
 .post-rail:hover {
   scrollbar-width: auto;
 }
+
 .post-rail:hover::-webkit-scrollbar {
-  display:block;
+  display: block;
 }
+
 .rail-thumb {
   width: 50px;
   height: 50px;
@@ -674,13 +705,24 @@ body.assets-page .controls {
   /* background: var(--bg-3); */
   cursor: pointer;
 }
-.rail-thumb:hover { border-color: var(--border-strong); }
-.rail-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.rail-thumb:hover {
+  border-color: var(--border-strong);
+}
+
+.rail-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 /* rail jumps land below the sticky topbar + home controls */
 .post-card,
 .masonry-item,
-.prompt-row { scroll-margin-top: calc(var(--topbar-h, 61px) + 118px); }
+.prompt-row {
+  scroll-margin-top: calc(var(--topbar-h, 61px) + 118px);
+}
 
 /* prompts mode: compact title + copyable prompt rows */
 .prompt-rows {
@@ -699,7 +741,10 @@ body.assets-page .controls {
   padding: 8px 10px;
   cursor: pointer;
 }
-.prompt-row:hover { border-color: var(--border-strong); }
+
+.prompt-row:hover {
+  border-color: var(--border-strong);
+}
 
 .prompt-row-title {
   flex: 0 0 220px;
@@ -722,9 +767,13 @@ body.assets-page .controls {
   text-overflow: ellipsis;
 }
 
-.prompt-row .btn-icon { flex: 0 0 auto; }
+.prompt-row .btn-icon {
+  flex: 0 0 auto;
+}
 
-.prompt-actions .btn { background: var(--bg-2); }
+.prompt-actions .btn {
+  background: var(--bg-2);
+}
 
 /* small resource-count badge on card thumbnails */
 .hero-badge {
@@ -1352,9 +1401,7 @@ body.assets-page .controls {
 }
 
 .masonry-item.fin img {
-  /* border: var(--border-dark); */
   border: 1px solid transparent;
-  /* border: 1px solid var(--brand-dark); */
 }
 
 .masonry-item.fin img:hover {
@@ -1386,8 +1433,6 @@ body.assets-page .controls {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   width: min(720px, 100%);
-  /* width: 100%; */
-  /* max-height: calc(100vh - 48px); */
   max-height: 80vh;
   display: flex;
   overflow: hidden;
@@ -1429,9 +1474,14 @@ body.assets-page .controls {
 }
 
 /* collapsed groups show just their tag chip */
-.tree-group.collapsed .tree-posts { display: none; }
+.tree-group.collapsed .tree-posts {
+  display: none;
+}
 
-.tree-tag { cursor: pointer; font-family: var(--font-sans); }
+.tree-tag {
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
 
 .tree-count {
   margin-left: 4px;
@@ -1648,6 +1698,7 @@ body.assets-page .controls {
   color: var(--text-2);
   margin: 12px 0 20px;
 }
+
 /* @media (max-width: 840px) {
   #app {
     padding: 8px;
@@ -1660,13 +1711,15 @@ body.assets-page .controls {
 } */
 /* ------------------------------------------------------------------ mobile */
 @media (max-width: 840px) {
-    #app {
+  #app {
     padding: 4px;
   }
-    .topbar-row {
+
+  .topbar-row {
     padding: 10px 16px;
     gap: 8px;
   }
+
   .search {
     order: 3;
     flex-basis: 100%;
@@ -1683,11 +1736,18 @@ body.assets-page .controls {
   }
 
   /* prompts mode: title stacks above the prompt on narrow screens */
-  .prompt-row { flex-wrap: wrap; }
-  .prompt-row-title { flex-basis: 100%; }
+  .prompt-row {
+    flex-wrap: wrap;
+  }
+
+  .prompt-row-title {
+    flex-basis: 100%;
+  }
 
   /* no thumbnail rail on small screens */
-  .post-rail { display: none; }
+  .post-rail {
+    display: none;
+  }
 
   .home-sticky {
     margin: 0 -16px 12px;
