@@ -1130,12 +1130,13 @@
 
   // The sticky home controls sit directly below the topbar, whose height
   // varies as it wraps — expose it as a CSS variable.
-  const setTopbarHeight = () => {
-    const topbar = document.getElementById('topbar');
-    if (topbar) document.documentElement.style.setProperty('--topbar-h', `${topbar.offsetHeight}px`);
-  };
-  setTopbarHeight();
-  window.addEventListener('resize', setTopbarHeight);
+  
+  // const setTopbarHeight = () => {
+  //   const topbar = document.getElementById('topbar');
+  //   if (topbar) document.documentElement.style.setProperty('--topbar-h', `${topbar.offsetHeight}px`);
+  // };
+  // setTopbarHeight();
+  // window.addEventListener('resize', setTopbarHeight);
 
   // Back to top: appears after scrolling, instant jump (no animations).
   const backTop = document.getElementById('back-top');
