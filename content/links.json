@@ -6,6 +6,11 @@
       "desc": "Compress/convert images"
     },
     {
+      "name": "Poe rate image",
+      "url": "https://poe.com/rateimage",
+      "desc": "personal image rate bot"
+    },
+    {
       "name": "Strip metadata",
       "url": "https://egoprry.github.io/strip-signed-gen/",
       "desc": "remove ai flag from gpt img"

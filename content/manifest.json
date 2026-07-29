@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-28T18:37:19.706Z",
+  "generated": "2026-07-29T15:26:36.096Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -452,6 +452,31 @@
         ]
       },
       "content": "## Prompt\n\n```\nPoint-and-shoot flash photography, 2003. direct harsh flash, same environment, the flash overexposing his face and the trees in background barely visible \n```\n\n```\nPoint-and-shoot flash photography, 2003. direct harsh flash, red-eye glow, the man at his desk placed in an endless empty parking garage at night, sodium vapor lamps receding into infinity, wet concrete reflections, the flash overexposing his face while everything 20 feet back falls into total black\n```"
+    },
+    {
+      "id": "gpt-style-6",
+      "title": "Cinematic deep blue style transfer",
+      "tags": [
+        "chatgpt-image-2",
+        "style-transfer"
+      ],
+      "date": "2026-07-29",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp"
+      ],
+      "hero": "50% 50%",
+      "dims": {
+        "fin-01.webp": [
+          1916,
+          821
+        ],
+        "img-01.webp": [
+          1920,
+          1080
+        ]
+      },
+      "content": "## Prompt\n\n```\nUsing the man in the reference image: a film still scanned from a 1984 35mm print. He stands in profile at a floor-to-ceiling window in a dark broadcast studio at night, almost entirely silhouetted, only a thin rim of moonlight traces his face, hair, and shoulders. A full moon hangs over a distant city skyline, its reflection on water the brightest element, slightly blown out with soft halation. The entire image is a single deep cobalt-blue monochrome, no warm tones anywhere. Shadows crushed to true black, sparse midtones, visible film grain heavier in the shadows. Wide anamorphic framing, him off-center, palm fronds and furniture as dark foreground shapes. Not a bright digital photo: no HDR, no lifted shadows, no mixed lighting.\n```\n\n- relatively universal"
     },
     {
       "id": "gpt-swap-2",

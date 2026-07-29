@@ -21,8 +21,8 @@
   --topbar-h: 52px;
   /* --topbar-h: 61px; */
   --hero-thumb: 50%;
-  --post-height: 320px;
-  --list-post-height: 340px;
+  --post-height: 280px;
+  --list-post-height: 300px;
   --post-height-short: 200px;
   --rail-w: 64px;
   --rail-thumb: 50px;
@@ -39,7 +39,8 @@
   /* radii */
   --radius-xs: 3px;
   --radius-sm: 4px;
-  --radius: 6px;
+  --radius: 0;
+  /* --radius: 6px; */
   /* control heights */
   --ctl-h-sm: 26px;
   --ctl-h: 32px;
@@ -283,6 +284,7 @@ a:hover {
 
 .brand:hover {
   text-decoration: none;
+  opacity: .8;
 }
 
 .site-nav {
@@ -429,11 +431,13 @@ body.assets-page .controls {
   align-items: center;
   justify-content: center;
   gap: var(--sp-1-5);
-  height: var(--ctl-h);
-  padding: 0 var(--sp-3);
+  padding: var(--sp-3);
+  /* height: var(--ctl-h); */
+  /* padding: 0 var(--sp-3); */
   background: var(--bg);
   color: var(--text);
-  border: 1px solid var(--border);
+  border: 1px solid var(--bg-3);
+  /* border: 1px solid var(--border); */
   border-radius: var(--radius);
   font-family: var(--font-sans);
   font-size: var(--fs-md);
@@ -523,9 +527,11 @@ body.assets-page .controls {
 
 /* -------------------------------------------------------------- post cards */
 .count {
-  color: var(--on-accent);
+  /* color: var(--on-accent); */
+  color: var(--text);
   font-size: var(--fs-xs);
-  background-color: var(--accent);
+  /* background-color: var(--brand-hover); */
+  background-color: var(--bg-2);
   border-radius: var(--radius);
   /* padding: var(--sp-1); */
   padding: 0 var(--sp-1);
@@ -577,7 +583,7 @@ body.assets-page .controls {
 .post-list {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);
+  gap: var(--sp-4);
 }
 
 /* grid layout: full-width thumbnail on top, title + tags only */
@@ -597,7 +603,7 @@ body.assets-page .controls {
   height: var(--post-height);
   min-height: 0;
   border-right: none;
-  border-bottom: 1px solid var(--border);
+  /* border-bottom: 1px solid var(--border); */
 }
 
 .post-card-grid .post-hero.empty {
@@ -605,7 +611,7 @@ body.assets-page .controls {
 }
 
 .post-card-grid .post-meta {
-  padding: var(--sp-3) var(--sp-4);
+  padding: var(--sp-1) var(--sp-2);
 }
 
 .post-card-grid .post-tags {
@@ -615,7 +621,9 @@ body.assets-page .controls {
 .post-card {
   display: flex;
   background: var(--bg-2);
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
+  box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.8); 
+  /* border: 1px solid var(--border); */
   border-radius: var(--radius);
   overflow: hidden;
   cursor: pointer;
@@ -631,7 +639,9 @@ body.assets-page .controls {
 }
 
 .post-card:hover {
-  border-color: var(--border-strong);
+  /* border-color: var(--border-strong); */
+  /* filter: contrast(1.15); */
+  border-color: var(--bg-3)
 }
 
 /* single hero thumbnail filling the left portion of the card */
@@ -639,8 +649,8 @@ body.assets-page .controls {
   flex: 0 0 var(--hero-thumb);
   position: relative;
   min-height: var(--post-height);
-  background: var(--bg-3);
-  border-right: 1px solid var(--border);
+  /* background: var(--bg-3); */
+  /* border-right: 1px solid var(--border); */
 }
 
 .post-hero img {
@@ -672,8 +682,8 @@ body.assets-page .controls {
 /* "fin" finals keep their red marker
    (was var(--border-dark), which was never defined) */
 .post-hero.fin img {
-  outline: 2px solid var(--brand);
-  outline-offset: -2px;
+  /* outline: 2px solid var(--accent); */
+  /* outline-offset: -2px; */
 }
 
 .post-hero.empty {
@@ -746,7 +756,11 @@ body.assets-page .controls {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-1-5);
-  margin-top: var(--sp-2-5);
+  height: 100%;
+  /* align-items: bottom; */
+  /* justify-content: baseline; */
+  /* margin-top: auto; */
+  /* margin-top: var(--sp-2-5); */
 }
 
 .card-thumb {
@@ -1002,7 +1016,7 @@ body.assets-page .controls {
 /* -------------------------------------------------------------- post view */
 .post-view {
   max-width: 900px;
-  background: var(--bg-2);
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--sp-6);
@@ -1078,14 +1092,21 @@ body.assets-page .controls {
 
 /* Result section: single fin keeps the hero treatment; a mult set wraps */
 .result-label {
-  margin-top: var(--sp-5);
+  margin-top: var(--sp-4);
+  margin-left: var(--sp-2);
+  position: relative;
+  z-index: 100;
+  background: var(--brand);
+  color: var(--text);
+  border: 1px solid var(--brand);
 }
 
 .result-row {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-3);
-  margin-top: var(--sp-2);
+  /* margin-top: var(--sp-2); */
+  margin-top: calc(-1 * (var(--ctl-h)));
 }
 
 .result-row .post-image-item.fin-hero {
@@ -1140,10 +1161,16 @@ body.assets-page .controls {
 /* fixed-width download/copy pair, left-aligned under the image */
 .img-actions {
   display: flex;
-  margin-top: calc(-1 * var(--input-h));
-  margin-bottom: var(--sp-1);
-  padding: 2px;
-  gap: var(--sp-1-5);
+  /* margin-top: calc((-1 * var(--input-h)) - var(--sp-1)); */
+  margin-top: calc(-1 * var(--ctl-h));
+  /* margin-top: calc((-1 * var(--input-h)) - var(--sp-2)); */
+  /* margin-bottom: auto; */
+  margin-bottom: var(--sp-3);
+  /* padding: 2px; */
+  gap: var(--sp-1);
+  margin-left: auto;
+
+  /* justify-content: space-between; */
 }
 
 .img-actions .btn {
@@ -1169,7 +1196,8 @@ body.assets-page .controls {
   height: auto;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
+  /* border: 1px solid var(--border); */
   border-radius: var(--radius);
   cursor: zoom-in;
   background: var(--bg-3);
@@ -1180,7 +1208,7 @@ body.assets-page .controls {
 }
 
 .post-image-item.fin img {
-  border: 2px solid var(--brand);
+  /* border: 2px solid var(--brand); */
 }
 
 .post-image-item.fin img:hover {
@@ -1200,6 +1228,8 @@ body.assets-page .controls {
   height: auto;
   max-height: 550px;
   object-fit: contain;
+  box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.8); 
+
 }
 
 .post-image-item .ref-label {
@@ -1223,11 +1253,13 @@ body.assets-page .controls {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-2);
-  border: 1px solid var(--border-strong);
+  color: var(--text);
+  /* color: var(--text-2); */
+  border: 1px solid var(--brand);
+  /* border: 1px solid var(--border-strong); */
   padding: 1px var(--sp-2);
   border-radius: var(--radius-xs);
-  margin-bottom: var(--sp-2);
+  /* margin-bottom: var(--sp-2); */
 }
 
 .post-images-refs {
@@ -1739,10 +1771,12 @@ body.assets-page .controls {
 }
 
 .link-row {
+  position: relative;
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
   gap: var(--sp-3);
-  padding: var(--sp-2) 0;
+  padding: var(--sp-1) 0;
   border-bottom: 1px solid var(--border);
 }
 
