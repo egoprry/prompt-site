@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-29T15:26:36.096Z",
+  "generated": "2026-08-01T06:03:28.801Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -924,6 +924,95 @@
     }
   ],
   "styles": [
+    {
+      "id": "profile-82-1",
+      "type": "profile",
+      "title": "8.2 profile #1",
+      "code": "rtexjn3",
+      "tags": [
+        "82",
+        "profile"
+      ],
+      "date": "2026-07-31",
+      "images": [
+        "fin-01.webp"
+      ],
+      "dims": {
+        "fin-01.webp": [
+          610,
+          309
+        ]
+      },
+      "notes": "Personal mj 8.2 profile"
+    },
+    {
+      "id": "mood-DBZ-1",
+      "type": "mood",
+      "title": "DBZ moodboard style",
+      "code": "52wb7jt",
+      "tags": [
+        "anime",
+        "90s"
+      ],
+      "date": "2026-07-31",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp",
+        "img-03.webp",
+        "img-04.webp",
+        "img-05.webp"
+      ],
+      "dims": {
+        "fin-01.webp": [
+          750,
+          378
+        ],
+        "img-01.webp": [
+          1232,
+          928
+        ],
+        "img-02.webp": [
+          1232,
+          928
+        ],
+        "img-03.webp": [
+          1232,
+          928
+        ],
+        "img-04.webp": [
+          1232,
+          928
+        ],
+        "img-05.webp": [
+          1536,
+          768
+        ]
+      },
+      "notes": "Curated from early DBZ cell era"
+    },
+    {
+      "id": "mood-cinematic-1",
+      "type": "mood",
+      "title": "Moody/surreal/cinematic style",
+      "code": "gzmy8gj",
+      "tags": [
+        "surreal",
+        "cinematic",
+        "moody"
+      ],
+      "date": "2026-07-31",
+      "images": [
+        "fin-01.webp"
+      ],
+      "dims": {
+        "fin-01.webp": [
+          750,
+          378
+        ]
+      },
+      "notes": "Range of cinematic + surreal moods"
+    },
     {
       "id": "mood-elegant-1",
       "type": "mood",

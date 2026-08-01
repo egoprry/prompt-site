@@ -1,24 +1,34 @@
 {
   "resources": [
     {
-      "name": "Squoosh",
-      "url": "https://squoosh.app",
-      "desc": "Compress/convert images"
+      "name": "RATE IMAGE",
+      "url": "https://poe.com/rateimage",
+      "desc": "(MINE) image rate bot"
     },
     {
-      "name": "Poe rate image",
-      "url": "https://poe.com/rateimage",
-      "desc": "personal image rate bot"
+      "name": "PROMPT MAP",
+      "url": "https://poe.com/PromptMap",
+      "desc": "(MINE) breaks down prompts"
     },
     {
       "name": "Strip metadata",
       "url": "https://egoprry.github.io/strip-signed-gen/",
-      "desc": "remove ai flag from gpt img"
+      "desc": "(MINE) remove ai flag from gpt img"
+    },
+    {
+      "name": "MJ v7 prompt-gen",
+      "url": "https://egoprry.github.io/prompt-gen1/",
+      "desc": "(MINE) prompt gen expirement"
     },
     {
       "name": "Photopea",
       "url": "https://www.photopea.com",
       "desc": "Free Photoshop"
+    },
+    {
+      "name": "Squoosh",
+      "url": "https://squoosh.app",
+      "desc": "Compress/convert images"
     },
     {
       "name": "Grainrad",
@@ -69,11 +79,6 @@
       "name": "Powerthesaurus",
       "url": "https://www.powerthesaurus.org",
       "desc": "For prompting"
-    },
-    {
-      "name": "MJ v7 prompt-gen",
-      "url": "https://egoprry.github.io/prompt-gen1/",
-      "desc": "prompt gen expirement"
     },
     {
       "name": "Midjourney Docs",
