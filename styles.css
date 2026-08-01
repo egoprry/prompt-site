@@ -553,7 +553,7 @@ body.assets-page .controls {
 .list-actions {
   display: flex;
   gap: var(--sp-2);
-  background-color: var(--bg-2)
+  background-color: var(--bg-3)
 }
 
 .layout-toggle {
@@ -1996,5 +1996,12 @@ body.assets-page .controls {
 
   .nav-link {
     padding: 0 var(--sp-1);
+  }
+  .count {
+    display:none;
+  }
+
+  .home-sticky .home-controls {
+    margin-bottom: 0;
   }
 }
