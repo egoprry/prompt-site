@@ -1847,6 +1847,7 @@ body.assets-page .controls {
 }
 
 /* ------------------------------------------------------------------ mobile */
+
 @media (max-width: 840px) {
   #app {
     padding: var(--sp-1);
@@ -1980,5 +1981,20 @@ body.assets-page .controls {
 
   .post-view {
     padding: var(--sp-1-5);
+  }
+}
+@media (max-width: 540px) {
+.topbar-row {
+    padding: var(--sp-2-5) var(--sp-1);
+    gap: var(--sp-1);
+  }
+
+  .brand {
+    font-size: var(--fs-md);
+    gap:var(--sp-1);
+  }
+
+  .nav-link {
+    padding: 0 var(--sp-1);
   }
 }
