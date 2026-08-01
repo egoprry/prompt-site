@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-01T06:03:28.801Z",
+  "generated": "2026-08-01T06:18:27.432Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -992,7 +992,7 @@
       "notes": "Curated from early DBZ cell era"
     },
     {
-      "id": "mood-cinematic-1",
+      "id": "mood-cin-1",
       "type": "mood",
       "title": "Moody/surreal/cinematic style",
       "code": "gzmy8gj",
@@ -1007,8 +1007,8 @@
       ],
       "dims": {
         "fin-01.webp": [
-          750,
-          378
+          754,
+          379
         ]
       },
       "notes": "Range of cinematic + surreal moods"
