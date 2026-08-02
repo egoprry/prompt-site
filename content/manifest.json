@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-01T06:18:27.432Z",
+  "generated": "2026-08-02T16:04:33.436Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -630,7 +630,7 @@
       "title": "Soprano MJ poster",
       "tags": [
         "midjourney",
-        "8.2"
+        "v8.2"
       ],
       "date": "2026-07-20",
       "images": [
@@ -845,7 +845,7 @@
       "title": "Y2K MJ poster",
       "tags": [
         "midjourney",
-        "8.2"
+        "v8.2"
       ],
       "date": "2026-07-20",
       "images": [
@@ -924,6 +924,52 @@
     }
   ],
   "styles": [
+    {
+      "id": "sref-1337103288-1",
+      "type": "sref",
+      "title": "sref painting 1",
+      "code": "1337103288",
+      "tags": [
+        "sref",
+        "painting"
+      ],
+      "date": "2026-08-02",
+      "images": [
+        "fin-01.webp",
+        "img-01.webp",
+        "img-02.webp",
+        "img-03.webp",
+        "img-04.webp",
+        "img-05.webp"
+      ],
+      "dims": {
+        "fin-01.webp": [
+          292,
+          189
+        ],
+        "img-01.webp": [
+          2048,
+          1024
+        ],
+        "img-02.webp": [
+          896,
+          1344
+        ],
+        "img-03.webp": [
+          2048,
+          1365
+        ],
+        "img-04.webp": [
+          2048,
+          1365
+        ],
+        "img-05.webp": [
+          2048,
+          1365
+        ]
+      },
+      "notes": "moody painting"
+    },
     {
       "id": "profile-82-1",
       "type": "profile",
@@ -1254,7 +1300,6 @@
     "img-24.webp",
     "img-25.webp",
     "img-26.webp",
-    "img-27.webp",
     "img-28.webp",
     "img-29.webp",
     "img-30.webp",
@@ -1344,10 +1389,6 @@
       2048
     ],
     "img-26.webp": [
-      1086,
-      1448
-    ],
-    "img-27.webp": [
       1086,
       1448
     ],

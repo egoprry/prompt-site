@@ -1,2 +1,2 @@
 midjourney
-8.2
+v8.2
