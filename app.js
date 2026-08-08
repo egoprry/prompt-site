@@ -25,7 +25,8 @@
   let posts = [];
   let styles = [];
   let styleTypeFilter = '';
-  let assets = [];
+  let assets = []; // [{file, category}] — file is relative to data/, e.g. "landscapes/img-01.webp"
+  let assetCategoryFilter = '';
   let assetDims = {};
   let linksData = null;
   let promptOfDay = null;
@@ -517,7 +518,7 @@
         <div class="list-tools">
           <div class="count">${shown.length} post${shown.length === 1 ? '' : 's'}</div>
           <div class="list-actions">
-            <button class="btn btn-sm" data-tree>Content tree</button>
+            <button class="btn btn-sm" data-tree>Tree</button>
             <div class="layout-toggle" role="group" aria-label="Layout">
               <button class="btn btn-sm${layout === 'list' ? ' active' : ''}" data-layout="list">List</button>
               <button class="btn btn-sm${layout === 'grid' ? ' active' : ''}" data-layout="grid">Grid</button>
@@ -772,28 +773,40 @@
     document.title = `${p.title} — GARDEN`;
   }
 
-  function renderAssets() {
-    zipTargets = assets.map((f) => ({ path: `data/${encodeURIComponent(f)}`, name: f }));
-    zipName = 'garden-assets.zip';
-    lightboxImages = assets.map((f) => `data/${encodeURIComponent(f)}`);
+  const assetUrl = (f) => `data/${f.split('/').map(encodeURIComponent).join('/')}`;
 
-    const items = assets.map((f, i) => `
-      <figure class="masonry-item${isFin(f) ? ' fin' : ''}">
-        <img loading="lazy" src="data/${encodeURIComponent(f)}" alt="Asset ${escapeHtml(f)}" data-lightbox="${i}"${dimAttrs(assetDims, f)}>
+  function renderAssets() {
+    const categories = [...new Set(assets.map((a) => a.category))];
+    const list = assetCategoryFilter ? assets.filter((a) => a.category === assetCategoryFilter) : assets;
+
+    zipTargets = list.map((a) => ({ path: assetUrl(a.file), name: a.file }));
+    zipName = 'garden-assets.zip';
+    lightboxImages = list.map((a) => assetUrl(a.file));
+
+    const catButtons = categories.length > 1 ? ['', ...categories].map((c) =>
+      `<button class="btn btn-sm${assetCategoryFilter === c ? ' active-filter' : ''}" data-asset-category="${escapeHtml(c)}">${c ? escapeHtml(c) : 'All'}</button>`
+    ).join('') : '';
+
+    const items = list.map((a, i) => `
+      <figure class="masonry-item${isFin(a.file.split('/').pop()) ? ' fin' : ''}">
+        <img loading="lazy" src="${assetUrl(a.file)}" alt="Asset ${escapeHtml(a.file)}" data-lightbox="${i}"${dimAttrs(assetDims, a.file)}>
         <div class="img-actions">
-          ${downloadIconBtn(`data/${encodeURIComponent(f)}`, true)}
-          ${copyIconBtn(`data/${encodeURIComponent(f)}`, true)}
+          ${downloadIconBtn(assetUrl(a.file), true)}
+          ${copyIconBtn(assetUrl(a.file), true)}
         </div>
       </figure>`).join('');
 
     app.innerHTML = `
       <div class="assets-head">
-        <div class="count">${assets.length} asset${assets.length === 1 ? '' : 's'}</div>
-        ${assets.length ? '<button class="btn" data-zip>Download all (.zip)</button>' : ''}
+        <div class="count">${list.length} asset${list.length === 1 ? '' : 's'}</div>
+        ${catButtons ? `<div class="list-actions">${catButtons}</div>` : ''}
+        ${list.length ? '<button class="btn" data-zip>⤓ all (.zip)</button>' : ''}
       </div>
-      ${assets.length
+      ${list.length
         ? `<div class="masonry">${items}</div>`
-        : '<div class="status">No assets yet. Drop images into the data/ folder and run <code>npm run build</code>.</div>'}`;
+        : assets.length
+          ? '<div class="status">No assets in this category.</div>'
+          : '<div class="status">No assets yet. Drop images into the data/ folder (or a data/&lt;category&gt; subfolder) and run <code>npm run build</code>.</div>'}`;
 
     document.title = 'Assets — GARDEN';
   }
@@ -1167,6 +1180,12 @@
     if (styleType) {
       styleTypeFilter = styleType.getAttribute('data-style-type');
       renderStyles();
+      return;
+    }
+    const assetCategory = e.target.closest('[data-asset-category]');
+    if (assetCategory) {
+      assetCategoryFilter = assetCategory.getAttribute('data-asset-category');
+      renderAssets();
       return;
     }
     const styleCard = e.target.closest('[data-style]');

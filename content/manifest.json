@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-07T21:40:48.118Z",
+  "generated": "2026-08-08T02:12:47.469Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -1320,232 +1320,367 @@
     }
   ],
   "assets": [
-    "img-01.webp",
-    "img-02.webp",
-    "img-03.webp",
-    "img-04.webp",
-    "img-06.webp",
-    "img-07.webp",
-    "img-09.webp",
-    "img-12.webp",
-    "img-13.webp",
-    "img-14.webp",
-    "img-15.webp",
-    "img-16.webp",
-    "img-24.webp",
-    "img-25.webp",
-    "img-26.webp",
-    "img-28.webp",
-    "img-29.webp",
-    "img-30.webp",
-    "img-31.webp",
-    "img-32.webp",
-    "img-33.webp",
-    "img-34.webp",
-    "img-35.webp",
-    "img-36.webp",
-    "img-37.webp",
-    "img-38.webp",
-    "img-39.webp",
-    "img-40.webp",
-    "img-42.webp",
-    "img-43.webp",
-    "img-44.webp",
-    "img-45.webp",
-    "img-46.webp",
-    "img-47.webp",
-    "img-48.webp",
-    "img-49.webp",
-    "img-50.webp",
-    "img-51.webp",
-    "img-52.webp",
-    "img-53.webp",
-    "img-54.webp",
-    "img-55.webp",
-    "img-56.webp",
-    "img-57.webp",
-    "img-58.webp"
+    {
+      "file": "groyper/img-01.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-02.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-26.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-28.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-29.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-31.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-33.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-38.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-42.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-43.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-44.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-45.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-46.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-47.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-48.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-49.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-50.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-51.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-52.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-53.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-54.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-55.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-56.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "misc/img-03.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-04.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-25.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-32.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-57.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-58.webp",
+      "category": "misc"
+    },
+    {
+      "file": "nick/img-06.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-07.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-09.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-12.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-13.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-14.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-15.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-16.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-24.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-30.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-34.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-35.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-36.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-37.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-39.webp",
+      "category": "nick"
+    },
+    {
+      "file": "nick/img-40.webp",
+      "category": "nick"
+    }
   ],
   "assetDims": {
-    "img-01.webp": [
+    "groyper/img-01.webp": [
       1086,
       1448
     ],
-    "img-02.webp": [
+    "groyper/img-02.webp": [
       896,
       1200
     ],
-    "img-03.webp": [
-      1280,
-      1280
-    ],
-    "img-04.webp": [
-      1280,
-      714
-    ],
-    "img-06.webp": [
-      735,
-      760
-    ],
-    "img-07.webp": [
-      1590,
-      2048
-    ],
-    "img-09.webp": [
-      1170,
-      1344
-    ],
-    "img-12.webp": [
-      896,
-      1200
-    ],
-    "img-13.webp": [
-      662,
-      753
-    ],
-    "img-14.webp": [
-      1536,
-      2048
-    ],
-    "img-15.webp": [
-      1781,
-      2048
-    ],
-    "img-16.webp": [
-      736,
-      736
-    ],
-    "img-24.webp": [
-      768,
-      1024
-    ],
-    "img-25.webp": [
-      2048,
-      2048
-    ],
-    "img-26.webp": [
+    "groyper/img-26.webp": [
       1086,
       1448
     ],
-    "img-28.webp": [
+    "groyper/img-28.webp": [
       1086,
       1448
     ],
-    "img-29.webp": [
+    "groyper/img-29.webp": [
       1254,
       1254
     ],
-    "img-30.webp": [
-      1254,
-      1254
-    ],
-    "img-31.webp": [
+    "groyper/img-31.webp": [
       1086,
       1448
     ],
-    "img-32.webp": [
-      1684,
-      934
-    ],
-    "img-33.webp": [
+    "groyper/img-33.webp": [
       744,
       804
     ],
-    "img-34.webp": [
-      832,
-      728
-    ],
-    "img-35.webp": [
-      318,
-      386
-    ],
-    "img-36.webp": [
-      829,
-      1080
-    ],
-    "img-37.webp": [
-      736,
-      679
-    ],
-    "img-38.webp": [
+    "groyper/img-38.webp": [
       420,
       420
     ],
-    "img-39.webp": [
-      653,
-      653
-    ],
-    "img-40.webp": [
-      928,
-      1232
-    ],
-    "img-42.webp": [
+    "groyper/img-42.webp": [
       419,
       595
     ],
-    "img-43.webp": [
+    "groyper/img-43.webp": [
       491,
       508
     ],
-    "img-44.webp": [
+    "groyper/img-44.webp": [
       484,
       516
     ],
-    "img-45.webp": [
+    "groyper/img-45.webp": [
       436,
       446
     ],
-    "img-46.webp": [
+    "groyper/img-46.webp": [
       1086,
       1448
     ],
-    "img-47.webp": [
+    "groyper/img-47.webp": [
       1037,
       1517
     ],
-    "img-48.webp": [
+    "groyper/img-48.webp": [
       2048,
       2048
     ],
-    "img-49.webp": [
+    "groyper/img-49.webp": [
       619,
       638
     ],
-    "img-50.webp": [
+    "groyper/img-50.webp": [
       2048,
       2048
     ],
-    "img-51.webp": [
+    "groyper/img-51.webp": [
       848,
       1264
     ],
-    "img-52.webp": [
+    "groyper/img-52.webp": [
       530,
       728
     ],
-    "img-53.webp": [
+    "groyper/img-53.webp": [
       1080,
       1457
     ],
-    "img-54.webp": [
+    "groyper/img-54.webp": [
       1086,
       1448
     ],
-    "img-55.webp": [
+    "groyper/img-55.webp": [
       1072,
       1136
     ],
-    "img-56.webp": [
+    "groyper/img-56.webp": [
       1254,
       1254
     ],
-    "img-57.webp": [
+    "misc/img-03.webp": [
+      1280,
+      1280
+    ],
+    "misc/img-04.webp": [
       1280,
       714
     ],
-    "img-58.webp": [
+    "misc/img-25.webp": [
+      2048,
+      2048
+    ],
+    "misc/img-32.webp": [
+      1684,
+      934
+    ],
+    "misc/img-57.webp": [
+      1280,
+      714
+    ],
+    "misc/img-58.webp": [
       907,
       1733
+    ],
+    "nick/img-06.webp": [
+      735,
+      760
+    ],
+    "nick/img-07.webp": [
+      1590,
+      2048
+    ],
+    "nick/img-09.webp": [
+      1170,
+      1344
+    ],
+    "nick/img-12.webp": [
+      896,
+      1200
+    ],
+    "nick/img-13.webp": [
+      662,
+      753
+    ],
+    "nick/img-14.webp": [
+      1536,
+      2048
+    ],
+    "nick/img-15.webp": [
+      1781,
+      2048
+    ],
+    "nick/img-16.webp": [
+      736,
+      736
+    ],
+    "nick/img-24.webp": [
+      768,
+      1024
+    ],
+    "nick/img-30.webp": [
+      1254,
+      1254
+    ],
+    "nick/img-34.webp": [
+      832,
+      728
+    ],
+    "nick/img-35.webp": [
+      318,
+      386
+    ],
+    "nick/img-36.webp": [
+      829,
+      1080
+    ],
+    "nick/img-37.webp": [
+      736,
+      679
+    ],
+    "nick/img-39.webp": [
+      653,
+      653
+    ],
+    "nick/img-40.webp": [
+      928,
+      1232
     ]
   }
 }

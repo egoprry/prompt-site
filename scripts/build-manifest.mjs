@@ -222,16 +222,47 @@ try {
 } catch { /* no styles folder */ }
 
 // Static assets gallery from data/ at the repo root (fin-first, no cap).
+// Each top-level subfolder of data/ becomes its own filter category (named
+// after the folder, images collected recursively within it); loose images
+// directly in data/ fall under the "misc" category.
+async function walkImages(dir, base = '') {
+  const entries = await readdir(dir, { withFileTypes: true });
+  let files = [];
+  for (const e of entries) {
+    if (e.isDirectory()) {
+      files = files.concat(await walkImages(path.join(dir, e.name), base ? `${base}/${e.name}` : e.name));
+    } else if (isImage(e.name)) {
+      files.push(base ? `${base}/${e.name}` : e.name);
+    }
+  }
+  return files;
+}
+
 let assets = [];
 const assetDims = {};
 try {
   const dataDir = path.resolve(CONTENT_DIR, '..', 'data');
-  assets = (await readdir(dataDir))
-    .filter(isImage)
-    .sort((a, b) => (isFin(b) - isFin(a)) || a.localeCompare(b));
-  for (const f of assets) {
-    const d = await imageDims(path.join(dataDir, f));
-    if (d) assetDims[f] = d;
+  const topEntries = await readdir(dataDir, { withFileTypes: true });
+
+  const byFinName = (a, b) => (isFin(path.basename(b)) - isFin(path.basename(a))) || a.localeCompare(b);
+
+  const categoryFolders = topEntries.filter((e) => e.isDirectory()).map((e) => e.name).sort();
+  const grouped = [];
+  for (const folder of categoryFolders) {
+    const files = (await walkImages(path.join(dataDir, folder), folder)).sort(byFinName);
+    for (const f of files) grouped.push({ file: f, category: folder });
+  }
+
+  const misc = topEntries
+    .filter((e) => e.isFile() && isImage(e.name))
+    .map((e) => e.name)
+    .sort(byFinName)
+    .map((f) => ({ file: f, category: 'misc' }));
+
+  assets = [...grouped, ...misc];
+  for (const a of assets) {
+    const d = await imageDims(path.join(dataDir, a.file));
+    if (d) assetDims[a.file] = d;
   }
 } catch { /* no data folder */ }
 

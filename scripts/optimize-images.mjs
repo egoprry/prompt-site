@@ -14,6 +14,10 @@
  *    featured finals and always display first on the site)
  *  - deletes the originals after successful conversion
  *
+ * The data/ assets gallery gets the same treatment: loose files directly in
+ * data/ are the "misc" category; each subfolder of data/ is its own category
+ * (named after the folder) shown as a filter pill on the Assets page.
+ *
  * Usage:
  *   node scripts/optimize-images.mjs           # process all post folders
  *   node scripts/optimize-images.mjs --keep    # keep original files
@@ -238,9 +242,19 @@ if (folders.length === 0) {
   for (const folder of folders) await processFolder(folder);
 }
 
-// Static assets gallery: same handling, no image cap.
+// Static assets gallery: same handling, no image cap. Loose files in data/
+// are the "misc" category; each subfolder of data/ is its own category and
+// gets the same optimize/rename treatment.
 if (!onlyFolder || onlyFolder === 'data') {
   await processDir(DATA_DIR, 'data', false);
+  try {
+    const dataFolders = (await readdir(DATA_DIR, { withFileTypes: true }))
+      .filter((e) => e.isDirectory())
+      .map((e) => e.name);
+    for (const folder of dataFolders) {
+      await processDir(path.join(DATA_DIR, folder), `data/${folder}`, false);
+    }
+  } catch { /* no data folder */ }
 }
 
 // Style catalog entries: same handling as post roots.
