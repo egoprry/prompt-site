@@ -88,6 +88,11 @@
   ],
   "social": [
     {
+      "name": "support me on ko-fi",
+      "url": "ko-fi.com/egoprry",
+      "desc": "support"
+    },
+    {
       "name": "@egoprry",
       "url": "https://x.com/egoprry",
       "desc": "main"
