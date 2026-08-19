@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-08T02:27:28.894Z",
+  "generated": "2026-08-19T13:45:42.267Z",
   "posts": [
     {
       "id": "gpt-candid-shirt-1",
@@ -1517,6 +1517,26 @@
       "category": "groyper"
     },
     {
+      "file": "groyper/img-84.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-85.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-86.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-87.webp",
+      "category": "groyper"
+    },
+    {
+      "file": "groyper/img-88.webp",
+      "category": "groyper"
+    },
+    {
       "file": "misc/img-03.webp",
       "category": "misc"
     },
@@ -1558,6 +1578,34 @@
     },
     {
       "file": "misc/img-63.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-64.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-65.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-66.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-67.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-68.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-69.webp",
+      "category": "misc"
+    },
+    {
+      "file": "misc/img-70.webp",
       "category": "misc"
     },
     {
@@ -1826,6 +1874,26 @@
       896,
       1200
     ],
+    "groyper/img-84.webp": [
+      1024,
+      1024
+    ],
+    "groyper/img-85.webp": [
+      1024,
+      1024
+    ],
+    "groyper/img-86.webp": [
+      1024,
+      1024
+    ],
+    "groyper/img-87.webp": [
+      960,
+      1200
+    ],
+    "groyper/img-88.webp": [
+      1024,
+      1024
+    ],
     "misc/img-03.webp": [
       1280,
       1280
@@ -1868,6 +1936,34 @@
     ],
     "misc/img-63.webp": [
       896,
+      1200
+    ],
+    "misc/img-64.webp": [
+      250,
+      250
+    ],
+    "misc/img-65.webp": [
+      1254,
+      1254
+    ],
+    "misc/img-66.webp": [
+      1086,
+      1448
+    ],
+    "misc/img-67.webp": [
+      1254,
+      1254
+    ],
+    "misc/img-68.webp": [
+      1086,
+      1448
+    ],
+    "misc/img-69.webp": [
+      960,
+      1200
+    ],
+    "misc/img-70.webp": [
+      960,
       1200
     ],
     "nick/img-06.webp": [

@@ -50,6 +50,10 @@
   const imageUrl = (post, file) =>
     `content/${encodeURIComponent(post.id)}/${file.split('/').map(encodeURIComponent).join('/')}`;
 
+  /* Donation details shown on the home page. */
+  const SOL_ADDRESS = '9X8pCgb1vZbD8Y3jgpNUqAeeJRmoXPXpgRVRm85JbuCv';
+  const SOL_PROFILE_URL = 'https://pump.fun/profile/golemporium';
+
   /* Icon-only button contents (stroke inherits currentColor). */
   const ICONS = {
     download: '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8m0 0l3.2-3.2M8 10L4.8 6.8M3 13.5h10"/></svg>',
@@ -492,6 +496,17 @@
   function renderList(state) {
     const list = filteredPosts(state);
     const parts = [];
+
+    // support block: plain flow content, above the prompt of the day (not sticky)
+    parts.push(`
+      <section class="donate">
+        <div class="donate-label">Support me by donating $SOL</div>
+        <button class="donate-addr" data-copy-text="${SOL_ADDRESS}" title="Copy address" aria-label="Copy Solana address">
+          <span class="donate-addr-text">${SOL_ADDRESS}</span>
+          <span class="donate-addr-icon">${ICONS.copy}</span>
+        </button>
+        <a class="donate-link" href="${SOL_PROFILE_URL}" target="_blank" rel="noopener">${SOL_PROFILE_URL}</a>
+      </section>`);
 
     if (promptOfDay) {
       const today = new Date().toISOString().slice(0, 10);

@@ -482,6 +482,78 @@ body.assets-page .controls {
   text-align: center;
 }
 
+/* ---------------------------------------------------------- support / donate
+   Plain flow content above the prompt of the day — deliberately not sticky. */
+.donate {
+  position: static;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-2-5) var(--sp-3);
+  margin-bottom: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-2);
+}
+
+/* same periwinkle sign as the prompt-of-day label */
+.donate-label {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-accent);
+  background: var(--accent);
+  padding: 1px var(--sp-2);
+  border-radius: var(--radius-xs);
+}
+
+/* the whole address row is the copy target; full width so the copied-state
+   icon swap cannot collapse the layout */
+.donate-addr {
+  width: 100%;
+  min-height: var(--ctl-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-1-5) var(--sp-2);
+  background: var(--bg-3);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  text-align: left;
+  cursor: pointer;
+  max-width:400px;
+}
+
+.donate-addr:hover {
+  border-color: var(--border-strong);
+}
+
+.donate-addr-text {
+  min-width: 0;
+  word-break: break-all;
+  user-select: all;
+}
+
+.donate-addr-icon {
+  display: flex;
+  flex: 0 0 auto;
+  color: var(--text-2);
+}
+
+.donate-link {
+  font-size: var(--fs-sm);
+  word-break: break-all;
+}
+
 /* ------------------------------------------------------- prompt of the day */
 .potd {
   background: var(--bg-2);
@@ -1471,6 +1543,11 @@ body.assets-page .controls {
   gap:1px;
 }
 
+/* assets grid: wider tiles than the front-page post masonry */
+.masonry:not(.post-masonry) {
+  columns: 170px;
+}
+
 .masonry-item {
   break-inside: avoid;
   display: flex;
@@ -1996,5 +2073,21 @@ body.assets-page .controls {
 
   .home-sticky .home-controls {
     margin-bottom: 0;
+  }
+
+  /* keep the 44-char address on one line at phone widths */
+  .donate-addr,
+  .donate-link {
+    font-size: var(--fs-xs);
+  }
+
+  .donate-addr {
+    padding: var(--sp-1-5);
+  }
+}
+
+@media (max-width: 400px) {
+  .brand {
+    display:none;
   }
 }
